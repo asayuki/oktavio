@@ -76,6 +76,7 @@ suite('Test modes', () => {
       },
       payload: {
         name: 'Testmode',
+        icon: 'flower',
         devices: [
           {
             id: deviceID,
@@ -98,5 +99,89 @@ suite('Test modes', () => {
 
     });
   });
+
+  test('PUT /api/modes', (done) => {
+    const options = {
+      method: 'PUT',
+      url: '/api/modes',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      payload: {
+        name: 'Testmode updated',
+        icon: 'power',
+        devices: []
+      }
+    };
+
+    server.inject(options, (response) => {
+      expect(response.statusCode).to.equal(200);
+      expect(response.result.modeUpdated).to.equal(true);
+      done();
+    });
+  });
+
+  test('POST /api/modes/addDevice', (done) => {
+    const options = {
+      method: 'POST',
+      url: '/api/modes/addDevice',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      payload: {
+        id: modeID,
+        device: {
+          id: deviceID,
+          on: true
+        }
+      }
+    };
+
+    server.inject(options, (response) => {
+      expect(response.statusCode).to.equal(200);
+      expect(response.result.deviceAdded).to.equal(true);
+      done();
+    });
+  });
+
+  test('GET /api/modes/[MODE_ID]', (response) => {
+    const options = {
+      method: 'GET',
+      url: '/api/modes/' + modeID,
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    };
+
+    server.inject(options, (response) => {
+      expect(response.statusCode).to.equal(200);
+      expect(response.result.name).to.equal('Testmode updated');
+      expect(response.result.icon).to.equal('power');
+      expect(response.result.devices.length).to.be.above(0);
+      done();
+    });
+  });
+
+  test('DELETE /api/modes/removeDevice', (done) => {
+    const options = {
+      method: 'POST',
+      url: '/api/modes/removeDevice',
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      payload: {
+        id: modeID,
+        deviceId: deviceID
+      }
+    };
+
+    server.inject(options, (response) => {
+      expect(response.statusCode).to.equal(200);
+      expect(response.result.deviceRemoved).to.equal(true);
+      done();
+    });
+  });
+
+
 
 });

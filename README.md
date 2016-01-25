@@ -31,6 +31,14 @@
 * `TEST_USER` - Optional; For testing purpose
 * `TEST_PASSWORD` - Optional; For testing purpose
 
+## Install packages
+
+To install node packages required to run the application, other than general requirements, execute the following command in the project root.
+
+``npm install``
+
+> Note: Sometimes there is an issue with permissions and you might need to use sudo.
+
 ## Adding initial user
 
 ## Starting Octav.io

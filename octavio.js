@@ -93,6 +93,7 @@ plugins.push({register: require('hapi-auth-jwt')});
 plugins.push({register: require('./core/pilight')});
 plugins.push({register: require('./core/login')});
 plugins.push({register: require('./core/devices')});
+plugins.push({register: require('./core/modes')});
 
 octavio.register(plugins, (err) => {
   if (err)

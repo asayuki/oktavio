@@ -91,7 +91,7 @@ suite('Test devices', () => {
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.deviceRemoved).to.equal(true);
+      expect(response.result.modeRemoved).to.equal(true);
       done();
     });
   });

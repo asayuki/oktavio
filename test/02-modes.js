@@ -122,10 +122,10 @@ suite('Test modes', () => {
     });
   });
 
-  test('POST /api/modes/addDevice', (done) => {
+  test('POST /api/modes/device', (done) => {
     const options = {
       method: 'POST',
-      url: '/api/modes/addDevice',
+      url: '/api/modes/device',
       headers: {
         Authorization: 'Bearer ' + token
       },
@@ -140,7 +140,7 @@ suite('Test modes', () => {
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.deviceAdded).to.equal(true);
+      expect(response.result.deviceAddedToMode).to.equal(true);
       done();
     });
   });
@@ -163,10 +163,10 @@ suite('Test modes', () => {
     });
   });
 
-  test('DELETE /api/modes/removeDevice', (done) => {
+  test('DELETE /api/modes/device', (done) => {
     const options = {
-      method: 'POST',
-      url: '/api/modes/removeDevice',
+      method: 'DELETE',
+      url: '/api/modes/device',
       headers: {
         Authorization: 'Bearer ' + token
       },
@@ -178,11 +178,9 @@ suite('Test modes', () => {
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.deviceRemoved).to.equal(true);
+      expect(response.result.deviceRemovedFromMode).to.equal(true);
       done();
     });
   });
-
-
 
 });

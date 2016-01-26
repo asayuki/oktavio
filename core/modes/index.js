@@ -29,6 +29,28 @@ exports.register = (plugin, options, next) => {
       }
     },
     {
+      method: 'GET',
+      path: '/api/modes/{id*}',
+      config: {
+        handler: handlers.getMode,
+        tags: ['api'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown()
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': { redirectTo: false },
+          'hapi-auth-jwt': { redirectTo: false },
+          'hapi-swagger': { payloadType: 'form' }
+        }
+      }
+    },
+    {
       method: 'POST',
       path: '/api/modes',
       config: {
@@ -77,6 +99,86 @@ exports.register = (plugin, options, next) => {
               on: Joi.boolean().required()
             }))
           })
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': { redirectTo: false },
+          'hapi-auth-jwt': { redirectTo: false },
+          'hapi-swagger': { payloadType: 'json' }
+        }
+      }
+    },
+    {
+      method: 'DELETE',
+      path: '/api/modes',
+      config: {
+        handler: handlers.removeMode,
+        tags: ['api'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown(),
+          payload: Joi.object({
+            id: Joi.string().required()
+          })
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': { redirectTo: false },
+          'hapi-auth-jwt': { redirectTo: false },
+          'hapi-swagger': { payloadType: 'json' }
+        }
+      }
+    },
+    {
+      method: 'POST',
+      path: '/api/modes/device',
+      config: {
+        handler: handlers.addDeviceToMode,
+        tags: ['api'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown(),
+          payload: Joi.object({
+            id: Joi.string().required(),
+            device: Joi.object({
+              id: Joi.string().required(),
+              on: Joi.boolean().required()
+            }).required()
+          })
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': { redirectTo: false },
+          'hapi-auth-jwt': { redirectTo: false },
+          'hapi-swagger': { payloadType: 'json' }
+        }
+      }
+    },
+    {
+      method: 'DELETE',
+      path: '/api/modes/device',
+      config: {
+        handler: handlers.removeDeviceFromMode,
+        tags: ['api'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown(),
+          payload: Joi.object({
+            id: Joi.string().required(),
+            deviceId: Joi.string().required()
+          }).required()
         },
         auth: {
           mode: 'try',

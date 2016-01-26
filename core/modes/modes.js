@@ -160,7 +160,7 @@ const handlers = {
 
         modes.remove({_id: new ObjectID(payload.id)}, (removeErr) => {
           if (removeErr)
-            return response({status: false, error: 'Databse error'}).code(500);
+            return response({status: false, error: 'Database error'}).code(500);
 
           return response({status: true, modeRemoved: true}).code(200);
         });
@@ -171,11 +171,78 @@ const handlers = {
   },
 
   addDeviceToMode: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        modes = db.collection('modes'),
+        payload = request.payload;
 
+      modes.findOne({_id: new ObjectID(payload.id)}, (err, mode) => {
+        if (err)
+          return response({status: false, error: 'Database error'}).code(500);
+
+        if (mode === null)
+          return response({status: false, error: 'Could not find mode with ID ' + payload.id}).code(500);
+
+        let deviceIndex = null, i;
+        for (i = 0; i < mode.devices.length; ++i) {
+          if (mode.devices[i].id === payload.device.id) {
+            deviceIndex = i;
+            break;
+          }
+        }
+
+        if (deviceIndex !== null)
+          return response({status: false, error: 'Device already exists in this mode'}).code(200);
+
+        mode.devices.push(payload.device);
+        modes.update({_id: new ObjectID(mode._id)}, {$set: {devices: mode.devices}}, (updateErr) => {
+          if (updateErr)
+            return response({status: false, error: 'Database error'}).code(500);
+
+          return response({status: true, deviceAddedToMode: true}).code(200);
+        });
+      });
+    } else {
+      return response({status: false, notAuthenticated: true}).code(403);
+    }
   },
 
   removeDeviceFromMode: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        modes = db.collection('modes'),
+        payload = request.payload;
 
+      modes.findOne({_id: new ObjectID(payload.id)}, (err, mode) => {
+        if (err)
+          return response({status: false, error: 'Database error'}).code(500);
+
+        if (mode === null)
+          return response({status: false, error: 'Could not find mode with ID ' + payload.id}).code(500);
+
+        let deviceIndex, i;
+        for (i = 0; i < mode.devices.length; ++i) {
+          if (mode.devices[i].id === payload.deviceId) {
+            deviceIndex = i;
+            break;
+          }
+        }
+
+        mode.devices.splice(deviceIndex, 1);
+        modes.update({_id: new ObjectID(mode._id)}, {$set: {devices: mode.devices}}, (updateErr) => {
+          if (updateErr)
+            return response({status: false, error: 'Database error'}).code(500);
+
+          return response({status: true, deviceRemovedFromMode: true}).code(200);
+        });
+      });
+    } else {
+      return response({status: false, notAuthenticated: true}).code(403);
+    }
   }
 
 };

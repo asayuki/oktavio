@@ -22,14 +22,14 @@ const handlers = {
     }
   },
 
-  getMode: (requst, response) => {
+  getMode: (request, response) => {
     if (request.auth.isAuthenticated) {
       let
         db = request.server.plugins['hapi-mongodb'].db,
         ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
         modes = db.collection('modes');
 
-      modes.findOne({_id: new ObjectID(request.params.id)}, (err, mode) {
+      modes.findOne({_id: new ObjectID(request.params.id)}, (err, mode) => {
         if (err)
           return response({status: false, error: 'Database error'}).code(500);
 
@@ -44,6 +44,7 @@ const handlers = {
     if (request.auth.isAuthenticated) {
       let
         db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
         devices = db.collection('devices'),
         modes = db.collection('modes'),
         payload = request.payload;
@@ -66,9 +67,9 @@ const handlers = {
             if (deviceDoc === null)
               callback('Could not find device with ID ' + device.id);
             else
-              callback()
+              callback();
           });
-        }, (err) {
+        }, (err) => {
           if (err)
             return response({status: false, error: err}).code(500);
 
@@ -105,7 +106,7 @@ const handlers = {
 
           return response({status: true, modeRemoved: true}).code(200);
         });
-      })
+      });
     } else {
       return response({status: false, notAuthenticated: true}).code(403);
     }

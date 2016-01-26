@@ -92,7 +92,7 @@ exports.register = (plugin, options, next) => {
       } else {
         return false;
       }
-    }
+    };
     heartbeatTimeout = setTimeout(() => {
       sendHeartbeat();
     }, 5000);

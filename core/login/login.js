@@ -16,7 +16,7 @@ const handlers = {
 
       if (user !== null) {
         if (passwordHash.verify(payload.password, user.password)) {
-          delete user.password
+          delete user.password;
           if (payload.session) {
             cache.set(user.username + '' + user._id, {
               account: user

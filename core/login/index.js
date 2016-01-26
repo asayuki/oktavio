@@ -32,7 +32,7 @@ exports.register = (plugin, options, next) => {
           return callback(err, false);
 
         if (!cached)
-          return callback(null, false)
+          return callback(null, false);
 
         return callback(null, true, cached.account);
       });

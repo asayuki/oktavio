@@ -132,7 +132,7 @@ exports.register = (plugin, options, next) => {
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
           'hapi-auth-jwt': { redirectTo: false },
-          'hapi-swagger': { payloadType: 'form' }
+          'hapi-swagger': { payloadType: 'json' }
         }
       }
     },

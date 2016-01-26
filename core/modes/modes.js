@@ -60,15 +60,19 @@ const handlers = {
 
       if (payload.devices.length > 0) {
         async.each(payload.devices, (device, callback) => {
-          devices.find({_id: new ObjectID(device.id)}, (err, deviceDoc) => {
-            if (err)
-              callback('Database error');
+          if (ObjectID.isValid(device.id)) {
+            devices.findOne({_id: new ObjectID(device.id)}, (err, deviceDoc) => {
+              if (err)
+                callback('Database error');
 
-            if (deviceDoc === null)
-              callback('Could not find device with ID ' + device.id);
-            else
-              callback();
-          });
+              if (deviceDoc === null)
+                callback('Could not find device with ID ' + device.id);
+              else
+                callback();
+            });
+          } else {
+            callback('Device ID ' + device.id + ' is not valid');
+          }
         }, (err) => {
           if (err)
             return response({status: false, error: err}).code(500);

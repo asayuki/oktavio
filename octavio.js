@@ -90,7 +90,9 @@ plugins.push({register: good, options: {reporters: reporters}});
 plugins.push({register: require('hapi-mongodb'), options: {url: mongoURL, settings: { db: {'native_parser': false}}}});
 plugins.push({register: require('hapi-auth-cookie')});
 plugins.push({register: require('hapi-auth-jwt')});
-plugins.push({register: require('./core/pilight')});
+if (process.env.PILIGHT_DONTLOAD !== 'true') {
+  plugins.push({register: require('./core/pilight')});
+}
 plugins.push({register: require('./core/login')});
 plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});

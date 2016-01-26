@@ -108,6 +108,7 @@ suite('Test modes', () => {
         Authorization: 'Bearer ' + token
       },
       payload: {
+        id: modeID,
         name: 'Testmode updated',
         icon: 'power',
         devices: []

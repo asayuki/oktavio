@@ -57,6 +57,37 @@ exports.register = (plugin, options, next) => {
           'hapi-swagger': { payloadType: 'json' }
         }
       }
+    },
+    {
+      method: 'PUT',
+      path: '/api/modes',
+      config: {
+        handler: handlers.updateMode,
+        tags: ['api'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown(),
+          payload: Joi.object({
+            id: Joi.string().required(),
+            name: Joi.string(),
+            icon: Joi.string(),
+            devices: Joi.array().items(Joi.object({
+              id: Joi.string().required(),
+              on: Joi.boolean().required()
+            }))
+          })
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': { redirectTo: false },
+          'hapi-auth-jwt': { redirectTo: false },
+          'hapi-swagger': { payloadType: 'json' }
+        }
+      }
     }
   ]);
 

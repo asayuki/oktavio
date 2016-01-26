@@ -82,11 +82,65 @@ const handlers = {
       } else {
         create();
       }
+    } else {
+      return response({status: false, notAuthenticated: true}).code(403);
     }
   },
 
   updateMode: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        devices = db.collection('devices'),
+        modes = db.collection('modes'),
+        payload = request.payload,
+        updateObj = {};
 
+      let update = () => {
+        modes.update({_id: new ObjectID(payload.id)}, {$set: updateObj}, (err) => {
+          if (err)
+            return response({status: false, error: 'Database error'}).code(500);
+
+          return response({status: true, modeUpdated: true}).code(200);
+        });
+      };
+
+      if (typeof payload.name !== 'undefined')
+        updateObj.name = payload.name;
+
+      if (typeof payload.icon !== 'undefined')
+        updateObj.icon = payload.icon;
+
+      if (typeof payload.devices !== 'undefined') {
+        async.each(payload.devices, (device, callback) => {
+          if (ObjectID.isValid(device.id)) {
+            devices.findOne({_id: new ObjectID(device.id)}, (err, deviceDoc) => {
+              if (err)
+                callback('Database error');
+
+              if (deviceDoc === null)
+                callback('Could not find device with ID ' + device.id);
+              else
+                callback();
+            });
+          } else {
+            callback('Device ID ' + device.id + ' is not valid');
+          }
+        }, (err) => {
+          if (err)
+            return response({status: false, error: err}).code(500);
+
+          updateObj.devices = payload.devices;
+          update();
+        });
+      } else {
+        update();
+      }
+
+    } else {
+      return response({status: false, notAuthenticated: true}).code(403);
+    }
   },
 
   removeMode: (request, response) => {

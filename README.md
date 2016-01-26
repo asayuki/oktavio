@@ -25,11 +25,14 @@
 * `MONGO_USER` - Defaults to null, might be required
 * `MONGO_PASSWORD` - Defaults to null, might be required
 * `MONGO_DB` - Required; Mongo database
+* `PILIGHT_HOST` - Required (if `PILIGHT_DONTLOAD` is not set to true); Address to Pilight Daemon
+* `PILIGHT_PORT` - Required (if `PILIGHT_DONTLOAD` is not set to true); Port to Pilight Daemon
 
 ### Additional configurations
 
 * `TEST_USER` - Optional; For testing purpose
 * `TEST_PASSWORD` - Optional; For testing purpose
+* `PILIGHT_DONTLOAD` - Optional; For testing purpose, if you dont have access to any pilight daemons
 
 ## Install packages
 

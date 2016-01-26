@@ -45,7 +45,7 @@ suite('Test modes', () => {
 
     stopChecking = () => {
       clearInterval(checking);
-    }
+    };
 
     checking = setInterval(() => { checkAppstarted(); }, 1000);
 
@@ -144,7 +144,7 @@ suite('Test modes', () => {
     });
   });
 
-  test('GET /api/modes/[MODE_ID]', (response) => {
+  test('GET /api/modes/[MODE_ID]', (done) => {
     const options = {
       method: 'GET',
       url: '/api/modes/' + modeID,

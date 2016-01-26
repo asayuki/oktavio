@@ -27,7 +27,7 @@ suite('Test login', () => {
 
     stopChecking = () => {
       clearInterval(checking);
-    }
+    };
 
     checking = setInterval(() => { checkAppstarted(); }, 1000);
 

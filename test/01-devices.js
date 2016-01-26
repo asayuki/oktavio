@@ -37,7 +37,7 @@ suite('Test devices', () => {
 
     stopChecking = () => {
       clearInterval(checking);
-    }
+    };
 
     checking = setInterval(() => { checkAppstarted(); }, 1000);
 

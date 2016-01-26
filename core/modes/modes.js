@@ -243,8 +243,98 @@ const handlers = {
     } else {
       return response({status: false, notAuthenticated: true}).code(403);
     }
-  }
+  },
 
+  activateMode: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        general = db.collection('general'),
+        modes = db.collection('modes'),
+        devices = db.collection('devices'),
+        payload = request.payload,
+        targetMode = null,
+        sendDevices = [];
+
+      async.series([
+        (callback) => {
+          modes.findOne({_id: new ObjectID(payload.id)}, (err, mode) => {
+            if (err)
+              return callback('Database error');
+
+            if (mode === null)
+              return callback('Could not find mode with ID ' + payload.id);
+
+            targetMode = mode;
+
+            return callback();
+          });
+        },
+        (callback) => {
+          general.update({type: 'settings'}, {$set: {currentMode: new ObjectID(payload.id)}}, (err) => {
+            if (err)
+              return callback('Database error');
+
+            return callback();
+          });
+        }
+      ], (err) => {
+        if (err)
+          return response({status: false, error: err}).code(500);
+
+        async.each(targetMode.devices, (device, callback) => {
+          var deviceID = new ObjectID(device.id);
+          devices.findOne({_id: deviceID}, (deviceErr, deviceDoc) => {
+            if (deviceErr)
+              return callback('Database error whilst fetching device ' + device.id);
+
+            let changeState = true;
+            if (typeof deviceDoc.current_state !== undefined) {
+              if (deviceDoc.current_state === device.on)
+                changeState = false
+            }
+            if (changeState) {
+              devices.update({_id: deviceID}, {$set: {current_state: device.on}}, (updateErr) => {
+                if (updateErr)
+                  return callback('Database error whilst updating current state of device ' + device.id);
+
+                let sendObj = {
+                  "action": "send",
+                  "code": {
+                    "protocol": [deviceDoc.device.protocol],
+                    "id": deviceDoc.device.id,
+                    "unit": deviceDoc.device.unit
+                  }
+                };
+
+                if (device.on)
+                  sendObj.code.on = 1;
+                else
+                  sendObj.code.off = 1;
+
+                sendDevices.push(sendObj);
+
+                return callback();
+
+              });
+            } else {
+              return callback()
+            }
+          });
+        }, (err) => {
+          if (err)
+            return response ({status: false, error: err}).code(500);
+
+          [].slice.call(sendDevices).forEach((sendObj) => {
+            request.server.plugins.pilight.send(sendObj);
+          });
+
+          return response({status: true}).code(200);
+        });
+      });
+    }
+  }
 };
 
 module.exports = handlers;

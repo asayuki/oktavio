@@ -12,13 +12,11 @@ exports.register = (plugin, options, next) => {
   createConnection();
 
   socket.on('connect', () => {
-    console.log('Connection');
     sayHello();
     startHeartbeat();
   });
 
   socket.on('close', () => {
-    console.log('Trying to reconnect');
     socket.destroy();
     createConnection();
   });

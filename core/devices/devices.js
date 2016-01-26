@@ -191,7 +191,6 @@ const handlers = {
         request.server.plugins.pilight.send(sendObj);
 
         return response({status: true}).code(200);
-
       });
 
     } else {

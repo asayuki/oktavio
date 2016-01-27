@@ -6,7 +6,7 @@
   "main": "octavio.js",
   "scripts": {
     "start": "nodemon --watch octavio.js --watch core octavio.js",
-    "test": "node_modules/lab/bin/lab -m 100000"
+    "test": "node_modules/lab/bin/lab"
   },
   "license": "MIT",
   "dependencies": {

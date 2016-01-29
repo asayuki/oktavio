@@ -1,4 +1,4 @@
-# Octav.io
+# Oktav.io
 
 ## General Requirements
 
@@ -10,7 +10,7 @@
 
 ## Configuring
 
-`Octav.io` configuration comes from environment variables. Some of them might work with default-values, others need to be configurated. Copy .env.example to .env and make your configurations there.
+`Oktav.io` configuration comes from environment variables. Some of them might work with default-values, others need to be configurated. Copy .env.example to .env and make your configurations there.
 
 * `APP_HOST` - Defaults to 127.0.0.1
 * `APP_PORT` - Defaults to 8000
@@ -44,4 +44,4 @@ To install node packages required to run the application, other than general req
 
 ## Adding initial user
 
-## Starting Octav.io
+## Starting Oktav.io

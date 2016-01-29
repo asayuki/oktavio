@@ -18,9 +18,9 @@ const
   },
   plugins = [],
   reporters = [],
-  octavio = new hapi.Server({
+  oktavio = new hapi.Server({
     cache: [{
-      name: 'octavioCache',
+      name: 'oktavioCache',
       engine: catbox,
       host: (process.env.REDIS_HOST) ? process.env.REDIS_HOST : '127.0.0.1',
       port: (process.env.REDIS_PORT) ? process.env.REDIS_PORT : 6379,
@@ -37,7 +37,7 @@ handlebarsLayout.register(htmlEngine);
 /*
  * Setup host and port for application
  */
-octavio.connection({
+oktavio.connection({
   host: (process.env.APP_HOST) ? process.env.APP_HOST : '127.0.0.1',
   port: (process.env.APP_PORT) ? process.env.APP_PORT : 8000
 });
@@ -45,11 +45,11 @@ octavio.connection({
 /*
  * Register viewspath
  */
-octavio.register(vision, (err) => {
+oktavio.register(vision, (err) => {
   if (err)
     throw err;
 
-  octavio.views({
+  oktavio.views({
     engines: {
       html: {
         module: htmlEngine,
@@ -97,15 +97,15 @@ plugins.push({register: require('./core/login')});
 plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
 
-octavio.register(plugins, (err) => {
+oktavio.register(plugins, (err) => {
   if (err)
     throw err;
 
-  octavio.start(() => {
+  oktavio.start(() => {
     process.env.APP_STARTED = true;
     if (process.env.APP_PRODUCTION !== 'true' && process.env.APP_TESTING !== 'true')
-      console.log('OctavIO started at:', octavio.info.uri);
+      console.log('oktavio started at:', oktavio.info.uri);
   });
 })
 
-module.exports = octavio;
+module.exports = oktavio;

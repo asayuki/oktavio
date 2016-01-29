@@ -5,7 +5,7 @@ const
 
 exports.register = (plugin, options, next) => {
   const cache = plugin.cache({
-    cache: 'octavioCache',
+    cache: 'oktavioCache',
     expiresIn: 60*60*24*365
   });
 
@@ -20,7 +20,7 @@ exports.register = (plugin, options, next) => {
   // Setup session strategy
   plugin.auth.strategy('session', 'cookie', {
     password: process.env.SESSION_PRIVATE_KEY,
-    cookie: 'octavio-session',
+    cookie: 'oktavio-session',
     redirectTo: '/',
     ttl: 60*60*24*30,
     isSecure: false,

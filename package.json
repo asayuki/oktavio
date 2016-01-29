@@ -1,11 +1,11 @@
 {
   "author": "neme <neme@whispered.se>",
-  "name": "octavio",
+  "name": "oktavio",
   "version": "0.0.1",
   "description": "API and GUI for control of your pilight-daemon",
-  "main": "octavio.js",
+  "main": "oktavio.js",
   "scripts": {
-    "start": "nodemon --watch octavio.js --watch core octavio.js",
+    "start": "nodemon --watch oktavio.js --watch core oktavio.js",
     "test": "node_modules/lab/bin/lab"
   },
   "license": "MIT",

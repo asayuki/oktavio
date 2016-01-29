@@ -10,7 +10,7 @@ const
   test = lab.test,
   before = lab.before,
   expect = code.expect,
-  server = require('../octavio'),
+  server = require('../oktavio'),
   fs = require('fs');
 
 suite('Test login', () => {

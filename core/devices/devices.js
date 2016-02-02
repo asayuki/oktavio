@@ -174,23 +174,28 @@ const handlers = {
         if (device === null)
           return response({status: false, error: 'Could not find device with ID ' + payload.id}).code(500);
 
-        let sendObj = {
-          "action": "send",
-          "code": {
-            "protocol": [device.device.protocol],
-            "id": device.device.id,
-            "unit": device.device.unit
-          }
-        };
+        devices.update({_id: new ObjectID(payload.id)}, {$set: {current_state: payload.on}}, (updateErr) => {
+          if (err)
+            return response({status: false, error: 'Database error'}).code(500);
 
-        if (payload.on)
-          sendObj.code.on = 1;
-        else
-          sendObj.code.off = 1;
+          let sendObj = {
+            "action": "send",
+            "code": {
+              "protocol": [device.device.protocol],
+              "id": device.device.id,
+              "unit": device.device.unit
+            }
+          };
 
-        request.server.plugins.pilight.send(sendObj);
+          if (payload.on)
+            sendObj.code.on = 1;
+          else
+            sendObj.code.off = 1;
 
-        return response({status: true}).code(200);
+          request.server.plugins.pilight.send(sendObj);
+
+          return response({status: true}).code(200);
+        });
       });
 
     } else {

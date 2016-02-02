@@ -5,7 +5,8 @@
   "description": "API and GUI for control of your pilight-daemon",
   "main": "oktavio.js",
   "scripts": {
-    "start": "nodemon --watch oktavio.js --watch core oktavio.js",
+    "start": "node oktavio.js",
+    "dev": "nodemon --watch oktavio.js --watch core oktavio.js",
     "test": "node_modules/lab/bin/lab"
   },
   "license": "MIT",

@@ -42,6 +42,8 @@ To install node packages required to run the application, other than general req
 
 > Note: Sometimes there is an issue with permissions and you might need to use sudo.
 
-## Adding initial user
-
 ## Starting Oktav.io
+
+``npm start`` will start the application but will also exit the application if you close your terminal window.
+
+A good way to start applications and keeping them alive is to use [PM2](https://github.com/Unitech/pm2). Follow the installation guide and then run ``pm2 start oktavio.js``.

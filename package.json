@@ -6,7 +6,7 @@
   "main": "oktavio.js",
   "scripts": {
     "start": "node oktavio.js",
-    "dev": "nodemon --watch oktavio.js --watch core oktavio.js",
+    "dev": "nodemon --watch oktavio.js --watch ui --watch core -e html,js oktavio.js",
     "test": "node_modules/lab/bin/lab"
   },
   "license": "MIT",

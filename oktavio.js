@@ -59,9 +59,9 @@ oktavio.register(vision, (err) => {
     },
     compileMode: 'sync',
     relativeTo: __dirname,
-    path: __dirname + '/ui',
-    layoutPath: __dirname + '/ui',
-    partialsPath: __dirname + '/ui'
+    path: __dirname + '/core/ui/views',
+    layoutPath: __dirname + '/core/ui/views',
+    partialsPath: __dirname + '/core/ui/views'
   });
 });
 
@@ -98,6 +98,8 @@ plugins.push({register: require('./core/login')});
 plugins.push({register: require('./core/users')});
 plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
+
+plugins.push({register: require('./core/ui')});
 
 let startServer = () => {
   oktavio.start(() => {

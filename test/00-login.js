@@ -20,9 +20,10 @@ suite('Test login', () => {
     let stopChecking, checking, checkAppstarted;
 
     checkAppstarted = () => {
-      if (process.env.APP_STARTED)
+      if (process.env.APP_STARTED) {
         done();
         stopChecking();
+      }
     };
 
     stopChecking = () => {

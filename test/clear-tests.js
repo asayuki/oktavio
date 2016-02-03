@@ -45,9 +45,10 @@ suite('Test devices', () => {
     });
 
     checkAppstarted = () => {
-      if (process.env.APP_STARTED)
+      if (process.env.APP_STARTED) {
         done();
         stopChecking();
+      }
     };
 
     stopChecking = () => {

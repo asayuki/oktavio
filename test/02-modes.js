@@ -38,9 +38,10 @@ suite('Test modes', () => {
     });
 
     checkAppstarted = () => {
-      if (process.env.APP_STARTED)
+      if (process.env.APP_STARTED) {
         done();
         stopChecking();
+      }
     };
 
     stopChecking = () => {

@@ -1,3 +1,5 @@
+!(Build status)[http://magic.rincewind.whispered.se/asayuki/oktavio/badge?branch=master]
+
 # Oktav.io
 
 ## General Requirements

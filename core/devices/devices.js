@@ -1,7 +1,6 @@
 'use strict';
 const
   jwt = require('jsonwebtoken'),
-  passwordHash = require('password-hash'),
   async = require('async');
 
 const handlers = {

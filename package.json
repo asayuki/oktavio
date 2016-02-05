@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.2",
+    "bcrypt": "^0.8.5",
     "catbox-redis": "^1.0.7",
     "dotenv": "^2.0.0",
     "good": "^6.4.0",
@@ -29,7 +30,6 @@
     "joi": "^7.2.2",
     "joi-objectid": "^2.0.0",
     "jsonwebtoken": "^5.5.4",
-    "password-hash": "^1.2.2",
     "vision": "^4.0.1"
   },
   "devDependencies": {

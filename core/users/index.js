@@ -2,7 +2,7 @@
 const
   Joi         = require('joi'),
   handlers    = require('./users'),
-  passwordHash = require('password-hash');
+  bcrypt      = require('bcrypt');
 
 Joi.objectId = require('joi-objectid')(Joi);
 
@@ -16,8 +16,32 @@ exports.register = (plugin, options, next) => {
 
   plugin.expose('fetchNumberOfUsers', (mongodb, callback) => {
     let db = mongodb.db;
-    db.collection('users').count((err, count) => {
+    db.collection('users').count({"username": {$ne: (process.env.TEST_USER !== '') ? process.env.TEST_USER : 'testuser'}}, (err, count) => {
       callback(count);
+    });
+  });
+
+  plugin.expose('testUser', (mongodb, callback) => {
+    let db = mongodb.db;
+    db.collection('users').findOne({"username": process.env.TEST_USER}, (err, testuser) => {
+      if (err)
+        callback("Error while checking testuser");
+
+      if (testuser === null) {
+        bcrypt.hash(process.env.TEST_PASSWORD, 8, (err, hash) => {
+          if (err)
+            callback("Error while hasing password");
+
+          db.collection('users').insert({"username": process.env.TEST_USER, "password": hash}, (err) => {
+            if (err)
+              callback("Error while creating testuser");
+
+            callback(null);
+          });
+        });
+      } else {
+        callback(null);
+      }
     });
   });
 

@@ -1,6 +1,6 @@
 'use strict';
 const
-  passwordHash  = require('password-hash');
+  bcrypt  = require('bcrypt');
 
 const handlers = {
   getUser: (request, response, cb) => {
@@ -27,13 +27,18 @@ const handlers = {
         users = db.collection('users'),
         payload = request.payload;
 
-      payload.password = passwordHash.generate(payload.password);
-      users.findOne({'username': payload.username}, (err, doc) => {
-        if (err) { return response({status: false, error: 'Database error'}).code(500); }
-        if (doc !== null) { return response({status: false, error: 'Username already exists'}).code(422); }
-        users.insert(payload, (err) => {
+      bcrypt.hash(payload.password, 8, (err, hash) => {
+        if (err)
+          return response({status: false, error: 'Passwordhash failed'});
+
+        payload.password = hash;
+        users.findOne({'username': payload.username}, (err, doc) => {
           if (err) { return response({status: false, error: 'Database error'}).code(500); }
-          return response({status: true, userCreated: true}).code(200);
+          if (doc !== null) { return response({status: false, error: 'Username already exists'}).code(422); }
+          users.insert(payload, (err) => {
+            if (err) { return response({status: false, error: 'Database error'}).code(500); }
+            return response({status: true, userCreated: true}).code(200);
+          });
         });
       });
     } else {
@@ -48,12 +53,19 @@ const handlers = {
         ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
         payload = request.payload;
 
-      let setUserobject = function (data) {
+      let setUserobject = function (data, cb) {
         var userObj = {};
         if (typeof data.password !== 'undefined') {
-          userObj.password = passwordHash.generate(data.password);
+          bcrypt.hash(data.password, 8, (err, hash) => {
+            if (err)
+              return cb(false);
+
+            userObj.password = hash;
+            return cb(userObj);
+          });
+        } else {
+          return cb(userObj);
         }
-        return userObj;
       };
 
       let userUpdate = null;
@@ -64,10 +76,14 @@ const handlers = {
           return response({status: true, userUpdated: true}).code(200);
         });
       } else {*/
-        userUpdate = setUserobject(payload);
-        users.update({_id: new ObjectID(request.auth.credentials._id)}, {$set: userUpdate}, (err) => {
-          if (err) { return response({status: false, error: 'Database error'}).code(500); }
-          return response({status: true, userUpdated: true});
+        setUserobject(payload, (userUpdate) => {
+          if (userUpdate === false)
+            return response({status: false, error: 'Passwordhash failed'});
+          
+          users.update({_id: new ObjectID(request.auth.credentials._id)}, {$set: userUpdate}, (err) => {
+            if (err) { return response({status: false, error: 'Database error'}).code(500); }
+            return response({status: true, userUpdated: true});
+          });
         });
       /*}*/
 

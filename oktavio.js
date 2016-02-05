@@ -103,9 +103,18 @@ plugins.push({register: require('./core/ui')});
 
 let startServer = () => {
   oktavio.start(() => {
-    process.env.APP_STARTED = true;
-    if (process.env.APP_PRODUCTION !== 'true' && process.env.APP_TESTING !== 'true')
-      console.log('oktavio started at:', oktavio.info.uri);
+    if (process.env.APP_TESTING === 'true') {
+      oktavio.plugins.users.testUser(oktavio.plugins['hapi-mongodb'], (err) => {
+        if (err)
+          throw err;
+
+        process.env.APP_STARTED = true;
+      });
+    } else {
+      process.env.APP_STARTED = true;
+      if (process.env.APP_PRODUCTION !== 'true')
+        console.log('oktavio started at:', oktavio.info.uri);
+    }
   });
 };
 
@@ -113,31 +122,35 @@ oktavio.register(plugins, (err) => {
   if (err)
     throw err;
 
-  oktavio.plugins.users.fetchNumberOfUsers(oktavio.plugins['hapi-mongodb'], (count) => {
-    if (count >= 1) {
-      startServer();
-    } else {
-      inquirer.prompt([
-        {
-          type: 'input',
-          name: 'username',
-          message: 'Username for the new user:',
-        },
-        {
-          type: 'password',
-          name: 'password',
-          message: 'Password for the new user:',
-        }
-      ], (userObj) => {
-        oktavio.plugins.users.createUser(oktavio.plugins['hapi-mongodb'], userObj, (err) => {
-          if (err)
-            throw err;
+  if (process.env.APP_TESTING === 'true') {
+    startServer();
+  } else {
+    oktavio.plugins.users.fetchNumberOfUsers(oktavio.plugins['hapi-mongodb'], (count) => {
+      if (count >= 1) {
+        startServer();
+      } else {
+        inquirer.prompt([
+          {
+            type: 'input',
+            name: 'username',
+            message: 'Username for the new user:',
+          },
+          {
+            type: 'password',
+            name: 'password',
+            message: 'Password for the new user:',
+          }
+        ], (userObj) => {
+          oktavio.plugins.users.createUser(oktavio.plugins['hapi-mongodb'], userObj, (err) => {
+            if (err)
+              throw err;
 
-          startServer();
+            startServer();
+          });
         });
-      });
-    }
-  });
+      }
+    });
+  }
 });
 
 module.exports = oktavio;

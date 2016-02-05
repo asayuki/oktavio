@@ -40,7 +40,6 @@
       return;
 
     [].slice.call(devices.devices).forEach((device) => {
-      console.log(device);
       let
         item = document.createElement('li'),
         itemName = document.createElement('span'),

@@ -1,7 +1,7 @@
 'use strict';
 const
   jwt = require('jsonwebtoken'),
-  passwordHash = require('password-hash');
+  bcrypt = require('bcrypt');
 
 const handlers = {
   session: (request, response) => {
@@ -15,7 +15,10 @@ const handlers = {
         return response().code(500);
 
       if (user !== null) {
-        if (passwordHash.verify(payload.password, user.password)) {
+        bcrypt.compare(payload.password, user.password, (err, res) => {
+          if (err && !res)
+            return response({status: false, error: 'Username or Password is invalid'}).code(403);
+
           delete user.password;
           if (payload.session) {
             cache.set(user.username + '' + user._id, {
@@ -33,9 +36,7 @@ const handlers = {
             let token = jwt.sign({_id: user._id}, process.env.SESSION_PRIVATE_KEY, { expiresIn: '30d'});
             return response({status: true, token: token}).code(200);
           }
-        } else {
-          return response({status: false, error: 'Username or Password is invalid'}).code(403);
-        }
+        });
       } else {
         return response({status: false, error: 'Username or Password is invalid'}).code(403);
       }

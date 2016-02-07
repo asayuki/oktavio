@@ -52,9 +52,33 @@ exports.register = (plugin, options, next) => {
             path: './core/ui/js'
           }
         },
-        id: 'adminjs'
+        id: 'uijs'
       }
     },
+    {
+      method: 'GET',
+      path: '/css/{path*}',
+      config: {
+        handler: {
+          directory: {
+            path: './core/ui/css'
+          }
+        },
+        id: 'uicss'
+      }
+    },
+    {
+      method: 'GET',
+      path: '/images/{path*}',
+      config: {
+        handler: {
+          directory: {
+            path: './core/ui/images'
+          }
+        },
+        id: 'uiimages'
+      }
+    }
   ]);
 
   next();

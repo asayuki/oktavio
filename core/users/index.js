@@ -49,12 +49,17 @@ exports.register = (plugin, options, next) => {
     let db = mongodb.db,
       users = db.collection('users');
 
-    payload.password = passwordHash.generate(payload.password);
-    users.insert(payload, (err) => {
+    bcrypt.hash(payload.password, 8, (err, hash) => {
       if (err)
-        return callback('Database error');
+        return callback('Error while hashing password');
 
-      return callback(null);
+      payload.password = hash;
+      users.insert(payload, (err) => {
+        if (err)
+          return callback('Database error');
+
+        return callback(null);
+      });
     });
   });
 

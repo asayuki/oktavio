@@ -1,0 +1,43 @@
+html, body { background: #F2F1ED; }
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video, button { margin: 0; padding: 0; border: 0; font-size: 100%; font: inherit; vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
+
+body { line-height: 1; }
+
+ol, ul { list-style: none; }
+
+blockquote, q { quotes: none; }
+
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+
+table { border-collapse: collapse; border-spacing: 0; }
+
+.retro-button-container { background: #777672; border-radius: 8px; display: inline-block; padding: 2px; margin: 0 100px 100px; }
+.retro-button-container:before, .retro-button-container:after { clear: both; content: ""; display: table; }
+
+.retro-button { background: #eeebe5; border-bottom: 3px solid #d0c7b3; border-radius: 6px; box-sizing: border-box; cursor: pointer; display: inline-block; float: left; height: 120px; margin-left: 2px; outline: none; position: relative; transition: all .2s; width: 120px; }
+.retro-button .retro-button-inner { background: linear-gradient(to bottom, #e5e1d9 0%, white 100%); border-radius: 60px; height: 100px; margin: 10px; transition: all .2s; width: 100px; }
+.retro-button .outer-shadow, .retro-button .inner-shadow { bottom: 0; box-shadow: none; left: 0; right: 0; top: 0; position: absolute; }
+.retro-button .inner-shadow { border-radius: 6px; opacity: 0; overflow: hidden; transition: all .2s; }
+.retro-button .outer-shadow { box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.34); transition: box-shadow .2s linear; }
+.retro-button:active { border-bottom: 3px solid #9E9595; height: 118px; width: 118px; margin-left: 3px; margin-right: 1px; margin-top: 1px; }
+.retro-button:active .retro-button-inner { height: 98px; margin-top: 9px; width: 98px; }
+.retro-button:active .inner-shadow { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(64, 64, 64, 0.14) 15%, rgba(16, 16, 16, 0.05) 100%); opacity: 1; }
+.retro-button:active .outer-shadow { box-shadow: none; }
+.retro-button:first-child { margin-left: 0px; }
+.retro-button:first-child:active { margin-left: 1px; }
+
+.big-box { background: url("/images/box-bg.png"); border: 1px solid #7e7d77; border-bottom: 0; border-radius: 8px; box-sizing: border-box; color: white; height: 150px; margin: 100px 100px 20px; width: 734px; }
+
+.box-item-container { display: flex; height: 100%; }
+.box-item-container:before, .box-item-container:after { clear: both; content: ""; display: table; }
+
+.box-item { border-left: 2px solid rgba(0, 0, 0, 0.05); display: flex; flex: 1; flex-direction: column; float: left; justify-content: center; text-align: center; }
+.box-item:first-child { border-left: 0; }
+.box-item.static { max-width: 140px; }
+
+.box-temperature h2 { font-family: 'Open Sans'; font-size: 18px; font-weight: 600; line-height: 22px; text-transform: uppercase; }
+.box-temperature span { font-family: 'Open Sans'; font-size: 48px; font-weight: 600; line-height: 56px; }

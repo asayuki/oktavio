@@ -1,0 +1,94 @@
+$buttonHeight: 120px;
+$buttonWidth: 120px;
+
+.retro-button-container {
+  background: rgba(119, 118, 114, 1);
+  border-radius: 8px;
+  display: inline-block;
+  padding: 2px;
+  margin: 0 100px 100px;
+
+  &:before, &:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
+
+.retro-button {
+  background: rgba(238, 235, 229, 1);
+  border-bottom: 3px solid rgba(208, 199, 179, 1);
+  border-radius: 6px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  float: left;
+  height: $buttonHeight;
+  margin-left: 2px;
+  outline: none;
+  position: relative;
+  transition: all .2s;
+  width: $buttonWidth;
+
+  .retro-button-inner {
+    background: linear-gradient(to bottom, rgba(229,225,217,1) 0%, rgba(255,255,255,1) 100%);
+    border-radius: $buttonHeight / 2;
+    height: $buttonHeight - 20;
+    margin: 10px;
+    transition: all .2s;
+    width: $buttonWidth - 20;
+  }
+
+  .outer-shadow, .inner-shadow {
+    bottom: 0;
+    box-shadow: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    position: absolute;
+  }
+
+  .inner-shadow {
+    border-radius: 6px;
+    opacity: 0;
+    overflow: hidden;
+    transition: all .2s;
+  }
+
+  .outer-shadow {
+    box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.34);
+    transition: box-shadow .2s linear;
+  }
+
+  &:active {
+    border-bottom: 3px solid #9E9595;
+    height: $buttonHeight - 2;
+    width: $buttonWidth - 2;
+    margin-left: 3px;
+    margin-right: 1px;
+    margin-top: 1px;
+
+    .retro-button-inner {
+      height: $buttonHeight - 22;
+      margin-top: 9px;
+      width: $buttonWidth - 22;
+    }
+
+    .inner-shadow {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(64, 64, 64, 0.14) 15%, rgba(16, 16, 16, 0.05) 100%);
+      opacity: 1;
+    }
+
+    .outer-shadow {
+      box-shadow: none;
+    }
+  }
+
+  &:first-child {
+    margin-left: 0px;
+
+    &:active {
+      margin-left: 1px;
+    }
+  }
+}

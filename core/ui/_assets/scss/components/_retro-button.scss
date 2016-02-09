@@ -35,6 +35,7 @@ $buttonWidth: 120px;
     border-radius: $buttonHeight / 2;
     height: $buttonHeight - 20;
     margin: 10px;
+    pointer-events: none;
     transition: all .2s;
     width: $buttonWidth - 20;
   }
@@ -45,6 +46,7 @@ $buttonWidth: 120px;
     left: 0;
     right: 0;
     top: 0;
+    pointer-events: none;
     position: absolute;
   }
 

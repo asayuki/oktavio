@@ -1,0 +1,33 @@
+$buttonWidth: 120px;
+$buttonHeight: 60px;
+
+.toggle-button {
+  margin: 20px 100px 100px;
+
+  background: #3C3A38 url('/images/toggle-button-noise.png');
+  border-radius: 6px;
+  display: block;
+  height: $buttonHeight;
+  outline: none;
+  width: $buttonWidth;
+}
+
+.toggle-button-flip {
+  //border: 1px solid black;
+  border-radius: 2px;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+  box-sizing: border-box;
+  height: $buttonHeight - 15;
+  margin: 5px;
+  position: relative;
+  width: $buttonWidth - 10;
+}
+
+.toggle-button-flip-inner {
+  bottom: 0;
+  box-shadow: inset 0px 0px 6px 0px rgba(255, 255, 255, 0.14);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}

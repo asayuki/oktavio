@@ -30,6 +30,12 @@ table { border-collapse: collapse; border-spacing: 0; }
 .retro-button:first-child { margin-left: 0px; }
 .retro-button:first-child:active { margin-left: 1px; }
 
+.toggle-button { margin: 20px 100px 100px; background: #3C3A38 url("/images/toggle-button-noise.png"); border-radius: 6px; display: block; height: 60px; outline: none; width: 120px; }
+
+.toggle-button-flip { border-radius: 2px; box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75); box-sizing: border-box; height: 45px; margin: 5px; position: relative; width: 110px; }
+
+.toggle-button-flip-inner { bottom: 0; box-shadow: inset 0px 0px 6px 0px rgba(255, 255, 255, 0.14); left: 0; position: absolute; right: 0; top: 0; }
+
 .big-box { background: url("/images/box-bg.png"); border: 1px solid #7e7d77; border-bottom: 0; border-radius: 8px; box-sizing: border-box; color: white; height: 150px; margin: 100px 100px 20px; width: 734px; }
 
 .box-item-container { display: flex; height: 100%; }

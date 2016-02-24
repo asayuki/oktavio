@@ -15,11 +15,26 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 
 table { border-collapse: collapse; border-spacing: 0; }
 
-.retro-button-container { background: #777672; border-radius: 8px; display: inline-block; padding: 2px; margin: 0 100px 100px; }
+.retro-button-container { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; margin: 0 auto; }
 .retro-button-container:before, .retro-button-container:after { clear: both; content: ""; display: table; }
+@media screen and (min-width: 244px) and (max-width: 572px) { .retro-button-container { width: 246px; }
+  .retro-button-container .retro-button-wrapper { border-radius: 8px; }
+  .retro-button-container .retro-button-wrapper:nth-child(2n+1) { border-radius: 8px 0 0 8px; }
+  .retro-button-container .retro-button-wrapper:nth-child(2n+2) { border-radius: 0 8px 8px 0; width: 124px; } }
+@media screen and (min-width: 572px) and (max-width: 933px) { .retro-button-container { width: 372px; }
+  .retro-button-container .retro-button-wrapper:nth-child(3n+1) { border-radius: 8px 0 0 8px; }
+  .retro-button-container .retro-button-wrapper:nth-child(3n+3) { border-radius: 0 8px 8px 0; width: 124px; } }
+@media screen and (min-width: 934px) { .retro-button-container { width: 734px; }
+  .retro-button-container .retro-button-wrapper { border-radius: 0; }
+  .retro-button-container .retro-button-wrapper:nth-child(6n+1) { border-radius: 8px 0 0 8px; }
+  .retro-button-container .retro-button-wrapper:nth-child(6n+6) { border-radius: 0 8px 8px 0; width: 124px; } }
 
-.retro-button { background: #eeebe5; border-bottom: 3px solid #d0c7b3; border-radius: 6px; box-sizing: border-box; cursor: pointer; display: inline-block; float: left; height: 120px; margin-left: 2px; outline: none; position: relative; transition: all .2s; width: 120px; }
-.retro-button .retro-button-inner { background: linear-gradient(to bottom, #e5e1d9 0%, white 100%); border-radius: 60px; height: 100px; margin: 10px; pointer-events: none; transition: all .2s; width: 100px; position: relative; }
+.retro-button-wrapper { background: #777672; box-sizing: border-box; display: inline-block; height: 124px; float: left; margin-bottom: 50px; padding: 2px 0; width: 122px; }
+.retro-button-wrapper:first-child { border-radius: 8px 0 0 8px; }
+.retro-button-wrapper:last-child { border-radius: 0 8px 8px 0; padding-right: 2px; width: 124px; }
+
+.retro-button { background: #eeebe5; border-bottom: 3px solid #d0c7b3; border-radius: 6px; box-sizing: border-box; cursor: pointer; display: inline-block; height: 120px; margin-left: 2px; outline: none; position: relative; transition: all .2s; width: 120px; }
+.retro-button .retro-button-inner { background: linear-gradient(to bottom, #e5e1d9 0%, white 100%); border-radius: 60px; height: 100px; margin: 10px; pointer-events: none; position: relative; transition: all .2s; width: 100px; }
 .retro-button .retro-button-inner .retro-button-text { box-sizing: border-box; color: rgba(0, 0, 0, 0.22); display: block; font-family: 'Open Sans'; font-size: 12px; font-weight: 700; padding: 0 10px; text-align: center; text-transform: uppercase; transition: all .2s ease; width: 100px; word-break: break-all; position: absolute; bottom: -40px; left: 0; right: 0; }
 .retro-button .outer-shadow, .retro-button .inner-shadow { bottom: 0; box-shadow: none; left: 0; right: 0; top: 0; pointer-events: none; position: absolute; }
 .retro-button .inner-shadow { border-radius: 6px; opacity: 0; overflow: hidden; transition: opacity .2s; }
@@ -29,8 +44,6 @@ table { border-collapse: collapse; border-spacing: 0; }
 .retro-button:active .retro-button-inner { height: 98px; margin-top: 9px; width: 98px; }
 .retro-button:active .inner-shadow { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(64, 64, 64, 0.14) 15%, rgba(16, 16, 16, 0.05) 100%); opacity: 1; }
 .retro-button:active .outer-shadow { box-shadow: none; }
-.retro-button:first-child { margin-left: 0px; }
-.retro-button:first-child:active { margin-left: 1px; }
 
 .toggle-button { margin: 20px 100px 100px; background: #3C3A38 url("/images/toggle-button-noise.png"); border-radius: 6px; display: block; height: 60px; outline: none; width: 120px; }
 

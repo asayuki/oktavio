@@ -19,11 +19,13 @@ table { border-collapse: collapse; border-spacing: 0; }
 .retro-button-container:before, .retro-button-container:after { clear: both; content: ""; display: table; }
 
 .retro-button { background: #eeebe5; border-bottom: 3px solid #d0c7b3; border-radius: 6px; box-sizing: border-box; cursor: pointer; display: inline-block; float: left; height: 120px; margin-left: 2px; outline: none; position: relative; transition: all .2s; width: 120px; }
-.retro-button .retro-button-inner { background: linear-gradient(to bottom, #e5e1d9 0%, white 100%); border-radius: 60px; height: 100px; margin: 10px; transition: all .2s; width: 100px; }
+.retro-button .retro-button-inner { background: linear-gradient(to bottom, #e5e1d9 0%, white 100%); border-radius: 60px; height: 100px; margin: 10px; transition: all .2s; width: 100px; position: relative; }
+.retro-button .retro-button-inner .retro-button-text { box-sizing: border-box; color: rgba(0, 0, 0, 0.22); display: block; font-family: 'Open Sans'; font-size: 12px; font-weight: 700; padding: 0 10px; text-align: center; text-transform: uppercase; transition: all .2s ease; width: 100px; word-break: break-all; position: absolute; bottom: -40px; left: 0; right: 0; }
 .retro-button .outer-shadow, .retro-button .inner-shadow { bottom: 0; box-shadow: none; left: 0; right: 0; top: 0; position: absolute; }
 .retro-button .inner-shadow { border-radius: 6px; opacity: 0; overflow: hidden; transition: all .2s; }
 .retro-button .outer-shadow { box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.34); transition: box-shadow .2s linear; }
 .retro-button:active { border-bottom: 3px solid #9E9595; height: 118px; width: 118px; margin-left: 3px; margin-right: 1px; margin-top: 1px; }
+.retro-button:active .retro-button-text { left: -1px; bottom: -42px; }
 .retro-button:active .retro-button-inner { height: 98px; margin-top: 9px; width: 98px; }
 .retro-button:active .inner-shadow { background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(64, 64, 64, 0.14) 15%, rgba(16, 16, 16, 0.05) 100%); opacity: 1; }
 .retro-button:active .outer-shadow { box-shadow: none; }

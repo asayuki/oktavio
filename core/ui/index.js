@@ -45,38 +45,14 @@ exports.register = (plugin, options, next) => {
     },
     {
       method: 'GET',
-      path: '/js/{path*}',
+      path: '/statics/{path*}',
       config: {
         handler: {
           directory: {
-            path: './core/ui/js'
+            path: './core/ui/statics'
           }
         },
-        id: 'uijs'
-      }
-    },
-    {
-      method: 'GET',
-      path: '/css/{path*}',
-      config: {
-        handler: {
-          directory: {
-            path: './core/ui/css'
-          }
-        },
-        id: 'uicss'
-      }
-    },
-    {
-      method: 'GET',
-      path: '/images/{path*}',
-      config: {
-        handler: {
-          directory: {
-            path: './core/ui/images'
-          }
-        },
-        id: 'uiimages'
+        id: 'statics'
       }
     }
   ]);

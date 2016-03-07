@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       files: {
         cwd: 'core/ui/_assets/javascript/modules',  // set working folder / root to copy
         src: '**/*.js',           // copy all files and subfolders
-        dest: 'core/ui/statics/js',    // destination folder
+        dest: 'core/ui/statics/js/modules',    // destination folder
         expand: true           // required when using cwd
       }
     },

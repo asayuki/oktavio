@@ -23,4 +23,6 @@ npm-debug.log*
 .shipit.json
 .shipit
 shipitfile.js
-core/ui/statics
+
+core/ui/statics/*
+!core/ui/statics/images/

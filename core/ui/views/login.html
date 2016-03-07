@@ -1,11 +1,21 @@
 {{#extend "layout"}}
   {{#content "body"}}
-    <form method="post" action="" id="loginform">
-      <p><input type="text" name="username" value="" placeholder="Username"></p>
-      <p><input type="password" name="password" value="" placeholder="Password"></p>
-      <p class="submit"><input type="submit" name="commit" value="Login"></p>
-    </form>
+    <div class="login-page">
+      <form method="post" action="" class="loginform" id="loginform">
+        <h2>Oktav.io Login</h2>
+        <p>
+          <input type="text" name="username" value="" placeholder="Username">
+        </p>
+        <p>
+          <input type="password" name="password" value="" placeholder="Password">
+        </p>
+        <p class="submit">
+          <input type="submit" name="commit" value="Login">
+        </p>
+      </form>
+    </div>
 
+    <!--
     <div class="big-box">
       <div class="box-item-container">
         <div class="box-item">
@@ -117,7 +127,7 @@
         <div class="toggle-button-flip-inner"></div>
       </div>
     </button>
-
+  -->
 
   {{/content}}
 

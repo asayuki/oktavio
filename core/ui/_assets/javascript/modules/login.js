@@ -1,7 +1,6 @@
 'use strict';
 /* jshint undef: false, unused: false */
 (() => {
-  const nw = new Network();
   const loginForm = document.querySelector('form#loginform');
 
   loginForm.addEventListener('submit', (e) => {
@@ -21,7 +20,7 @@
       return;
     }
 
-    nw.go({
+    network.go({
       type: 'POST',
       url: '/api/session',
       json: true,

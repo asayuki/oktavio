@@ -20,7 +20,7 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         files: {
-          'core/ui/statics/js/minified-vendors.js': [
+          'core/ui/statics/js/minified-core.js': [
             'core/ui/_assets/javascript/core/network.js'
           ]
         },

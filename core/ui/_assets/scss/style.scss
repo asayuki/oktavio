@@ -1,15 +1,18 @@
-html, body {
-  //background: #F2F1ED;
-  height: 100%;
-  min-height: 100%;
-}
 @import 'reset';
 
 @import 'shared/variables';
 @import 'shared/h';
 
 @import 'components/retro-button';
-@import 'components/toggle-button';
+@import 'components/retro-toggle-button';
 @import 'components/big-box';
+@import 'components/notifier';
 
 @import 'pages/login';
+
+html, body {
+  box-sizing: border-box;
+  padding: 20px;
+  height: 100%;
+  min-height: 100%;
+}

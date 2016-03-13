@@ -22,7 +22,7 @@ exports.register = (plugin, options, next) => {
     password: process.env.SESSION_PRIVATE_KEY,
     cookie: 'oktavio-session',
     redirectTo: '/',
-    ttl: 60*60*24*30,
+    ttl: 60*60*24*365,
     isSecure: false,
     clearInvalid: true,
     keepAlive: true,

@@ -21,7 +21,8 @@ module.exports = function(grunt) {
       dist: {
         files: {
           'core/ui/statics/js/minified-core.js': [
-            'core/ui/_assets/javascript/core/network.js'
+            'core/ui/_assets/javascript/core/network.js',
+            'core/ui/_assets/javascript/core/notifier.js'
           ]
         },
       },

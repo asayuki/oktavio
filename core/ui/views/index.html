@@ -1,9 +1,30 @@
 {{#extend "layout"}}
   {{#content "body"}}
-    <ul class="fn-devices"></ul>
+    <ul class="fn-devices">
+      <li>
+        Device #1 {{> "components/retro-toggle" id="1"}}
+      </li>
+      <li>
+        Device #2 {{> "components/retro-toggle" id="2"}}
+      </li>
+      <li>
+        Device #3 {{> "components/retro-toggle" id="3"}}
+      </li>
+      <li>
+        Device #4 {{> "components/retro-toggle" id="4"}}
+      </li>
+      <li>
+        Device #5 {{> "components/retro-toggle" id="5"}}
+      </li>
+    </ul>
+
+    <br /><br /><br /><br />
+
+    {{> "components/retro-buttons" name="modes" modes=modes}}
+    
   {{/content}}
 
   {{#content "javascript"}}
-    <script src="/js/index.js"></script>
+    <script src="/statics/js/modules/index.js"></script>
   {{/content}}
 {{/extend}}

@@ -1,0 +1,137 @@
+// Notifications
+$notifier-success: green;
+$notifier-error: red;
+$notifier-message: #01213f;
+
+// Prompt
+$notifier-prompt: #01213f;
+$notifier-prompt-textarea-bg: white;
+$notifier-prompt-textarea-text: white;
+
+$notifier-prompt-save-bg: green;
+$notifier-prompt-cancel-bg: red;
+
+$notifier-prompt-save-text: white;
+$notifier-prompt-cancel-text: white;
+
+.notifier, .notifier-prompt {
+  & > div {
+    border-radius: 6px;
+    box-shadow: 0 0px 6px rgba(0, 0, 0, 0.31);
+    box-sizing: border-box;
+    color: white;
+    font-family: 'ralewayregular';
+    font-size: 14px;
+    line-height: 16px;
+    transition: all .5s linear;
+    margin: 5px 0 0;
+    padding: 15px;
+    opacity: 0;
+    width: 100%;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &.notification {
+      opacity: 1;
+    }
+
+    &.success {
+      background-color: rgba($notifier-success, 0.8);
+      border: 1px solid darken($notifier-success, 5%);
+      cursor: pointer;
+    }
+
+    &.message {
+      background-color: rgba($notifier-message, 0.8);
+      border: 1px solid darken($notifier-message, 5%);
+      cursor: pointer;
+    }
+
+    &.error {
+      background-color: rgba($notifier-error, 0.8);
+      border: 1px solid darken($notifier-error, 5%);
+      cursor: pointer;
+    }
+
+    &.prompt {
+      background-color: rgba($notifier-prompt, 0.8);
+      border: 1px solid darken($notifier-prompt, 5%);
+    }
+  }
+
+  .notification-title {
+    font-size: 12px;
+    line-height: 18px;
+    padding: 0;
+  }
+
+  .prompt {
+    textarea {
+      background: rgba($notifier-prompt-textarea-bg, 0.2);
+      box-sizing: border-box;
+      color: $notifier-prompt-textarea-text;
+      font-family: 'ralewayregular';
+      font-size: 12px;
+      line-height: 16px;
+      margin: 20px 0;
+      min-height: 70px;
+      padding: 10px;
+    }
+
+    .btn-container {
+      &:before, &:after {
+        clear: both;
+        content: "";
+        display: table;
+      }
+    }
+
+    .save, .cancel {
+      border: 0;
+      border-radius: 5px;
+      color: $notifier-prompt-save-text;
+      cursor: pointer;
+      outline: none;
+      padding: 7px 15px;
+    }
+
+    .save {
+      background-color: $notifier-prompt-save-bg;
+      color: $notifier-prompt-save-text;
+      float: left;
+    }
+
+    .cancel {
+      background: $notifier-prompt-cancel-bg;
+      color: $notifier-prompt-cancel-text;
+      float: right;
+    }
+  }
+}
+
+.notifier {
+  bottom: 20px;
+  box-sizing: border-box;
+  height: auto;
+  right: 20px;
+  position: absolute;
+  width: 320px;
+  z-index: 30;
+}
+
+.notifier-prompt {
+  box-sizing: border-box;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 160px);
+  position: absolute;
+  width: 320px;
+  z-index: 30;
+}

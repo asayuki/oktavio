@@ -6,19 +6,17 @@
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    notifier.closeAllNotifications();
+
     let
       username = loginForm.querySelector('input[name="username"]').value,
       password = loginForm.querySelector('input[name="password"]').value;
 
-    if (username === '') {
-      console.log('Tomt användarnamn');
-      return;
-    }
+    if (username === '')
+      return notifier.message('Empty username');
 
-    if (password === '') {
-      console.log('Tomt lösenord');
-      return;
-    }
+    if (password === '')
+      return notifier.message('Empty password');
 
     network.go({
       type: 'POST',
@@ -26,9 +24,10 @@
       json: true,
       params: JSON.stringify({username: username, password: password, session: true})
     }, (err, result) => {
-      console.log(err);
-      console.log(result);
-    });
+      if (err || (typeof result.error !== 'undefined'))
+        return notifier.error((typeof result.error !== 'undefined') ? result.error : err);
 
+      window.location = '/';
+    });
   });
 })();

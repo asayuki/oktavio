@@ -1,0 +1,3 @@
+[submodule "core/ui/oktavio-ui"]
+	path = core/ui/oktavio-ui
+	url = git@github.com:asayuki/oktavio-ui.git

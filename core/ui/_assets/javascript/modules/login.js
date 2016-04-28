@@ -1,14 +1,14 @@
 'use strict';
 /* jshint undef: false, unused: false */
-(() => {
-  const loginForm = document.querySelector('form#loginform');
-
-  loginForm.addEventListener('submit', (e) => {
+(function () {
+  var loginForm = document.querySelector('form#loginform');
+  loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
+    e.stopPropagation();
 
     notifier.closeAllNotifications();
 
-    let
+    var
       username = loginForm.querySelector('input[name="username"]').value,
       password = loginForm.querySelector('input[name="password"]').value;
 
@@ -23,7 +23,7 @@
       url: '/api/session',
       json: true,
       params: JSON.stringify({username: username, password: password, session: true})
-    }, (err, result) => {
+    }, function (err, result) {
       if (err || (typeof result.error !== 'undefined'))
         return notifier.error((typeof result.error !== 'undefined') ? result.error : err);
 

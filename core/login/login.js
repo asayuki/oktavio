@@ -10,7 +10,7 @@ const handlers = {
       payload = request.payload,
       cache = request.server.plugins.login.getCache();
 
-    db.collection('users').findOne({username: payload.username}, (err, user) => {
+    db.collection('users').findOne({username: payload.username.toLowerCase()}, (err, user) => {
       if (err)
         return response().code(500);
 
@@ -21,14 +21,14 @@ const handlers = {
 
           delete user.password;
           if (payload.session) {
-            cache.set(user.username + '' + user._id, {
+            cache.set(user.username.toLowerCase() + '' + user._id, {
               account: user
             }, 0, (cacheErr) => {
               if (cacheErr)
                 return response({status: false}).code(500);
 
               request.cookieAuth.set({
-                sid: user.username + '' + user._id
+                sid: user.username.toLowerCase() + '' + user._id
               });
               return response({status: true}).code(200);
             });

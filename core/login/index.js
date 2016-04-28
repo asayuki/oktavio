@@ -75,6 +75,10 @@ exports.register = (plugin, options, next) => {
           mode: 'try',
           strategies: ['session', 'token']
         },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
+        },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
           'hapi-auth-jwt': { redirectTo: false },
@@ -91,6 +95,10 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session']
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },

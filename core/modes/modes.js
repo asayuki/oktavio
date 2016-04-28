@@ -14,7 +14,10 @@ const handlers = {
         if (err)
           return response({status: false, error: 'Database error'}).code(500);
 
-        return response({modes: modesArr, numModes: modesArr.length}).code(200);
+        if (typeof request.params.html !== 'undefined' && request.params.html === 'html')
+          return response.view('components/retro-buttons', {modes: modesArr, name: 'modes'}).code(200);
+        else
+          return response({modes: modesArr, numModes: modesArr.length}).code(200);
       });
     } else {
       return response({status: false, notAuthenticated: true}).code(403);

@@ -8,11 +8,9 @@ exports.register = (plugin, options, next) => {
       path: '/',
       config: {
         handler: (request, response) => {
+          console.log(request.auth);
           if (request.auth.isAuthenticated) {
-
-            var modes=[{_id:"56e555de9bd4c710ea153f87",name:"all off",icon:"nothing",devices:[{id:"56e555529bd4c710ea153f84",on:!0},{id:"56e555609bd4c710ea153f85",on:!0},{id:"56e5556b9bd4c710ea153f86",on:!0}]},{_id:"56e556739bd4c710ea153f88",name:"special",icon:"nothing",devices:[{id:"56e555529bd4c710ea153f84",on:!0},{id:"56e555609bd4c710ea153f85",on:!0},{id:"56e5556b9bd4c710ea153f86",on:!0}]},{_id:"56e5567f9bd4c710ea153f89",name:"cinema",icon:"nothing",devices:[{id:"56e555529bd4c710ea153f84",on:!0},{id:"56e555609bd4c710ea153f85",on:!0},{id:"56e5556b9bd4c710ea153f86",on:!0}]},{_id:"56e55a97dc705080ea5619d4",name:"nightmode",icon:"nothing",devices:[{id:"56e555529bd4c710ea153f84",on:!0},{id:"56e555609bd4c710ea153f85",on:!0},{id:"56e5556b9bd4c710ea153f86",on:!0}]},{_id:"56e55a9fdc705080ea5619d5",name:"music",icon:"nothing",devices:[{id:"56e555529bd4c710ea153f84",on:!0},{id:"56e555609bd4c710ea153f85",on:!0},{id:"56e5556b9bd4c710ea153f86",on:!0}]},{_id:"56e55aa6dc705080ea5619d6",name:"trance",icon:"nothing",devices:[{id:"56e555529bd4c710ea153f84",on:!0},{id:"56e555609bd4c710ea153f85",on:!0},{id:"56e5556b9bd4c710ea153f86",on:!0}]}];
-
-            response.view('index', {modes: modes});
+            response.view('index');
           } else {
             response.redirect('/login');
           }
@@ -20,6 +18,10 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session']
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         plugins: {
           'hapi-auth-cookie': {redirectTo: false},
@@ -41,6 +43,10 @@ exports.register = (plugin, options, next) => {
           mode: 'try',
           strategies: ['session']
         },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
+        },
         plugins: {
           'hapi-auth-cookie': {redirectTo: false},
         }
@@ -54,6 +60,10 @@ exports.register = (plugin, options, next) => {
           directory: {
             path: './core/ui/statics'
           }
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         id: 'statics'
       }

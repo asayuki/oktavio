@@ -8,7 +8,7 @@ exports.register = (plugin, options, next) => {
   plugin.route([
     {
       method: 'GET',
-      path: '/api/devices',
+      path: '/api/devices/{html?}',
       config: {
         handler: handlers.getDevices,
         tags: ['api'],
@@ -20,6 +20,10 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
@@ -50,6 +54,10 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
@@ -82,6 +90,10 @@ exports.register = (plugin, options, next) => {
           mode: 'try',
           strategies: ['session', 'token']
         },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
+        },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
           'hapi-auth-jwt': { redirectTo: false },
@@ -103,6 +115,10 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
@@ -129,6 +145,10 @@ exports.register = (plugin, options, next) => {
           mode: 'try',
           strategies: ['session', 'token']
         },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
+        },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },
           'hapi-auth-jwt': { redirectTo: false },
@@ -154,6 +174,10 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
+        },
+        state: {
+          parse: true, // parse and store in request.state
+          failAction: 'ignore' // may also be 'ignore' or 'log'
         },
         plugins: {
           'hapi-auth-cookie': { redirectTo: false },

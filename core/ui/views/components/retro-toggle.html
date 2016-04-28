@@ -1,14 +1,17 @@
-<div class="retro-toggle-container">
-  <div class="retro-toggle-off">
-    <input class="radiooff" type="radio" id="d{{id}}off" name="d{{id}}" checked="checked" />
-    <label for="d{{id}}off">
-      <span>Off</span>
-    </label>
+{{#each devices}}
+  <div class="retro-toggle-container" data-id="{{_id}}">
+    <span>{{name}}</span>
+    <div class="retro-toggle-off">
+      <input class="radiooff" type="radio" id="d{{_id}}off" name="d{{_id}}" checked="{{#unless current_state }}checked{{/unless}}" />
+      <label for="d{{_id}}off" data-id="{{_id}}">
+        <span>Off</span>
+      </label>
+    </div>
+    <div class="retro-toggle-on">
+      <input class="radioon" type="radio" id="d{{_id}}on" name="d{{_id}}" checked="{{#if current_state }}checked{{/if}}" />
+      <label for="d{{_id}}on" data-id="{{_id}}">
+        <span>On</span>
+      </label>
+    </div>
   </div>
-  <div class="retro-toggle-on">
-    <input class="radioon" type="radio" id="d{{id}}on" name="d{{id}}" />
-    <label for="d{{id}}on">
-      <span>On</span>
-    </label>
-  </div>
-</div>
+{{/each}}

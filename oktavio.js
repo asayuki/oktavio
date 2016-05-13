@@ -13,7 +13,8 @@ const
   htmlEngine = handlebars.create(),
   swaggerOpt = {
     info: {
-      version: '1'
+      title: 'Test API documentation',
+      version: '1.0'
     },
     pathPrefixSize: 2
   },

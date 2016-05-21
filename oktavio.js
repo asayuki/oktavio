@@ -19,7 +19,7 @@ const
     pathPrefixSize: 2
   },
   plugins = [],
-  reporters = [],
+  reporters = {},
   oktavio = new hapi.Server({
     cache: [{
       name: 'oktavioCache',
@@ -85,7 +85,7 @@ if (process.env.APP_PRODUCTION === 'true' || process.env.APP_TESTING === 'true')
   reporters.push({reporter: require('good-file'), events: { error: '*' }, config: __dirname + 'octavo-error.log'});
 } else {
   plugins.push({register: require('hapi-swagger'), options: swaggerOpt});
-  reporters.push({reporter: require('good-console'), events: { error: '*', response: '*'}});
+  reporters.console = [{module: 'good-console', args: [{ error: '*', response: '*'}]}];
 }
 
 plugins.push({register: good, options: {reporters: reporters}});
@@ -141,7 +141,7 @@ oktavio.register(plugins, (err) => {
             name: 'password',
             message: 'Password for the new user:',
           }
-        ], (userObj) => {
+        ]).then((userObj) => {
           oktavio.plugins.users.createUser(oktavio.plugins['hapi-mongodb'], userObj, (err) => {
             if (err)
               throw err;

@@ -17,6 +17,7 @@
 * `APP_HOST` - Defaults to 127.0.0.1
 * `APP_PORT` - Defaults to 8000
 * `APP_PRODUCTION` - Defaults to false, will output logs in console if not set to true
+* `API_DOCUMENTATION` - Defaults to false, set to true if you want to enable API test page
 * `SESSION_PRIVATE_KEY` - Required; Key for session/cookies/tokens
 * `REDIS_HOST` - Defaults to 127.0.0.1
 * `REDIS_PORT` - Defaults to 6379

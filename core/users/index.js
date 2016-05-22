@@ -16,9 +16,12 @@ exports.register = (plugin, options, next) => {
 
   plugin.expose('fetchNumberOfUsers', (mongodb, callback) => {
     let db = mongodb.db;
-    db.collection('users').count({"username": {$ne: (process.env.TEST_USER !== '') ? process.env.TEST_USER : 'testuser'}}, (err, count) => {
+    db.collection('users').count({}, (err, count) => {
       callback(count);
     });
+    //db.collection('users').count({"username": {$ne: (process.env.TEST_USER !== '') ? process.env.TEST_USER : 'testuser'}}, (err, count) => {
+    //  callback(count);
+    //});
   });
 
   plugin.expose('testUser', (mongodb, callback) => {

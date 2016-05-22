@@ -122,6 +122,7 @@ oktavio.register(plugins, (err) => {
     startServer();
   } else {
     oktavio.plugins.users.fetchNumberOfUsers(oktavio.plugins['hapi-mongodb'], (count) => {
+      console.log(count);
       if (count >= 1) {
         startServer();
       } else {

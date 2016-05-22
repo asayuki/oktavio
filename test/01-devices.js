@@ -69,22 +69,20 @@ suite('Test devices', () => {
       },
       payload: {
         name: 'Testdevice',
-        device: {
-          protocol: 'kaku_switch_old',
-          id: 1,
-          unit: 1
-        }
+        protocol: 'kaku_switch_old',
+        unit_id: 1,
+        unit_code: 1
       }
     };
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.deviceID).to.be.an.object();
+      expect(response.result.device).to.be.an.object();
 
-      fs.writeFile(__dirname + '/deviceid.txt', response.result.deviceID, (err) => {
+      fs.writeFile(__dirname + '/deviceid.txt', response.result.device._id, (err) => {
         if (err)
           throw err;
-        deviceID = response.result.deviceID;
+        deviceID = response.result.device._id;
         done();
       });
 
@@ -100,15 +98,14 @@ suite('Test devices', () => {
       },
       payload: {
         id: deviceID,
-        device: {
-          id: 2
-        }
+        unit_id: 2
       }
     };
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.deviceUpdated).to.equal(true);
+      expect(response.result.device).to.be.an.object();
+      expect(response.result.device.unit_id).to.be.equal(2);
       done();
     });
   });
@@ -124,7 +121,7 @@ suite('Test devices', () => {
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.device.id).to.equal(2);
+      expect(response.result.device.unit_code).to.equal(1);
       done();
     });
   });

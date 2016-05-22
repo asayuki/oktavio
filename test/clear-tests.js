@@ -73,12 +73,12 @@ suite('Test devices', () => {
 
     server.inject(options, (response) => {
       expect(response.statusCode).to.equal(200);
-      expect(response.result.deviceRemoved).to.equal(true);
+      expect(response.result.removed).to.equal(true);
       done();
     });
   });
 
-  test('DELETE /api/modes', (done) => {
+  /*test('DELETE /api/modes', (done) => {
     const options = {
       method: 'DELETE',
       url: '/api/modes',
@@ -95,6 +95,6 @@ suite('Test devices', () => {
       expect(response.result.modeRemoved).to.equal(true);
       done();
     });
-  });
+  });*/
 
 });

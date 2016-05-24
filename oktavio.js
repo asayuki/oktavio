@@ -112,6 +112,11 @@ let startServer = () => {
         console.log('oktavio started at:', oktavio.info.uri);
     }
   });
+
+  oktavio.on('request-internal', (request, event, tags) => {
+    if (tags.error && tags.state)
+      console.log('Stateerror', event);
+  });
 };
 
 oktavio.register(plugins, (err) => {

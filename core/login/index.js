@@ -4,107 +4,108 @@ const
   handlers = require('./login');
 
 exports.register = (plugin, options, next) => {
+
+  // Expire
+  const expire = 1000 * 60 * 60 * 24 * 365;
+
+  // Setup a cache that expires in one year
   const cache = plugin.cache({
     cache: 'oktavioCache',
-    expiresIn: 60*60*24*365
+    expiresIn: expire
   });
 
+  // Bind cache to application
   plugin.app.cache = cache;
-
   plugin.bind({
     cache: plugin.app.cache
   });
 
-  plugin.expose('getCache', () => { return cache; });
+  // Expose cache for other plugins
+  plugin.expose('getCache', () => {
+    return cache;
+  });
 
-  // Setup session strategy
+  // Setup session & cookie strategy
   plugin.auth.strategy('session', 'cookie', {
     password: process.env.SESSION_PRIVATE_KEY,
     cookie: 'oktavio-session',
     redirectTo: '/',
-    ttl: 60*60*24*365,
+    ttl: expire,
     isSecure: false,
     clearInvalid: true,
     keepAlive: true,
     validateFunc: (request, session, callback) => {
-      cache.get(session.sid, (err, cached) => {
-        if (err)
-          return callback(err, false);
+      cache.get(session.sid, (error, cached) => {
+        if (error) {
+          return callback(error, false);
+        }
 
-        if (!cached)
+        if (!cached) {
           return callback(null, false);
+        }
 
         return callback(null, true, cached.account);
       });
     }
-  });
+  })
 
-  // Setup JWT strategy
+  // Setup token strategy
   plugin.auth.strategy('token', 'jwt', {
     key: process.env.SESSION_PRIVATE_KEY,
-    validateFunc: (request, decodedToken, callback) => {
-      let db = request.server.plugins['hapi-mongodb'].db,
+    validateFunc: (request, token, callback) => {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
         ObjectID = request.server.plugins['hapi-mongodb'].ObjectID;
-      db.collection('users').findOne({_id: new ObjectID(decodedToken._id)}, {password: 0}, (err, doc) => {
-        if (err)
-          return callback(err, false, {});
 
-        if (doc === null)
+      db.collection('users').findOne({_id: new ObjectID(token._id)}, {password: 0}, (error, user) => {
+        if (error) {
+          return callback(error, false, {});
+        }
+
+        if (user === null) {
           return callback(null, false, {});
+        }
 
-        return callback(null, true, doc);
+        return callback(null, true, user);
       });
     }
   });
 
+  // Setup some routes
   plugin.route([
     {
       method: 'POST',
       path: '/api/session',
       config: {
-        handler: handlers.session,
-        tags: ['api'],
+        handlers: handler.session,
+        tags: ['api', 'session'],
         validate: {
           payload: {
             username: Joi.string().required(),
             password: Joi.string().required(),
-            session: Joi.boolean().valid(true, false).required()
+            token: Joi.boolean().valid(false, true)
           }
         },
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
         },
-        state: {
-          parse: true, // parse and store in request.state
-          failAction: 'ignore' // may also be 'ignore' or 'log'
-        },
         plugins: {
-          'hapi-auth-cookie': { redirectTo: false },
-          'hapi-auth-jwt': { redirectTo: false },
-          'hapi-swagger': { payloadType: 'form' }
+          'hapi-auth-cookie': {
+            redirectTo: false
+          },
+          'hapi-auth-jwt': {
+            redirectTo: false
+          },
+          'hapi-swagger': {
+            payloadType: 'form'
+          }
         }
       }
     },
     {
-      method: 'GET',
-      path: '/api/unsession',
-      config: {
-        handler: handlers.unsession,
-        tags: ['api'],
-        auth: {
-          mode: 'try',
-          strategies: ['session']
-        },
-        state: {
-          parse: true, // parse and store in request.state
-          failAction: 'ignore' // may also be 'ignore' or 'log'
-        },
-        plugins: {
-          'hapi-auth-cookie': { redirectTo: false },
-          'hapi-swagger': { payloadType: 'form' }
-        }
-      }
+      method: ['GET', 'POST'],
+      path: '/api/'
     }
   ]);
 
@@ -115,7 +116,7 @@ exports.register = (plugin, options, next) => {
 exports.register.attributes = {
   name: 'login',
   version: '1.0.0',
-  description: 'Login coreplugin',
+  description: 'Login coreplugin for Oktavio',
   main: 'index.js',
   author: 'neme <neme@whispered.se>',
   license: 'MIT'

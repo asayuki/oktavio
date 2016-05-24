@@ -20,10 +20,6 @@ exports.register = (plugin, options, next) => {
           mode: 'try',
           strategies: ['session', 'token']
         },
-        state: {
-          parse: true,
-          failAction: 'ignore'
-        },
         plugins: {
           'hapi-auth-cookie': {
             redirectTo: false
@@ -54,10 +50,6 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
-        },
-        state: {
-          parse: true,
-          failAction: 'ignore'
         },
         plugins: {
           'hapi-auth-cookie': {
@@ -94,10 +86,6 @@ exports.register = (plugin, options, next) => {
           mode: 'try',
           strategies: ['session', 'token']
         },
-        state: {
-          parse: true,
-          failAction: 'ignore'
-        },
         plugins: {
           'hapi-auth-cookie': {
             redirectTo: false
@@ -128,10 +116,6 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
-        },
-        state: {
-          parse: true,
-          failAction: 'ignore'
         },
         plugins: {
           'hapi-auth-cookie': {
@@ -168,10 +152,6 @@ exports.register = (plugin, options, next) => {
         auth: {
           mode: 'try',
           strategies: ['session', 'token']
-        },
-        state: {
-          parse: true,
-          failAction: 'ignore'
         },
         plugins: {
           'hapi-auth-cookie': {

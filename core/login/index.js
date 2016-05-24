@@ -47,7 +47,7 @@ exports.register = (plugin, options, next) => {
         return callback(null, true, cached.account);
       });
     }
-  })
+  });
 
   // Setup token strategy
   plugin.auth.strategy('token', 'jwt', {
@@ -77,7 +77,7 @@ exports.register = (plugin, options, next) => {
       method: 'POST',
       path: '/api/session',
       config: {
-        handlers: handler.session,
+        handler: handlers.session,
         tags: ['api', 'session'],
         validate: {
           payload: {
@@ -104,8 +104,27 @@ exports.register = (plugin, options, next) => {
       }
     },
     {
-      method: ['GET', 'POST'],
-      path: '/api/'
+      method: 'GET',
+      path: '/api/unsession',
+      config: {
+        handler: handlers.unsession,
+        tags: ['api', 'session'],
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          },
+          'hapi-auth-jwt': {
+            redirectTo: false
+          },
+          'hapi-swagger': {
+            payloadType: 'form'
+          }
+        }
+      }
     }
   ]);
 

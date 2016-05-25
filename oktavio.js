@@ -126,7 +126,8 @@ oktavio.register(plugins, (err) => {
   if (process.env.APP_TESTING === 'true') {
     startServer();
   } else {
-    oktavio.plugins.users.fetchNumberOfUsers(oktavio.plugins['hapi-mongodb'], (count) => {
+    startServer();
+    /*oktavio.plugins.users.fetchNumberOfUsers(oktavio.plugins['hapi-mongodb'], (count) => {
       console.log(count);
       if (count >= 1) {
         startServer();
@@ -151,7 +152,7 @@ oktavio.register(plugins, (err) => {
           });
         });
       }
-    });
+    });*/
   }
 });
 

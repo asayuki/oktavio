@@ -165,7 +165,7 @@ exports.register = (plugin, options, next) => {
           }
         }
       }
-    },
+    }
   ]);
   next();
 };
@@ -173,7 +173,7 @@ exports.register = (plugin, options, next) => {
 exports.register.attributes = {
   name: 'devices',
   version: '1.0.1',
-  description: 'Devices coremodule',
+  description: 'Devices coreplugin for Oktavio',
   main: 'index.js',
   author: 'neme <neme@whispered.se>',
   license: 'MIT'

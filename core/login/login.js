@@ -77,7 +77,7 @@ module.exports = {
       });
     } else {
       return response({
-        error: 'Already logged in.'
+        error: 'Already authenticated.'
       }).code(401);
     }
   },
@@ -104,7 +104,7 @@ module.exports = {
       });
     } else {
       return response({
-        error: 'Not logged in.'
+        error: 'Not authenticated.'
       }).code(401);
     }
   }

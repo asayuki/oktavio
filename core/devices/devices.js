@@ -19,7 +19,7 @@ module.exports = {
       devices.find({}).toArray((error, devicesArr) => {
         if (error) {
           return response({
-            error: 'Database error'
+            error: 'Database error.'
           }).code(500);
         }
 
@@ -30,7 +30,7 @@ module.exports = {
       });
     } else {
       return response({
-        error: 'Not authenticated'
+        error: 'Not authenticated.'
       }).code(401);
     }
   },
@@ -51,7 +51,7 @@ module.exports = {
       devices.findOne({_id: new ObjectID(request.params.id)}, (error, device) => {
         if (error) {
           return response({
-            error: 'Database error'
+            error: 'Database error.'
           }).code(500);
         }
 
@@ -61,7 +61,7 @@ module.exports = {
       });
     } else {
       return response({
-        error: 'Not authenticated'
+        error: 'Not authenticated.'
       }).code(401);
     }
   },
@@ -84,7 +84,7 @@ module.exports = {
       devices.insert(request.payload, (error, device) => {
         if (error) {
           return response({
-            error: 'Database error'
+            error: 'Database error.'
           }).code(500);
         }
 
@@ -94,7 +94,7 @@ module.exports = {
       });
     } else {
       return response({
-        error: 'Not authenticated'
+        error: 'Not authenticated.'
       }).code(401);
     }
   },
@@ -115,20 +115,20 @@ module.exports = {
       devices.findOne({_id: new ObjectID(request.payload.id)}, (error, device) => {
         if (error) {
           return response({
-            error: 'Database error'
+            error: 'Database error.'
           }).code(500);
         }
 
         if (device === null) {
           return response({
-            error: 'Device not found'
+            error: 'Device not found.'
           }).code(404);
         }
 
         modes.find({devices: {$elemMatch: {id: request.payload.id}}}, {devices: true}).toArray((error, modesArr) => {
           if (error) {
             return response({
-              error: 'Database error'
+              error: 'Database error.'
             }).code(500);
           }
 
@@ -147,14 +147,14 @@ module.exports = {
           }, (error) => {
             if (error) {
               return response({
-                error: 'Error while removing device from modes'
+                error: 'Error while removing device from modes.'
               }).code(500);
             }
 
             devices.remove({_id: new ObjectID(request.payload.id)}, (error) => {
               if (error) {
                 return response({
-                  error: 'Database error while removing device'
+                  error: 'Database error while removing device.'
                 }).code(500);
               }
 
@@ -169,7 +169,7 @@ module.exports = {
     } else {
       return response({
         status: false,
-        error: 'Not authenticated'
+        error: 'Not authenticated.'
       }).code(401);
     }
   },
@@ -189,13 +189,13 @@ module.exports = {
       devices.findOne({_id: new ObjectID(payload.id)}, (error, device) => {
         if (error) {
           return response({
-            error: 'Database error'
+            error: 'Database error.'
           }).code(500);
         }
 
         if (device === null) {
           return response({
-            error: 'Device not found'
+            error: 'Device not found.'
           }).code(404);
         }
 
@@ -219,7 +219,7 @@ module.exports = {
         devices.update({_id: new ObjectID(device._id)}, {$set: device}, (error) => {
           if (error) {
             return response({
-              error: 'Database error'
+              error: 'Database error.'
             }).code(500);
           }
 
@@ -249,7 +249,7 @@ module.exports = {
     } else {
       return response({
         status: false,
-        error: 'Not authenticated'
+        error: 'Not authenticated.'
       }).code(401);
     }
   }

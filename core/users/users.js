@@ -1,6 +1,7 @@
 'use strict';
 const
-  bcrypt = require('bcrypt');
+  bcrypt = require('bcrypt'),
+  extend = require('util')._extend;
 
 module.exports = {
 
@@ -93,5 +94,45 @@ module.exports = {
         error: 'Not authenticated'
       }).code(401);
     }
+  },
+
+  updateUser: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        users = db.collection('users'),
+        payload = request.payload,
+        updateUser = request.auth.credentials._id;
+
+      console.log('payload:', payload);
+
+      if (typeof payload.password !== 'undefined') {
+        payload.password = bcrypt.hashSync(payload.password, 10);
+      }
+
+      if (typeof payload.id !== 'undefined') {
+        updateUser = payload.id;
+        delete payload.id;
+      }
+
+      users.findOne({
+        _id: new ObjectID(updateUser)
+      }, (error, user) => {
+        console.log(extend(user, payload));
+
+        return response({}).code(200);
+
+      });
+
+    } else {
+      return response({
+        error: 'Not authenticated'
+      }).code(401);
+    }
+  },
+
+  deleteUser: (request, response) => {
+
   }
 };

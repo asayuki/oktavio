@@ -37,6 +37,70 @@ exports.register = (plugin, options, next) => {
           }
         }
       }
+    },
+    {
+      method: 'GET',
+      path: '/api/users/{username}',
+      config: {
+        handler: handlers.getUser,
+        tags: ['api', 'users'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown(),
+          params: {
+            username: Joi.string().required()
+          }
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          },
+          'hapi-auth-jwt': {
+            redirectTo: false
+          },
+          'hapi-swagger': {
+            payloadType: 'form'
+          }
+        }
+      }
+    },
+    {
+      method: 'PUT',
+      path: '/api/users',
+      config: {
+        handler: handlers.updateUser,
+        tags: ['api', 'users'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown(),
+          payload: Joi.object({
+            id: Joi.string(),
+            username: Joi.string(),
+            password: Joi.string()
+          })
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          },
+          'hapi-auth-jwt': {
+            redirectTo: false
+          },
+          'hapi-swagger': {
+            payloadType: 'form'
+          }
+        }
+      }
     }
   ]);
 

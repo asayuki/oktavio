@@ -11,6 +11,13 @@ exports.register = (plugin, options, next) => {
 
   createConnection();
 
+  // Fix error handeling
+  //socket.on('error', (error) => {
+  //  setTimeout(() => {
+  //    console.log('Wait while we try again.');
+  //  }, 2000);
+  //});
+
   socket.on('connect', () => {
     sayHello();
     startHeartbeat();
@@ -53,7 +60,13 @@ exports.register = (plugin, options, next) => {
   })(socket));
 
   const sayHello = () => {
-    send({"action":"identify","options":{"config":1},"uuid":"0000-d0-63-00-000000"});
+    send({
+      "action": "identify",
+      "options": {
+        "config":1
+      },
+      "uuid":"0000-d0-63-00-000000"
+    });
   };
 
   const onReceive = (message) => {

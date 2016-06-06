@@ -9,6 +9,7 @@
 * git
 * mongodb-server (local or remote)
 * redis-server (local or remote)
+* pilight-deamon (local or remote)
 
 ## Configuring
 

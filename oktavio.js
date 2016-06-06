@@ -10,6 +10,7 @@ const
   inert = require('inert'),
   good = require('good'),
   inquirer = require('inquirer'),
+  Joi = require('joi'),
   htmlEngine = handlebars.create(),
   swaggerOpt = {
     info: {
@@ -86,9 +87,21 @@ plugins.push({register: require('hapi-mongodb'), options: {url: mongoURL, settin
 plugins.push({register: require('hapi-auth-cookie')});
 plugins.push({register: require('hapi-auth-jwt')});
 
-// Add core plugins
-plugins.push({register: require('./core/login')});
-plugins.push({register: require('./core/users')});
+plugins.push({
+  register: require('hapi-users-plugin'),
+  options: {
+    collection: 'users',
+    session: true,
+    token: true,
+    session_private_key: 'ihugyuftdiwjerou234h52ökwemr23ASFDSGer63ergHTFHTR',
+    cache_name: 'oktavioCache',
+    extra_fields: {
+      firstname: Joi.string().min(2).max(30),
+      lastname: Joi.string().min(2).max(30)
+    }
+  }
+});
+
 plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
 plugins.push({register: require('./core/ui')});

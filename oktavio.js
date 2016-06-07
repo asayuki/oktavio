@@ -9,7 +9,6 @@ const
   vision = require('vision'),
   inert = require('inert'),
   good = require('good'),
-  inquirer = require('inquirer'),
   Joi = require('joi'),
   htmlEngine = handlebars.create(),
   swaggerOpt = {
@@ -106,8 +105,8 @@ plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
 plugins.push({register: require('./core/ui')});
 
-if (process.env.PILIGHT_DONTLOAD !== 'true')
-  plugins.push({register: require('./core/pilight')});
+//if (process.env.PILIGHT_DONTLOAD !== 'true')
+plugins.push({register: require('./core/pilight')});
 
 
 let startServer = () => {
@@ -136,37 +135,7 @@ oktavio.register(plugins, (err) => {
   if (err)
     throw err;
 
-  if (process.env.APP_TESTING === 'true') {
-    startServer();
-  } else {
-    startServer();
-    /*oktavio.plugins.users.fetchNumberOfUsers(oktavio.plugins['hapi-mongodb'], (count) => {
-      console.log(count);
-      if (count >= 1) {
-        startServer();
-      } else {
-        inquirer.prompt([
-          {
-            type: 'input',
-            name: 'username',
-            message: 'Username for the new user:',
-          },
-          {
-            type: 'password',
-            name: 'password',
-            message: 'Password for the new user:',
-          }
-        ]).then((userObj) => {
-          oktavio.plugins.users.createUser(oktavio.plugins['hapi-mongodb'], userObj, (err) => {
-            if (err)
-              throw err;
-
-            startServer();
-          });
-        });
-      }
-    });*/
-  }
+  startServer();
 });
 
 module.exports = oktavio;

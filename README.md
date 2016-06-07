@@ -36,7 +36,6 @@
 
 * `TEST_USER` - Optional; For testing purpose
 * `TEST_PASSWORD` - Optional; For testing purpose
-* `PILIGHT_DONTLOAD` - Optional; For testing purpose, if you dont have access to any pilight daemons
 
 ## Install packages
 

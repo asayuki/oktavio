@@ -1,7 +1,7 @@
 * ~~Slam together Login and Users module~~
 * ~~Create npm-plugin of Users module as this is needed in other projects aswell~~ (hapi-users-plugin @ npm)
-* Clean up oktavio.js
+* ~~Clean up oktavio.js~~
+* ~~Clean up some bits in pilight-plugin~~
 * Clean up modes-plugin
-* Clean up some bits in pilight-plugin
-* Clean up ui
+* Clean up/redo ui
 * HTTP2

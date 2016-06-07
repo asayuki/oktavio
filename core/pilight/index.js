@@ -5,116 +5,114 @@ const
 
 exports.register = (plugin, options, next) => {
 
-  const createConnection = () => {
-    socket.connect(process.env.PILIGHT_PORT, process.env.PILIGHT_HOST);
-  };
-
-  createConnection();
-
-  // Fix error handeling
-  //socket.on('error', (error) => {
-  //  setTimeout(() => {
-  //    console.log('Wait while we try again.');
-  //  }, 2000);
-  //});
-
-  socket.on('connect', () => {
-    sayHello();
-    startHeartbeat();
-  });
-
-  socket.on('close', () => {
-    socket.destroy();
-    createConnection();
-  });
-
-  socket.on('data', ((that) => {
-    let buffer = '';
-    return (data) => {
-      let messages, e, i, jsonMsg, len, msg, ref;
-      buffer += data.toString().replace(/\0/g, '');
-      if (buffer[buffer.length - 2] === '\n' || buffer[buffer.length -1] === '\n') {
-        messages = buffer.slice(0, -1);
-        ref = messages.split('\n');
-        for (i = 0, len = ref.length; i < len; i++) {
-          msg = ref[i];
-          if (msg.length !== 0) {
-            if (msg === 'BEAT') {
-              onBeat();
-            } else {
-              jsonMsg = null;
-              try {
-                jsonMsg = JSON.parse(msg);
-              } catch (err) {
-                console.log('Error in parsing Pilight response:', err, 'in "', msg, '"');
-              }
-              if (jsonMsg !== null) {
-                onReceive(jsonMsg);
-              }
-            }
-          }
-        }
-        return buffer = '';
-      }
-    };
-  })(socket));
-
-  const sayHello = () => {
-    send({
-      "action": "identify",
-      "options": {
-        "config":1
-      },
-      "uuid":"0000-d0-63-00-000000"
-    });
-  };
-
   const onReceive = (message) => {
-    //console.log('Pilight Received:', JSON.stringify(message));
-  };
-
-  const onBeat = () => {
-    startHeartbeat();
+    console.log('Pilight received:', JSON.stringify(message));
   };
 
   const send = (message) => {
     if (socket) {
-      socket.write(JSON.stringify(message) + "\n", 'utf8');
+      socket.write(JSON.stringify(message) + "\n", "utf8");
       return true;
     } else {
       return false;
     }
   };
 
-  const startHeartbeat = () => {
-    let heartbeatTimeout = null;
-    let sendHeartbeat = () => {
+  const onBeat = () => {
+    Beat();
+  };
+
+  const Beat = () => {
+    let beatTimeout = null;
+    let sendBeat = () => {
       if (socket) {
         try {
-          socket.write("HEART\n", 'utf8');
-        } catch (err) {
-          if (err)
-            console.log('Err:', err);
+          socket.write("HEART\n", "utf8");
+        } catch (error) {
+          if (error) {
+            console.log('Error:', error);
+          }
 
-          heartbeatTimeout = setTimeout(() => {
-            sendHeartbeat();
+          beatTimeout = setTimeout(() => {
+            Beat();
           }, 5000);
         }
       } else {
         return false;
       }
     };
-    heartbeatTimeout = setTimeout(() => {
-      sendHeartbeat();
-    }, 5000);
+
+    sendBeat();
   };
 
-  /*
-   * Exposes
-   */
+  const createConnection = () => {
+    socket.connect(process.env.PILIGHT_PORT, process.env.PILIGHT_HOST);
+  };
+
+  socket.on('connect', () => {
+    send({
+      "action": "identify",
+      "options": {
+        "config": 1
+      },
+      "uuid": "0000-d0-63-00-000000"
+    });
+  });
+
+  socket.on('close', () => {
+    socket.destroy();
+
+    console.log('Connection to Pilight Daemon failed. Please wait while we try to establish a connection again.');
+
+    setTimeout(() => {
+      createConnection();
+    }, 5000);
+  });
+
+  socket.on('error', () => {});
+
+  socket.on('data', ((that) => {
+    let buffer = '';
+
+    return (data) => {
+      let messages, jsonMessage, reference;
+
+      buffer += data.toString().replace(/\0/g, '');
+
+      if (buffer[buffer.length - 2] === '\n' || buffer[buffer.length - 1] === '\n') {
+        messages = buffer.slice(0, -1);
+        reference = messages.split('\n');
+
+        [].slice.call(reference).forEach((ref) => {
+          jsonMessage = null;
+          if (ref.length !== 0) {
+            if (ref === 'BEAT') {
+              onBeat();
+            } else {
+              try {
+                jsonMessage = JSON.parse(ref);
+              } catch (error) {
+                console.log('Error in parsing Pilight response:', error, 'in "', ref, '"');
+              }
+
+              if (jsonMessage !== null) {
+                onReceive(jsonMessage);
+              }
+            }
+          }
+        });
+
+        buffer = '';
+        return;
+      }
+    };
+  })(socket));
+
   plugin.expose('send', (action) => {
     send(action);
   });
+
+  createConnection();
 
   next();
 
@@ -122,8 +120,8 @@ exports.register = (plugin, options, next) => {
 
 exports.register.attributes = {
   name: 'pilight',
-  version: '1.0.0',
-  description: 'Pilight coreplugin',
+  version: '2.0.0',
+  description: 'Pilight coreplugin for Oktav.io',
   main: 'index.js',
   author: 'neme <neme@whispered.se>',
   license: 'MIT'

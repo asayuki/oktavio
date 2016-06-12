@@ -76,9 +76,12 @@ exports.register = (plugin, options, next) => {
     send({
       "action": "identify",
       "options": {
-        "config": 1
+        //"core": 1,
+        "receiver": 1,
+        "config": 1,
       },
       "uuid": "0000-d0-63-00-000000"
+      //"media": "all"
     });
     /* eslint-enable quotes */
   });

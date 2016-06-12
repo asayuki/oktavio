@@ -71,15 +71,16 @@ exports.register = (plugin, options, next) => {
 
   // On connect
   // Send a identify message to socket
-  // Note: Be adviced that send can fail with ' instead of ", but lets try it out.
   socket.on('connect', () => {
+    /* eslint-disable quotes */
     send({
-      'action': 'identify',
-      'options': {
-        'config': 1
+      "action": "identify",
+      "options": {
+        "config": 1
       },
-      'uuid': '0000-d0-63-00-000000'
+      "uuid": "0000-d0-63-00-000000"
     });
+    /* eslint-enable quotes */
   });
 
   // On close

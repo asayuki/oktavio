@@ -172,7 +172,7 @@ exports.register = (plugin, options, next) => {
 
 exports.register.attributes = {
   name: 'devices',
-  version: '1.0.1',
+  version: '2.0.0',
   description: 'Devices coreplugin for Oktavio',
   main: 'index.js',
   author: 'neme <neme@whispered.se>',

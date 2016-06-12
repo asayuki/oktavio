@@ -217,6 +217,7 @@ module.exports = {
           }
 
           if (typeof device.active !== 'undefined') {
+            /* eslint-disable quotes */
             let sendObj = {
               "action": "send",
               "code": {
@@ -225,6 +226,7 @@ module.exports = {
                 "unit": device.unit_code
               }
             };
+            /* eslint-enable quotes */
 
             if (device.active)
               sendObj.code.on = 1;

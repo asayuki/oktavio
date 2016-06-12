@@ -5,29 +5,45 @@ const
 
 exports.register = (plugin, options, next) => {
 
+  /*
+   * onReceive
+   * Takes a json-message and logs it in console stringified.
+   */
   const onReceive = (message) => {
     console.log('Pilight received:', JSON.stringify(message));
   };
 
+  /*
+   * send
+   * Stringify json message and send it to socket.
+   */
   const send = (message) => {
     if (socket) {
-      socket.write(JSON.stringify(message) + "\n", "utf8");
+      socket.write(JSON.stringify(message) + '\n', 'utf8');
       return true;
     } else {
       return false;
     }
   };
 
+  /*
+   * onBeat
+   * Beat!
+   */
   const onBeat = () => {
     Beat();
   };
 
+  /*
+   * Beat
+   * Send a heartbeat to socket every 5 seconds.
+   */
   const Beat = () => {
     let beatTimeout = null;
     let sendBeat = () => {
       if (socket) {
         try {
-          socket.write("HEART\n", "utf8");
+          socket.write('HEART\n', 'utf8');
         } catch (error) {
           if (error) {
             console.log('Error:', error);
@@ -45,20 +61,29 @@ exports.register = (plugin, options, next) => {
     sendBeat();
   };
 
+  /*
+   * createConnection
+   * Creates the connection to the socket.
+   */
   const createConnection = () => {
     socket.connect(process.env.PILIGHT_PORT, process.env.PILIGHT_HOST);
   };
 
+  // On connect
+  // Send a identify message to socket
+  // Note: Be adviced that send can fail with ' instead of ", but lets try it out.
   socket.on('connect', () => {
     send({
-      "action": "identify",
-      "options": {
-        "config": 1
+      'action': 'identify',
+      'options': {
+        'config': 1
       },
-      "uuid": "0000-d0-63-00-000000"
+      'uuid': '0000-d0-63-00-000000'
     });
   });
 
+  // On close
+  // Try and create a new connection
   socket.on('close', () => {
     socket.destroy();
 
@@ -69,8 +94,12 @@ exports.register = (plugin, options, next) => {
     }, 5000);
   });
 
+  // On error
+  // Do nothing.
   socket.on('error', () => {});
 
+  // On data
+  // Go through the buffer and try and parse the message.
   socket.on('data', ((that) => {
     let buffer = '';
 
@@ -108,6 +137,9 @@ exports.register = (plugin, options, next) => {
     };
   })(socket));
 
+  /*
+   * Expose the send action so other plugins can use it.
+   */
   plugin.expose('send', (action) => {
     send(action);
   });

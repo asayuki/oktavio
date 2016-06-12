@@ -58,7 +58,7 @@ oktavio.register(vision, (err) => {
     engines: {
       html: {
         module: htmlEngine,
-        isCached: (process.env.APP_PRODUCTION === 'true') ? process.env.APP_PRODUCTION : false
+        isCached: (process.env.APP_PRODUCTION === 'true') ? true : false
       }
     },
     compileMode: 'sync',
@@ -70,16 +70,18 @@ oktavio.register(vision, (err) => {
 });
 
 // Enable API Documentation
-if (process.env.API_DOCUMENTATION)
+if (process.env.APP_PRODUCTION !== 'true') {
   plugins.push({register: require('hapi-swagger'), options: swaggerOpt});
+}
 
 // Add plugins and error reporters to list to register
 plugins.push(inert);
 
-if (process.env.APP_PRODUCTION === 'true' || process.env.APP_TESTING === 'true')
+if (process.env.APP_PRODUCTION === 'true' || process.env.APP_TESTING === 'true') {
   reporters.console = [{module: 'good-console', args: [{ error: '*' }]}];
-else
+} else {
   reporters.console = [{module: 'good-console', args: [{ error: '*', response: '*'}]}];
+}
 
 plugins.push({register: good, options: {reporters: reporters}});
 plugins.push({register: require('hapi-mongodb'), options: {url: mongoURL, settings: { db: {'native_parser': false}}}});
@@ -112,28 +114,32 @@ plugins.push({register: require('./core/pilight')});
 let startServer = () => {
   oktavio.start(() => {
     if (process.env.APP_TESTING === 'true') {
-      oktavio.plugins.users.testUser(oktavio.plugins['hapi-mongodb'], (err) => {
-        if (err)
-          throw err;
+      oktavio.plugins.users.testUser(oktavio.plugins['hapi-mongodb'], (error) => {
+        if (error) {
+          throw error;
+        }
 
         process.env.APP_STARTED = true;
       });
     } else {
       process.env.APP_STARTED = true;
-      if (process.env.APP_PRODUCTION !== 'true')
+      if (process.env.APP_PRODUCTION !== 'true') {
         console.log('oktavio started at:', oktavio.info.uri);
+      }
     }
   });
 
   oktavio.on('request-internal', (request, event, tags) => {
-    if (tags.error && tags.state)
+    if (tags.error && tags.state) {
       console.log('Stateerror', event);
+    }
   });
 };
 
-oktavio.register(plugins, (err) => {
-  if (err)
-    throw err;
+oktavio.register(plugins, (error) => {
+  if (error) {
+    throw error;
+  }
 
   startServer();
 });

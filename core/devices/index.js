@@ -79,7 +79,7 @@ exports.register = (plugin, options, next) => {
             protocol: Joi.string().required(),
             unit_code: Joi.number().required(),
             unit_id: Joi.number().required(),
-            active: Joi.boolean()
+            state: Joi.boolean()
           }).required()
         },
         auth: {
@@ -146,7 +146,7 @@ exports.register = (plugin, options, next) => {
             protocol: Joi.string(),
             unit_code: Joi.number(),
             unit_id: Joi.number(),
-            active: Joi.boolean()
+            state: Joi.boolean()
           })
         },
         auth: {

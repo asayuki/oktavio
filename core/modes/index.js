@@ -1,7 +1,7 @@
 'use strict';
 const
-  Joi = require('joi');
-  //handlers = require('./modes');
+  Joi = require('joi'),
+  handlers = require('./modes');
 
 exports.register = (plugin, options, next) => {
   plugin.route([
@@ -10,7 +10,7 @@ exports.register = (plugin, options, next) => {
       method: 'GET',
       path: '/api/modes/{id*}',
       config: {
-        handler: (a, b) => {},
+        handler: handlers.getMode,
         tags: ['api', 'modes'],
         validate: {
           headers: Joi.object({
@@ -42,7 +42,7 @@ exports.register = (plugin, options, next) => {
       method: 'GET',
       path: '/api/modes',
       config: {
-        handler: (a, b) => {},
+        handler: handlers.getModes,
         tags: ['api', 'modes'],
         validate: {
           headers: Joi.object({
@@ -71,7 +71,7 @@ exports.register = (plugin, options, next) => {
       method: 'POST',
       path: '/api/modes',
       config: {
-        handler: (a, b) => {},
+        handler: handlers.addMode,
         tags: ['api', 'modes'],
         validate: {
           headers: Joi.object({
@@ -108,7 +108,7 @@ exports.register = (plugin, options, next) => {
       method: 'PUT',
       path: '/api/modes',
       config: {
-        handler: (a, b) => {},
+        handler: handlers.updateMode,
         tags: ['api', 'modes'],
         validate: {
           headers: Joi.object({
@@ -146,7 +146,7 @@ exports.register = (plugin, options, next) => {
       method: 'DELETE',
       path: '/api/modes',
       config: {
-        handler: (a, b) => {},
+        handler: handlers.removeMode,
         tags: ['api', 'modes'],
         validate: {
           headers: Joi.object({

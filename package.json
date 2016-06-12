@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node oktavio.js",
     "dev": "nodemon --watch oktavio.js --watch core -e html,js --ignore core/ui/_assets/ --ignore core/ui/statics/ oktavio.js",
-    "test": "node_modules/lab/bin/lab -m 10000"
+    "test": "node_modules/lab/bin/lab -m 10000",
+    "lint-staged": "lint-staged"
   },
   "lint-staged": {
    "eslint": "*.js"

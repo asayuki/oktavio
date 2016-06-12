@@ -1,7 +1,8 @@
 'use strict';
 const
   jwt = require('jsonwebtoken'),
-  async = require('async');
+  async = require('async'),
+  extend = require('util')._extend;
 
 module.exports = {
   /**
@@ -176,6 +177,13 @@ module.exports = {
 
   /**
    * Update device
+   * @param {Object}  request.params
+   * @param {String}  request.params.id - ID of the device you're updating
+   * @param {String}  request.params.name - Name of the device you're updating
+   * @param {String}  request.params.protocol - Protocol of the device
+   * @param {integer} request.params.unit_code - Unit code
+   * @param {integer} request.params.unit_id - Unit id
+   * @param {Boolean} request.params.active - Optional, if device is active or not active as of this moment
    */
   updateDevice: (request, response) => {
     if (request.auth.isAuthenticated) {
@@ -199,22 +207,7 @@ module.exports = {
           }).code(404);
         }
 
-        if (typeof payload.name !== 'undefined')
-          device.name = payload.name;
-
-        if (typeof payload.protocol !== 'undefined')
-          device.protocol = payload.protocol;
-
-        if (typeof payload.unit_code !== 'undefined')
-          device.unit_code = payload.unit_code;
-
-        if (typeof payload.unit_id !== 'undefined')
-          device.unit_id = payload.unit_id;
-
-        if (typeof payload.active !== 'undefined') {
-          device.active = payload.active;
-          pilightSend = (process.env.PILIGHT_DONTLOAD) ? false : true;
-        }
+        device = extend(device, payload);
 
         devices.update({_id: new ObjectID(device._id)}, {$set: device}, (error) => {
           if (error) {
@@ -223,7 +216,7 @@ module.exports = {
             }).code(500);
           }
 
-          if (pilightSend) {
+          if (typeof device.active !== 'undefined') {
             let sendObj = {
               "action": "send",
               "code": {

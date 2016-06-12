@@ -38,7 +38,7 @@ module.exports = {
 
   /**
    * Get device
-   * @param {integer} request.params.id - Id of device
+   * @param {String} request.params.id - Id of device
    * @return {Object} response
    * @return {Object} response.device - MongoDB-object of device or null if not found
    */
@@ -69,12 +69,12 @@ module.exports = {
 
   /**
    * Add device
-   * @param {Object}  request.params
-   * @param {String}  request.params.name - Name of the device you're adding
-   * @param {String}  request.params.protocol - Protocol of the device
-   * @param {integer} request.params.unit_code - Unit code
-   * @param {integer} request.params.unit_id - Unit id
-   * @param {Boolean} request.params.active - Optional, if device is active or not active as of this moment
+   * @param {Object}  request.payload
+   * @param {String}  request.payload.name - Name of the device you're adding
+   * @param {String}  request.payload.protocol - Protocol of the device
+   * @param {integer} request.payload.unit_code - Unit code
+   * @param {integer} request.payload.unit_id - Unit id
+   * @param {Boolean} request.payload.state - Optional, if device is active or not active as of this moment
    */
   addDevice: (request, response) => {
     if (request.auth.isAuthenticated) {
@@ -177,13 +177,14 @@ module.exports = {
 
   /**
    * Update device
-   * @param {Object}  request.params
-   * @param {String}  request.params.id - ID of the device you're updating
-   * @param {String}  request.params.name - Name of the device you're updating
-   * @param {String}  request.params.protocol - Protocol of the device
-   * @param {integer} request.params.unit_code - Unit code
-   * @param {integer} request.params.unit_id - Unit id
-   * @param {Boolean} request.params.active - Optional, if device is active or not active as of this moment
+   * Will only update those fields that are in the payload.
+   * @param {Object}  request.payload
+   * @param {String}  request.payload.id - ID of the device you're updating
+   * @param {String}  request.payload.name - Name of the device you're updating
+   * @param {String}  request.payload.protocol - Protocol of the device
+   * @param {integer} request.payload.unit_code - Unit code
+   * @param {integer} request.payload.unit_id - Unit id
+   * @param {Boolean} request.payload.state - Optional, if device is active or not active as of this moment
    */
   updateDevice: (request, response) => {
     if (request.auth.isAuthenticated) {
@@ -216,7 +217,7 @@ module.exports = {
             }).code(500);
           }
 
-          if (typeof device.active !== 'undefined') {
+          if (typeof device.state !== 'undefined') {
             /* eslint-disable quotes */
             let sendObj = {
               "action": "send",
@@ -228,7 +229,7 @@ module.exports = {
             };
             /* eslint-enable quotes */
 
-            if (device.active) {
+            if (device.state) {
               sendObj.code.on = 1;
             } else {
               sendObj.code.off = 1;

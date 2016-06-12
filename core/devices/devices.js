@@ -228,10 +228,11 @@ module.exports = {
             };
             /* eslint-enable quotes */
 
-            if (device.active)
+            if (device.active) {
               sendObj.code.on = 1;
-            else
+            } else {
               sendObj.code.off = 1;
+            }
 
             request.server.plugins.pilight.send(sendObj);
           }

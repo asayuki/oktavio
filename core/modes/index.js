@@ -4,11 +4,11 @@ const
   handlers = require('./modes');
 
 exports.register = (plugin, options, next) => {
+
   plugin.route([
-    // Get one mode
     {
       method: 'GET',
-      path: '/api/modes/{id*}',
+      path: '/api/modes/{id}',
       config: {
         handler: handlers.getMode,
         tags: ['api', 'modes'],
@@ -16,9 +16,9 @@ exports.register = (plugin, options, next) => {
           headers: Joi.object({
             Authorization: Joi.string()
           }).unknown(),
-          params: Joi.object({
+          params: {
             id: Joi.string().required()
-          })
+          }
         },
         auth: {
           mode: 'try',
@@ -37,7 +37,6 @@ exports.register = (plugin, options, next) => {
         }
       }
     },
-    // Get multiple modes
     {
       method: 'GET',
       path: '/api/modes',
@@ -66,7 +65,6 @@ exports.register = (plugin, options, next) => {
         }
       }
     },
-    // Create mode
     {
       method: 'POST',
       path: '/api/modes',
@@ -103,7 +101,6 @@ exports.register = (plugin, options, next) => {
         }
       }
     },
-    // Update mode
     {
       method: 'PUT',
       path: '/api/modes',
@@ -141,7 +138,6 @@ exports.register = (plugin, options, next) => {
         }
       }
     },
-    // Delete mode
     {
       method: 'DELETE',
       path: '/api/modes',

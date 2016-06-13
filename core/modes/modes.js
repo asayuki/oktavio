@@ -4,14 +4,69 @@ const
   async = require('async'),
   extend = require('util')._extend;
 
-// db.foo.updateMany({}, {$set: {lastLookedAt: Date.now() / 1000}})
-
 /**
  * activateMode
  * Activates mode and triggers device-activation
+ * @param {Object} plugins - Server plugins
+ * @param {Object} mode - The mode we want to activate
+ * @param {Function} callback
+ * @return {Function} callback
  */
-function activateMode (db, mode, callback) {
-  //db.collection('modes').updateMany({}, {$set: {active: }})
+function activateMode (plugins, mode, callback) {
+  let
+    modesCollection = plugins['hapi-mongodb'].db.collection('modes'),
+    devicesCollection = plugins['hapi-mongodb'].db.collection('devices'),
+    ObjectID = plugins['hapi-mongodb'].ObjectID;
+
+  modesCollection.updateMany({}, {$set: {active: false}}, (error) => {
+    if (error) {
+      callback('Database error.');
+    }
+
+    modesCollection.update({_id: new ObjectID(mode._id)}, {$set: {active: true}}, (error) => {
+      if (error) {
+        callback('Database error.');
+      }
+
+      getDevicesForMode(devicesCollection, ObjectID, mode.devices, (error, devices) => {
+        let sendDeviceObj = null;
+        async.each(devices, (device, cb) => {
+          devicesCollection.update({_id: new ObjectID(device._id)}, {$set: {state: device.on}}, (error) => {
+            if (error) {
+              cb('Could not update device with ID "' + device._id + '".');
+            }
+
+            /* eslint-disable quotes */
+            sendDeviceObj = {
+              "action": "send",
+              "code": {
+                "protocol": [device.protocol],
+                "id": device.unit_id,
+                "unit": device.unit_code
+              }
+            };
+            /* eslint-enable quotes */
+
+            if (device.on) {
+              sendDeviceObj.code.on = 1;
+            } else {
+              sendDeviceObj.code.off = 1;
+            }
+
+            plugins.pilight.send(sendDeviceObj);
+
+            cb();
+          });
+        }, (error) => {
+          if (error) {
+            callback(error);
+          }
+
+          callback();
+        });
+      });
+    });
+  });
 }
 
 /**
@@ -21,8 +76,30 @@ function activateMode (db, mode, callback) {
  * @param {Object} ObjectID - ObjectID function
  * @param {Array} devicesList - List of devices
  * @param {Function} callback
+ * @return {Function} callback
  */
 function getDevicesForMode (devicesCollection, ObjectID, devicesList, callback) {
+
+  /*async.each(modes, (mode, callback) => {
+    if (typeof mode.devices !== 'undefined' && mode.devices.length > 0) {
+      let devices = getDevicesForMode(devicesCollection, ObjectID, mode.devices, (error, devices) => {
+        if (error) {
+          callback(true);
+        }
+
+        mode.devices = devices;
+        callback();
+      });
+    } else {
+      callback();
+    }
+  }, (error) => {
+    if (error) {
+      return response({
+        error: 'Database error'
+      }).code(500);
+    }
+  });*/
 
   let deviceIds = [];
 
@@ -73,31 +150,10 @@ module.exports = {
           }).code(500);
         }
 
-        async.each(modes, (mode, callback) => {
-          if (typeof mode.devices !== 'undefined' && mode.devices.length > 0) {
-            let devices = getDevicesForMode(devicesCollection, ObjectID, mode.devices, (error, devices) => {
-              if (error) {
-                callback(true);
-              }
-
-              mode.devices = devices;
-              callback();
-            });
-          } else {
-            callback();
-          }
-        }, (error) => {
-          if (error) {
-            return response({
-              error: 'Database error'
-            }).code(500);
-          }
-
-          return response({
-            modes: modes,
-            numModes: modes.length
-          }).code(200);
-        });
+        return response({
+          modes: modes,
+          numModes: modes.length
+        }).code(200);
       });
     } else {
       return response({
@@ -127,25 +183,9 @@ module.exports = {
           }).code(500);
         }
 
-        if (typeof mode.devices !== 'undefined' && mode.devices.length > 0) {
-          let devices = getDevicesForMode(devicesCollection, ObjectID, mode.devices, (error, devices) => {
-            if (error) {
-              return response({
-                error: 'Database error.'
-              }).code(500);
-            }
-
-            mode.devices = devices;
-
-            return response({
-              mode: mode
-            }).code(200);
-          });
-        } else {
-          return response({
-            mode: mode
-          }).code(200);
-        }
+        return response({
+          mode: mode
+        }).code(200);
       });
     } else {
       return response({
@@ -203,7 +243,7 @@ module.exports = {
           }
 
           if (typeof payload.active !== 'undefined' && payload.active) {
-            activateMode(db, mode.ops[0], (error, done) => {
+            activateMode(request.server.plugins, mode.ops[0], (error) => {
               if (error) {
                 return response({
                   mode: mode.ops[0],
@@ -241,7 +281,83 @@ module.exports = {
    */
   updateMode: (request, response) => {
     if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        modesCollection = db.collection('modes'),
+        devicesCollection = db.collection('devices'),
+        payload = request.payload,
+        modeId = new ObjectID(payload.id);
 
+      modesCollection.findOne({_id: modeId}, (error, mode) => {
+        if (error) {
+          return response({
+            error: 'Database error.'
+          }).code(500);
+        }
+
+        if (mode === null) {
+          return response({
+            error: 'Could not find mode with ID "' + payload.id + '".'
+          }).code(404);
+        }
+
+        delete payload.id;
+        delete mode._id;
+
+        mode = extend(mode, payload);
+
+        // Lets check if all devices exists
+        async.each(payload.devices, (device, callback) => {
+          if (!ObjectID.isValid(device.id)) {
+            callback('Device ID "' + device.id + '" is not valid.');
+          }
+
+          devicesCollection.findOne({_id: new ObjectID(device.id)}, (error, deviceObj) => {
+            if (error) {
+              callback('Database error.');
+            }
+
+            if (deviceObj === null) {
+              callback('Device with ID "' + device.id + '" does not exist.');
+            }
+
+            callback();
+          });
+        }, (error) => {
+          if (error) {
+            return response({
+              error: error
+            }).code(500);
+          }
+          modesCollection.update({_id: modeId}, {$set: mode}, (error) => {
+            mode._id = modeId;
+            if (error) {
+              return response({
+                error: 'Database error'
+              }).code(500);
+            }
+
+            if (typeof payload.active !== 'undefined' && payload.active) {
+              activateMode(request.server.plugins, mode, (error) => {
+                if (error) {
+                  return response({
+                    error: error
+                  }).code(500);
+                }
+
+                return response({
+                  mode: mode
+                }).code(200);
+              });
+            } else {
+              return response({
+                mode: mode
+              }).code(200);
+            }
+          });
+        });
+      });
     } else {
       return response({
         status: false,
@@ -257,7 +373,36 @@ module.exports = {
    */
   removeMode: (request, response) => {
     if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        modesCollection = db.collection('modes');
 
+      modesCollection.findOne({_id: new ObjectID(request.payload.id)}, (error, mode) => {
+        if (error) {
+          return response({
+            error: 'Database error.'
+          }).code(500);
+        }
+
+        if (mode === null) {
+          return response({
+            error: 'Could not find mode with ID "' + request.payload.id + '".'
+          }).code(404);
+        }
+
+        modesCollection.remove({_id: new ObjectID(request.payload.id)}, (error) => {
+          if (error) {
+            return response({
+              error: 'Database error.'
+            }).code(500);
+          }
+
+          return response({
+            removed: true
+          }).code(200);
+        });
+      });
     } else {
       return response({
         status: false,

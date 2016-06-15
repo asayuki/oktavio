@@ -25,7 +25,7 @@ exports.register = (plugin, options, next) => {
           strategies: ['session', 'token']
         },
         plugins: {
-          'hapi-auth-cooke': {
+          'hapi-auth-cookie': {
             redirectTo: false
           },
           'hapi-auth-jwt': {
@@ -53,7 +53,7 @@ exports.register = (plugin, options, next) => {
           strategies: ['session', 'token']
         },
         plugins: {
-          'hapi-auth-cooke': {
+          'hapi-auth-cookie': {
             redirectTo: false
           },
           'hapi-auth-jwt': {
@@ -89,7 +89,7 @@ exports.register = (plugin, options, next) => {
           strategies: ['session', 'token']
         },
         plugins: {
-          'hapi-auth-cooke': {
+          'hapi-auth-cookie': {
             redirectTo: false
           },
           'hapi-auth-jwt': {
@@ -126,7 +126,7 @@ exports.register = (plugin, options, next) => {
           strategies: ['session', 'token']
         },
         plugins: {
-          'hapi-auth-cooke': {
+          'hapi-auth-cookie': {
             redirectTo: false
           },
           'hapi-auth-jwt': {
@@ -157,7 +157,7 @@ exports.register = (plugin, options, next) => {
           strategies: ['session', 'token']
         },
         plugins: {
-          'hapi-auth-cooke': {
+          'hapi-auth-cookie': {
             redirectTo: false
           },
           'hapi-auth-jwt': {

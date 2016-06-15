@@ -106,8 +106,6 @@ plugins.push({
 plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
 plugins.push({register: require('./core/ui')});
-
-//if (process.env.PILIGHT_DONTLOAD !== 'true')
 plugins.push({register: require('./core/pilight')});
 
 

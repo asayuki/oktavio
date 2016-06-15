@@ -3,55 +3,9 @@
 exports.register = (plugin, options, next) => {
 
   plugin.route([
-    {
-      method: 'GET',
-      path: '/',
-      config: {
-        handler: (request, response) => {
-          console.log(request.auth);
-          if (request.auth.isAuthenticated) {
-            response.view('index');
-          } else {
-            response.redirect('/login');
-          }
-        },
-        auth: {
-          mode: 'try',
-          strategies: ['session']
-        },
-        state: {
-          parse: true, // parse and store in request.state
-          failAction: 'ignore' // may also be 'ignore' or 'log'
-        },
-        plugins: {
-          'hapi-auth-cookie': {redirectTo: false},
-        }
-      }
-    },
-    {
-      method: 'GET',
-      path: '/login',
-      config: {
-        handler: (request, response) => {
-          if (!request.auth.isAuthenticated) {
-            response.view('login');
-          } else {
-            response.redirect('/');
-          }
-        },
-        auth: {
-          mode: 'try',
-          strategies: ['session']
-        },
-        state: {
-          parse: true, // parse and store in request.state
-          failAction: 'ignore' // may also be 'ignore' or 'log'
-        },
-        plugins: {
-          'hapi-auth-cookie': {redirectTo: false},
-        }
-      }
-    },
+    /**
+     * Statics
+     */
     {
       method: 'GET',
       path: '/statics/{path*}',
@@ -61,11 +15,33 @@ exports.register = (plugin, options, next) => {
             path: './core/ui/statics'
           }
         },
-        state: {
-          parse: true, // parse and store in request.state
-          failAction: 'ignore' // may also be 'ignore' or 'log'
-        },
         id: 'statics'
+      }
+    },
+
+    /**
+     * Loginpage
+     */
+    {
+      method: 'GET',
+      path: '/login',
+      config: {
+        handler: (request, response) => {
+          if (request.auth.isAuthenticated) {
+            return response.redirect('/');
+          }
+
+          return response.view('login/login');
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        }
       }
     }
   ]);
@@ -75,8 +51,8 @@ exports.register = (plugin, options, next) => {
 
 exports.register.attributes = {
   'name': 'ui',
-  'version': '1.0.0',
-  'description': 'ui plugin',
+  'version': '2.0.0',
+  'description': 'UI plugin for Oktavio',
   'main': 'index.js',
   'author': 'neme <neme@whispered.se>',
   'license': 'MIT'

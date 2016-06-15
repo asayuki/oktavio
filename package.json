@@ -11,7 +11,7 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-   "eslint": "*.js"
+    "eslint": "*.js"
   },
   "pre-commit": "lint-staged",
   "license": "MIT",

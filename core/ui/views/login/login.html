@@ -1,21 +1,25 @@
 {{#extend "base"}}
   {{#content "base_content"}}
-    <section class="login-page">
+    <div class="login-page">
 
-      <h1>Oktav.IO Login</h1>
+      <header>
+        <h1>OKTAV.IO Login</h1>
+      </header>
 
-      <form method="post" id="login-form">
-        <div>
-          <input type="text" name="username" id="username" required>
-          <label for="username">Username</label>
-        </div>
-        <div>
-          <input type="password" name="password" id="password" required>
-          <label for="password">Password</label>
-        </div>
+      <section>
+        <form method="post" id="login-form">
+          <div>
+            <input type="text" name="username" id="username" required>
+            <label for="username">Username</label>
+          </div>
+          <div>
+            <input type="password" name="password" id="password" required>
+            <label for="password">Password</label>
+          </div>
 
-        <button>Login</button>
-      </form>
-    </section>
+          <button>Login</button>
+        </form>
+      </section>
+    </div>
   {{/content}}
 {{/extend}}

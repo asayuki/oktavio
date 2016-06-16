@@ -27,3 +27,4 @@ shipitfile.js
 core/ui/statics/*
 !core/ui/statics/images/
 !core/ui/statics/fonts/
+!core/ui/statics/javascript/

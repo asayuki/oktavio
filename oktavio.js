@@ -101,12 +101,12 @@ if (process.env.APP_PRODUCTION !== 'true') {
 plugins.push(inert);
 
 if (process.env.APP_PRODUCTION === 'true' || process.env.APP_TESTING === 'true') {
-  reporters.console = [{module: 'good-console', args: [{ error: '*' }]}];
+  reporters.console = [{module: 'good-console', args: [{ error: '*' }]}, 'stdout'];
 } else {
-  reporters.console = [{module: 'good-console', args: [{ error: '*', response: '*'}]}];
+  reporters.console = [{module: 'good-console', args: [{ error: '*', response: '*'}]}, 'stdout'];
 }
 
-plugins.push({register: good, options: {reporters: reporters}});
+plugins.push({register: good, options: {ops: false, reporters: reporters}});
 plugins.push({register: require('hapi-mongodb'), options: {url: mongoURL, settings: { db: {'native_parser': false}}}});
 plugins.push({register: require('hapi-auth-cookie')});
 plugins.push({register: require('hapi-auth-jwt')});

@@ -1,20 +1,22 @@
-requirejs(['../core/network', '../core/notifier'], (network, notifier) => {
-  let loginForm = document.querySelector('form#login-form');
+requirejs(['../core/network', '../core/notifier'], function (network, notifier) {
+  var loginForm = document.querySelector('form#login-form');
 
-  loginForm.addEventListener('submit', (e) => {
+  loginForm.addEventListener('submit', function (e) {
     e.preventDefault();
     e.stopPropagation();
 
-    let
+    notifier.closeNotifications();
+
+    var
       username = loginForm.querySelector('input[name="username"]').value,
       password = loginForm.querySelector('input[name="password"]').value;
 
     if (username === '') {
-      return;
+      return notifier.message('You need to fill out "Username"');
     }
 
     if (password === '') {
-      return; // Notify
+      return notifier.message('You need to fill out "Password"');
     }
 
     network.go({
@@ -22,17 +24,15 @@ requirejs(['../core/network', '../core/notifier'], (network, notifier) => {
       url: '/api/users/login',
       json: true,
       params: JSON.stringify({username: username, password: password})
-    }, (error, result) => {
-
-      console.log(error, result);
+    }, function (error, result) {
 
       if (error || typeof result.error !== 'undefined') {
-        console.log(error);
-        console.log(result.error);
-        return notifier.error(result.error); // Notify
+        return notifier.error({
+          text: (typeof result.error !== 'undefined') ? result.error : 'There was some kind of error, please try again.'
+        });
       }
 
-      //window.location = '/';
+      window.location = '/';
     });
   });
 });

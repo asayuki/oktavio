@@ -1,0 +1,84 @@
+/**
+ * Variables for notifier
+ */
+
+// Notifier
+$notifier-width: 320px;
+
+// Notifications
+$notifier-bg-success: rgba(223, 242, 191, 1);
+$notifier-bg-error: rgba(255, 186, 186, 1);
+$notifier-bg-message: rgba(189, 229, 248, 1);
+
+$notifier-text-success: rgba(79, 138, 16, 1);
+$notifier-text-error: rgba(216, 0, 12, 1);
+$notifier-text-message: rgba(0, 82, 155, 1);
+
+.notifier {
+  bottom: 20px;
+  box-sizing: border-box;
+  right: 20px;
+  position: absolute;
+  width: $notifier-width;
+  z-index: 10;
+
+  .notification {
+    //border-radius: 4px;
+    border-left: 4px solid transparent;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 5px 0 0;
+    opacity: 0;
+    padding: 15px 10px;
+    transition: opacity .5s linear;
+    width: 100%;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .title {
+      display: block;
+      font-weight: bold;
+    }
+
+    &.success, &.error, &.message {
+      opacity: 1;
+
+      &.remove {
+        opacity: 0;
+      }
+    }
+
+    &.success {
+      background-color: $notifier-bg-success;
+      border-left-color: darken($notifier-bg-success, 20);
+      color: $notifier-text-success;
+    }
+
+    &.error {
+      background-color: $notifier-bg-error;
+      border-left-color: darken($notifier-bg-error, 20);
+      color: $notifier-text-error;
+    }
+
+    &.message {
+      background-color: $notifier-bg-message;
+      border-left-color: darken($notifier-bg-message, 50);
+      color: $notifier-text-message;
+    }
+
+    .notification-title {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .notification-text {
+
+    }
+  }
+}

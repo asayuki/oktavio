@@ -3,63 +3,46 @@
 
   var notifications = (function () {
     var classes = {
-      'prompt': {
-        'container': 'notifier-prompt'
-      },
       'notification': {
         'container': 'notifier'
       }
     };
 
     /**
-     * Check if notifications container exists, if not create.
-     *
-     * @return {Object}
+     * Get container with specified container class, or create it.
+     * @param {string} type - Which type of classtype
+     * @param {Boolean} create - If set to true it will create container if it does not exist
+     * @return {Object|Boolean} - Returns container if it exists or create is true, otherwise false.
      */
-    function checkAndCreateContainer (type) {
-      if (document.querySelector('.' + classes[type].container) === null)
-        return createContainer(type);
-      else
-        return document.querySelector('.' + classes[type].container);
-    }
-
-    /**
-     * Create container and add container to DOM
-     *
-     * @return {Object};
-     */
-    function createContainer (type) {
-      var div = document.createElement('div');
-
-      div.classList.add(classes[type].container);
-      document.querySelector('body').appendChild(div);
-
-      return div;
-    }
-
-    /**
-     * Get container for type
-     *
-     * @return {Object}
-     */
-    function getContainer (type) {
+    function getContainer (type, create) {
       var container = document.querySelector('.' + classes[type].container);
-      if (container === null)
-        return false;
-      else
-        return container;
+
+      if (container === null) {
+        if (create) {
+          container = document.createElement('div');
+
+          container.classList.add(classes[type].container);
+          document.querySelector('body').appendChild(container);
+        } else {
+          return false;
+        }
+      }
+
+      return container;
     }
 
     /**
      * Remove notification from container
-     * And remove container if it does not contain any more notifications
+     * @param {Object} - Notification DOM element
+     * @param {Object} - Container DOM element
      */
     function removeNotification (notification, container) {
-      notification.classList.remove('notification');
+      notification.classList.add('remove');
       setTimeout(function () {
         try {
           container.removeChild(notification);
         } catch (e) {}
+
         if (container.children.length === 0) {
           try {
             container.parentNode.removeChild(container);
@@ -68,160 +51,112 @@
       }, 500);
     }
 
+    /**
+     * Create nofification
+     * @param {Object} options - Options for notification
+     * @param {string} options.type - Which type of notification
+     * @param {string} options.text - Text for notification
+     * @param {string} options.title - Optional if you want a title
+     * @param {number} options.timer - Optional if you want notification to be autoremoved after x milliseconds
+     */
+    function createNotification (options) {
+      var
+        containerElem     = getContainer('notification', true),
+        notificationElem  = document.createElement('div'),
+        textElem          = document.createElement('p');
+
+      notificationElem.classList.add('notification');
+      containerElem.appendChild(notificationElem);
+
+      // Add title if specified
+      if (typeof options.title !== 'undefined' && options.title !== '') {
+        var titleElem = document.createElement('p');
+        titleElem.classList.add('notification-title');
+        titleElem.innerHTML = options.title;
+        notificationElem.appendChild(titleElem);
+      }
+
+      // Add text to notification
+      textElem.innerHTML = options.text;
+      textElem.classList.add('notification-text');
+      notificationElem.appendChild(textElem);
+
+      // Add eventlistener on click to remove
+      notificationElem.addEventListener('click', removeNotification.bind(null, notificationElem, containerElem));
+
+      // Add class to notification after a few ms, or it will not have a smooth feeling
+      setTimeout(function () {
+        notificationElem.classList.add(options.type);
+      }, 100);
+
+      // Set timer if specified
+      if (typeof options.timer !== 'undefined' && options.timer > 0) {
+        setTimeout(function () {
+          removeNotification(notificationElem, containerElem);
+        });
+      }
+    }
+
+    /**
+     * Close all
+     * @param {string} Type - Which type of notification
+     */
+    function closeAll (type) {
+      var container = getContainer(type);
+      if (container) {
+        try {
+          container.parentNode.removeChild(container);
+        } catch (e) {}
+      }
+    }
+
+
     // Notifications API
     return {
-      closeAll: function (type) {
-        var container = getContainer(type);
-        if (container) {
-          [].forEach.call(container.children, function (child) {
-            try {
-              child.classList.remove('notification');
-              container.removeChild(child);
-            } catch (e) {}
-          });
-
-          try {
-            container.parentNode.removeChild(container);
-          } catch (e) {}
-        }
+      createNotification: function (options) {
+        createNotification(options);
       },
 
-      createNotification: function (type, text, timer) {
-        var
-          container       = checkAndCreateContainer('notification'),
-          div             = document.createElement('div'),
-          textTitle       = document.createElement('p');
-        container.appendChild(div);
-
-        // Add title to notification
-        textTitle.innerHTML = text;
-        textTitle.classList.add('notification-title');
-        div.appendChild(textTitle);
-
-        // Eventlisterner on click to remove
-        div.addEventListener('click', removeNotification.bind(null, div, container), false);
-
-        // Set classed after 100ms, or it will not have that smooth feeling.
-        setTimeout(function () {
-          div.classList.add(type, 'notification');
-        }, 100);
-
-        // If timer is set, remove notification after @timer ms
-        if (typeof timer !== 'undefined' && timer !== 0) {
-          setTimeout(function () {
-            removeNotification(div, container);
-          }, timer);
-        }
-      },
-
-      createPrompt: function (text, callback) {
-        var
-          container       = checkAndCreateContainer('prompt'),
-          div             = document.createElement('div'),
-          textTitle       = document.createElement('p'),
-          textField       = document.createElement('textarea'),
-          buttonContainer = document.createElement('div'),
-          saveButton      = document.createElement('button'),
-          cancelButton    = document.createElement('button');
-
-        // Set buttontexts & classes
-        saveButton.innerHTML = 'Ok';
-        saveButton.classList.add('save');
-        cancelButton.innerHTML = 'Cancel';
-        cancelButton.classList.add('cancel');
-
-        // Add buttons to their container
-        buttonContainer.classList.add('btn-container');
-        buttonContainer.appendChild(saveButton);
-        buttonContainer.appendChild(cancelButton);
-
-        // Add title to prompt
-        textTitle.innerHTML = text;
-        textTitle.classList.add('notification-title');
-        div.appendChild(textTitle);
-
-        // Add textfield to prompt
-        div.appendChild(textField);
-
-        // Add buttonContainer to prompt
-        div.appendChild(buttonContainer);
-
-        // Add prompt to container
-        container.appendChild(div);
-
-        // Add eventlisteners for save and cancel buttons
-        saveButton.addEventListener('click', function (e) {
-          e.preventDefault();
-          var textValue = textField.value;
-          removeNotification(div, container);
-          setTimeout(function () {
-            callback(textField.value);
-          }, 500);
-        });
-
-        cancelButton.addEventListener('click', function (e) {
-          e.preventDefault();
-          removeNotification(div, container);
-          setTimeout(function () {
-            callback(null);
-          }, 500);
-        });
-
-        // Set classes after 100ms, or it will not have that smooth feeling.
-        setTimeout(function () {
-          div.classList.add('prompt', 'notification');
-        }, 100);
+      closeNotifications: function () {
+        closeAll('notification');
       }
     };
+
   })();
 
   /**
-   * Notifier public API
-   *
-   * @return {Object}
+   * Notifier API
    */
   function Notifier () {
     return {
-      prompt: function (text, callback) {
-        notifications.createPrompt(text, callback);
+      success: function (options) {
+        options.type = 'success';
+        notifications.createNotification(options);
       },
 
-      success: function (text, timer) {
-        notifications.createNotification('success', text, timer);
+      error: function (options) {
+        options.type = 'error';
+        notifications.createNotification(options);
       },
 
-      error: function (text, timer) {
-        notifications.createNotification('error', text, timer);
+      message: function (options) {
+        options.type = 'message';
+        notifications.createNotification(options);
       },
-
-      message: function (text, timer) {
-        notifications.createNotification('message', text, timer);
-      },
-
-      closeAllNotifications: function () {
-        notifications.closeAll('notification');
-      },
-
-      closeAllPrompts: function () {
-        notifications.closeAll('prompt');
+      closeNotifications: function () {
+        notifications.closeNotifications();
       }
     };
   }
 
-  /*
-   * Boot it up
-   */
   var notifier = new Notifier();
 
-  // CommonJS
   if (typeof module === 'object' && typeof module.exports === 'object') {
     module.exports = notifier;
-  // AMD
   } else if (typeof define === 'function' && define.amd) {
     define([], function () {
       return notifier;
     });
-  // Window
   } else if (!window.notifier) {
     window.notifier = notifier;
   }

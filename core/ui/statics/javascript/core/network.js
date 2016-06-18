@@ -5,8 +5,9 @@
   };
 
   var extend = function ( defaults, options ) {
-    var extended = {};
-    var prop;
+    var
+      extended = {},
+      prop;
     for (prop in defaults) {
       if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
         extended[prop] = defaults[prop];
@@ -27,19 +28,24 @@
         var request = new XMLHttpRequest();
         request.open(options.type, options.url, true);
         request.onreadystatechange = function () {
+
           if (request.readyState === 4) {
-            if (request.status === 200 || request.status === 201) {
-              var response = '';
-              try {
-                response = JSON.parse(request.responseText);
-              } catch (e) {}
-              if (typeof response === 'object') {
-                callback(null, response);
+            var response = '';
+            try {
+              response = JSON.parse(request.responseText);
+            } catch (e) {}
+            if (typeof response === 'object') {
+              if (request.status === 200 || request.status === 201) {
+                return callback(null, response);
               } else {
-                callback(null, request.responseText);
+                return callback(true, response);
               }
             } else {
-              callback(true, false);
+              if (request.status === 200 || request.status === 201) {
+                return callback(null, request.responseText);
+              } else {
+                return callback(true, request.responseText);
+              }
             }
           }
         };

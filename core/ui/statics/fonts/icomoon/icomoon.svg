@@ -7,7 +7,10 @@
 <font-face units-per-em="1024" ascent="960" descent="-64" />
 <missing-glyph horiz-adv-x="1024" />
 <glyph unicode="&#x20;" horiz-adv-x="512" d="" />
-<glyph unicode="&#xe900;" glyph-name="view_module" d="M682 724.667h214v-256h-214v256zM426 468.667v256h214v-256h-214zM682 170.667v256h214v-256h-214zM426 170.667v256h214v-256h-214zM170 170.667v256h214v-256h-214zM170 468.667v256h214v-256h-214z" />
-<glyph unicode="&#xe901;" glyph-name="power" d="M684 640.667c42 0 84-44 84-86v-234l-150-150v-128h-212v128l-150 150v234c0 42 42 86 84 86h2v170h84v-170h172v170h84z" />
-<glyph unicode="&#xe902;" glyph-name="home" d="M426 84.667h-212v342h-128l426 384 426-384h-128v-342h-212v256h-172v-256z" />
+<glyph unicode="&#xe900;" glyph-name="keyboard_arrow_left" d="M658 252.667l-60-60-256 256 256 256 60-60-196-196z" />
+<glyph unicode="&#xe901;" glyph-name="navigate_next" d="M426 682.667l256-256-256-256-60 60 196 196-196 196z" />
+<glyph unicode="&#xe902;" glyph-name="menu" d="M128 682.667h768v-86h-768v86zM128 384.667v84h768v-84h-768zM128 170.667v86h768v-86h-768z" />
+<glyph unicode="&#xe903;" glyph-name="view_module" d="M682 724.667h214v-256h-214v256zM426 468.667v256h214v-256h-214zM682 170.667v256h214v-256h-214zM426 170.667v256h214v-256h-214zM170 170.667v256h214v-256h-214zM170 468.667v256h214v-256h-214z" />
+<glyph unicode="&#xe904;" glyph-name="power" d="M684 640.667c42 0 84-44 84-86v-234l-150-150v-128h-212v128l-150 150v234c0 42 42 86 84 86h2v170h84v-170h172v170h84z" />
+<glyph unicode="&#xe905;" glyph-name="home" d="M426 84.667h-212v342h-128l426 384 426-384h-128v-342h-212v256h-172v-256z" />
 </font></defs></svg>

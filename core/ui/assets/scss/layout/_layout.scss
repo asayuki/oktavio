@@ -5,10 +5,6 @@ html, body {
   min-height: 100%;
 }
 
-body {
-  display: flex;
-  flex-direction: row;
-}
-
-@import 'menu';
-//@import 'content';
+//@import 'menu';
+@import 'content';
+@import 'slider';

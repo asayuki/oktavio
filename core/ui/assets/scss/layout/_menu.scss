@@ -1,10 +1,63 @@
 nav.main-menu {
   background-color: $clouds;
-  max-width: 80px;
-  width: 80px;
+  height: 100%;
+  max-width: 65px;
+  overflow: hidden;
+  position: relative;
+  width: 65px;
+
+  &:after {
+    box-shadow: inset -7px 0px 40px -15px rgba(0, 0, 0, 0.75);
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -50px;
+    bottom: -50px;
+    pointer-events: none;
+    width: 100%;
+  }
+
+  ul {
+    height: 100%;
+    overflow: auto;
+  }
 
   li {
-    line-height: 80px;
-    text-align: center;
+    a {
+      display: block;
+      text-align: center;
+    }
+
+    i {
+      color: rgba(0, 0, 0, .4);
+      font-size: 24px;
+      line-height: 65px;
+    }
+
+    &.home {
+      background-color: #e74c3c;
+    }
+
+    &.devices {
+      background-color: #8e44ad;
+    }
+
+    &.modes {
+      background-color: #2980b9;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    height: auto;
+    max-width: none;
+    width: 100%;
+
+    ul {
+      height: auto;
+    }
+
+    li {
+      display: inline-block;
+    }
   }
 }

@@ -43,6 +43,32 @@ exports.register = (plugin, options, next) => {
           }
         }
       }
+    },
+
+    /**
+     * Dashboard
+     */
+    {
+      method: 'GET',
+      path: '/',
+      config: {
+        handler: (request, response) => {
+          if (!request.auth.isAuthenticated) {
+            return response.redirect('/login');
+          }
+
+          return response.view('dashboard/index');
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        }
+      }
     }
   ]);
 

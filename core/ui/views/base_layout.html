@@ -1,5 +1,9 @@
 {{#extend "base"}}
   {{#content "base_content"}}
-    {{#block "content"}}{{/block}}
+    {{> "menu"}}
+
+    <div class="page-content">
+      {{#block "content"}}{{/block}}
+    </div>
   {{/content}}
 {{/extend}}

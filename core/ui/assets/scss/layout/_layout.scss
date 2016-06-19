@@ -1,0 +1,14 @@
+html, body {
+  box-sizing: border-box;
+  font-family: 'Myriad Pro Regular';
+  height: 100%;
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+}
+
+@import 'menu';
+//@import 'content';

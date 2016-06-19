@@ -18,8 +18,9 @@ $notifier-text-message: rgba(0, 82, 155, 1);
   bottom: 20px;
   box-sizing: border-box;
   right: 20px;
+  left: 20px;
   position: absolute;
-  width: $notifier-width;
+  width: calc(100% - 40px);
   z-index: 10;
 
   .notification {
@@ -80,5 +81,10 @@ $notifier-text-message: rgba(0, 82, 155, 1);
     .notification-text {
 
     }
+  }
+
+  @media screen and (min-width: 500px) {
+    left: auto;
+    width: $notifier-width;
   }
 }

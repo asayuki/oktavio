@@ -1,5 +1,33 @@
 $num-slides: 10;
 
+/**
+ * Calculate nth-child for next-control
+ * @param $index - Current index
+ */
+@function right-side($index) {
+  @if $index == ($num-slides - 1) {
+    @return 1;
+  } @else if $index == ($num-slides + 1) {
+    @return ($num-slides + 1);
+  } @else if $index == $num-slides {
+    @return ($index + 1);
+  } @else {
+    @return ($index + 2);
+  }
+}
+
+@function left-side($index) {
+  @if $index == 0 {
+    @return $num-slides;
+  } @else if $index == ($num-slides - 1) {
+    @return ($num-slides - 1);
+  } @else if $index == $num-slides {
+    @return ($index - 1);
+  } @else {
+    @return ($num-slides - ($index + 1));
+  }
+}
+
 .slider {
   input {
     display: none;
@@ -18,95 +46,25 @@ $num-slides: 10;
 
     #slide-#{$i}:checked {
       &~.controls {
-        @if $i == ($num-slides - 1) {
-          label:nth-child(1) {
-            border-left: 1px solid gray;
-            border-radius: 0 4px 4px 0;
-            display: block;
-            float: right;
+        label:nth-child(#{right-side($i)}) {
+          border-left: 1px solid gray;
+          border-radius: 0 4px 4px 0;
+          display: block;
+          float: right;
 
-            &:before {
-              content: "\e901";
-            }
-          }
-        } @else if $i == ($num-slides + 1) {
-          label:nth-child(#{$num-slides + 1}) {
-            border-left: 1px solid gray;
-            border-radius: 0 4px 4px 0;
-            display: block;
-            float: right;
-
-            &:before {
-              content: "\e901";
-            }
-          }
-        } @else if $i == $num-slides {
-          label:nth-child(#{$i + 1}) {
-            border-left: 1px solid gray;
-            border-radius: 0 4px 4px 0;
-            display: block;
-            float: right;
-
-            &:before {
-              content: "\e901";
-            }
-          }
-        } @else {
-          label:nth-child(#{$i + 2}) {
-            border-left: 1px solid gray;
-            border-radius: 0 4px 4px 0;
-            display: block;
-            float: right;
-
-            &:before {
-              content: "\e901";
-            }
+          &:before {
+            content: "\e901";
           }
         }
 
-        @if $i == 0 {
-          label:nth-child(#{$num-slides}) {
-            border-right: 1px solid gray;
-            border-radius: 4px 0 0 4px;
-            display: block;
-            float: left;
+        label:nth-child(#{left-side($i)}) {
+          border-right: 1px solid gray;
+          border-radius: 4px 0 0 4px;
+          display: block;
+          float: left;
 
-            &:before {
-              content: "\e900";
-            }
-          }
-        } @else if $i == ($num-slides - 1) {
-          label:nth-child(#{$num-slides - 1}) {
-            border-right: 1px solid gray;
-            border-radius: 4px 0 0 4px;
-            display: block;
-            float: left;
-
-            &:before {
-              content: "\e900";
-            }
-          }
-        } @else if $i == $num-slides {
-          label:nth-child(#{$i - 1}) {
-            border-right: 1px solid gray;
-            border-radius: 4px 0 0 4px;
-            display: block;
-            float: left;
-
-            &:before {
-              content: "\e900";
-            }
-          }
-        } @else {
-          label:nth-child(#{$num-slides - ($i + 1)}) {
-            border-right: 1px solid gray;
-            border-radius: 4px 0 0 4px;
-            display: block;
-            float: left;
-
-            &:before {
-              content: "\e900";
-            }
+          &:before {
+            content: "\e900";
           }
         }
       }

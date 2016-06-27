@@ -15,7 +15,11 @@ exports.register = (plugin, options, next) => {
             path: './core/ui/statics'
           }
         },
-        id: 'statics'
+        id: 'statics',
+        state: {
+          parse: true,
+          failAction: 'ignore'
+        }
       }
     },
 
@@ -41,6 +45,10 @@ exports.register = (plugin, options, next) => {
           'hapi-auth-cookie': {
             redirectTo: false
           }
+        },
+        state: {
+          parse: true,
+          failAction: 'ignore'
         }
       }
     },
@@ -67,6 +75,10 @@ exports.register = (plugin, options, next) => {
           'hapi-auth-cookie': {
             redirectTo: false
           }
+        },
+        state: {
+          parse: true,
+          failAction: 'ignore'
         }
       }
     }

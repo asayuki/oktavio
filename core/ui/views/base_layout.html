@@ -1,8 +1,13 @@
 {{#extend "base"}}
   {{#content "base_content"}}
     {{> "menu"}}
-
     <div class="page-content">
+
+      <header class="mobile-header">
+        <button class="hamburgler fn-hamburgler"></button>
+        Dashboard
+      </header>
+
       {{#block "content"}}{{/block}}
     </div>
   {{/content}}

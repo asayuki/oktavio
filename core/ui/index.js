@@ -57,7 +57,7 @@ exports.register = (plugin, options, next) => {
             return response.redirect('/login');
           }
 
-          return response.view('dashboard/index');
+          return response.view('pages/index');
         },
         auth: {
           mode: 'try',

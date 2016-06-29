@@ -51,13 +51,11 @@ let listener = http2.createServer({
   key: fs.readFileSync(process.env.CERTIFICATES_DIR + 'example.com.key'),
   cert: fs.readFileSync(process.env.CERTIFICATES_DIR + 'example.com.crt')
 });
-
 if (!listener.address) {
   listener.address = function () {
     return this._server.address();
   }
 }
-
 listener.getConnections = function (cb) {
   process.nextTick(() => {
     cb(null, this._server._connections);
@@ -139,7 +137,6 @@ let startServer = () => {
         if (error) {
           throw error;
         }
-
         process.env.APP_STARTED = true;
       });
     } else {
@@ -149,7 +146,6 @@ let startServer = () => {
       }
     }
   });
-
   oktavio.on('request-internal', (request, event, tags) => {
     if (tags.error && tags.state) {
       console.log('Stateerror', event);

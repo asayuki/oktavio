@@ -66,6 +66,34 @@ exports.register = (plugin, options, next) => {
       }
     },
     {
+      method: 'GET',
+      path: '/api/modes/active',
+      config: {
+        handler: handlers.getActiveMode,
+        tags: ['api', 'modes'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown()
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          },
+          'hapi-auth-jwt': {
+            redirectTo: false
+          },
+          'hapi-swagger': {
+            payloadType: 'form'
+          }
+        }
+      }
+    },
+    {
       method: 'POST',
       path: '/api/modes',
       config: {

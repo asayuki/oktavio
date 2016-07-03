@@ -10,8 +10,7 @@ const
   inert = require('inert'),
   good = require('good'),
   Joi = require('joi'),
-  //fs = require('fs'),
-  //http2 = require('http2'),
+  helpers = require('./core/handlebar-helpers'),
   htmlEngine = handlebars.create(),
   swaggerOpt = {
     info: {
@@ -45,27 +44,13 @@ else
 // Register engine for Handlebars
 handlebarsLayout.register(htmlEngine);
 
-/*
-// Register http2
-let listener = http2.createServer({
-  key: fs.readFileSync(process.env.CERTIFICATES_DIR + 'example.com.key'),
-  cert: fs.readFileSync(process.env.CERTIFICATES_DIR + 'example.com.crt')
+// Register helpers
+[].forEach.call(helpers, (helper) => {
+  htmlEngine.registerHelper(helper.name, helper.func);
 });
-if (!listener.address) {
-  listener.address = function () {
-    return this._server.address();
-  }
-}
-listener.getConnections = function (cb) {
-  process.nextTick(() => {
-    cb(null, this._server._connections);
-  })
-};*/
 
 // Setup host and port for application
 oktavio.connection({
-  //listener: listener,
-  //tls: true,
   host: (process.env.APP_HOST) ? process.env.APP_HOST : 'localhost',
   port: (process.env.APP_PORT) ? process.env.APP_PORT : 8000
 });

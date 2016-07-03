@@ -130,6 +130,48 @@ function getDevicesForMode (devicesCollection, ObjectID, devicesList, callback) 
 module.exports = {
 
   /**
+   * Retrieve currect active mode and total modes
+   * @return {Object/null} response.mode - The mode which is currently active
+   * @return (Number) response.numModes - Count of all modes
+   */
+  getActiveMode: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        ObjectID = request.server.plugins['hapi-mongodb'].ObjectID,
+        modesCollection = db.collection('modes');
+
+      modesCollection.count({}, (error, totalModes) => {
+        if (error) {
+          return response({
+            error: 'Database error.'
+          }).code(500);
+        }
+
+        console.log(totalModes);
+
+        modesCollection.findOne({active: true}, (error, mode) => {
+          if (error) {
+            return response({
+              error: 'Database error.'
+            }).code(500);
+          }
+
+          return response({
+            mode: mode,
+            numModes: totalModes
+          }).code(200);
+        });
+      });
+    } else {
+      return response({
+        status: false,
+        error: 'Not authenticated.'
+      }).code(401);
+    }
+  },
+
+  /**
    *  Retrieve list of modes
    * @return {Object}  response
    * @return {Object}  response.modes - Array of modes

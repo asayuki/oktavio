@@ -35,6 +35,34 @@ exports.register = (plugin, options, next) => {
     },
     {
       method: 'GET',
+      path: '/api/devices/active',
+      config: {
+        handler: handlers.getActiveDevices,
+        tags: ['api', 'devices'],
+        validate: {
+          headers: Joi.object({
+            Authorization: Joi.string()
+          }).unknown()
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session', 'token']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          },
+          'hapi-auth-jwt': {
+            redirectTo: false
+          },
+          'hapi-swagger': {
+            payloadType: 'form'
+          }
+        }
+      }
+    },
+    {
+      method: 'GET',
       path: '/api/devices/{id}',
       config: {
         handler: handlers.getDevice,

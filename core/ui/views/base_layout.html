@@ -1,5 +1,22 @@
 {{#extend "base"}}
   {{#content "base_content"}}
+
+    <input type="checkbox" id="nav-checkbox" name="nav-checkbox">
+
+    <nav class="main-menu fn-main-menu">
+      <label for="nav-checkbox" class="nav-open">Åpen</label>
+      <a href="/" class="page-item page-dashboard{{#ifvalue page.context equals="index"}} active{{/ifvalue}}">
+        <span>Dashboard</span>
+      </a>
+      <a href="/devices" class="page-item page-devices">
+        <span>Devices</span>
+      </a>
+      <a href="/modes" class="page-item page-modes">
+        <span>Modes</span>
+      </a>
+      <label for="nav-checkbox" class="nav-close">Close</label>
+    </nav>
+
     <div class="page-content">
       {{#block "content"}}{{/block}}
     </div>

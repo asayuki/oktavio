@@ -65,7 +65,37 @@ exports.register = (plugin, options, next) => {
             return response.redirect('/login');
           }
 
-          return response.view('pages/index');
+          return response.view('pages/index', {page: {context: 'index'}});
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        state: {
+          parse: true,
+          failAction: 'ignore'
+        }
+      }
+    },
+
+    /**
+     * Devices
+     */
+    {
+      method: 'GET',
+      path: '/devices',
+      config: {
+        handler: (request, response) => {
+          if (!request.auth.isAuthenticated) {
+            return response.redirect('/login');
+          }
+
+          return response.view('pages/devices', {page: {context: 'devices'}});
         },
         auth: {
           mode: 'try',

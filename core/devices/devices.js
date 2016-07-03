@@ -37,6 +37,42 @@ module.exports = {
   },
 
   /**
+   * Returns the number of active devices, and total devices
+   */
+  getActiveDevices: (request, response) => {
+    if (request.auth.isAuthenticated) {
+      let
+        db = request.server.plugins['hapi-mongodb'].db,
+        devices = db.collection('devices');
+
+      devices.count({state: true}, (error, onCount) => {
+        if (error) {
+          return response({
+            error: 'Database error.'
+          }).code(500);
+        }
+
+        devices.count({}, (error, totalCount) => {
+          if (error) {
+            return response({
+              error: 'Database error.'
+            }).code(500);
+          }
+
+          return response({
+            numOnDevices: onCount,
+            numDevices: totalCount
+          }).code(200);
+        });
+      });
+    } else {
+      return response({
+        error: 'Not authenticated.'
+      }).code(401);
+    }
+  },
+
+  /**
    * Get device
    * @param {String} request.params.id - Id of device
    * @return {Object} response
@@ -210,7 +246,11 @@ module.exports = {
 
         device = extend(device, payload);
 
-        devices.update({_id: new ObjectID(device._id)}, {$set: device}, (error) => {
+        delete device._id;
+        delete device.id;
+
+        devices.update({_id: new ObjectID(payload.id)}, {$set: device}, (error) => {
+
           if (error) {
             return response({
               error: 'Database error.'
@@ -237,6 +277,8 @@ module.exports = {
 
             request.server.plugins.pilight.send(sendObj);
           }
+
+          device._id = payload.id;
 
           return response({
             device: device

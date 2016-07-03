@@ -1,4 +1,4 @@
-input[id^="nav-"], input[id*=" nav-"], input[id^="page-"], input[id*=" page-"] {
+input[id^="nav-"], input[id*=" nav-"] {
   display: none;
 }
 
@@ -9,12 +9,14 @@ nav.main-menu {
   position: fixed;
   right: 0;
   top: 0;
+  z-index: 10;
 
   @include transition(height, .3s, ease-in-out);
 }
 
 #nav-checkbox ~.main-menu {
   > * {
+    color: white;
     align-items: center;
     display: none;
     flex-grow: 1;
@@ -45,28 +47,12 @@ nav.main-menu {
   }
 }
 
-#page-dashboard:checked ~.main-menu .page-dashboard {
-  display: flex;
-}
-
-#nav-checkbox:checked ~ #page-dashboard:checked ~.main-menu .page-dashboard {
-  background-color: #0A2037;
-}
-
-#page-devices:checked ~.main-menu .page-devices {
-  display: flex;
-}
-
-#nav-checkbox:checked ~ #page-devices:checked ~.main-menu .page-devices {
-  background-color: #0A2037;
-}
-
-#page-modes:checked ~.main-menu .page-modes {
-  display: flex;
-}
-
-#nav-checkbox:checked ~ #page-modes:checked ~.main-menu .page-modes {
-  background-color: #0A2037;
+#nav-checkbox:not(:checked) ~.main-menu {
+  .page-item.active {
+    display: block;
+    line-height: 50px;
+    text-align: center;
+  }
 }
 
 #nav-checkbox:checked ~.main-menu {
@@ -81,6 +67,10 @@ nav.main-menu {
       font-size: 40px;
       margin-right: 0;
     }
+
+    &.active {
+      background-color: lighten(#072527, 20%);
+    }
   }
 
   > * {
@@ -88,7 +78,7 @@ nav.main-menu {
   }
 
   .nav-close {
-    background: red;
+    background: #FC575E;
     max-height: 50px;
   }
 

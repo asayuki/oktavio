@@ -269,6 +269,8 @@ module.exports = {
             };
             /* eslint-enable quotes */
 
+            console.log(sendObj);
+
             if (device.state) {
               sendObj.code.on = 1;
             } else {

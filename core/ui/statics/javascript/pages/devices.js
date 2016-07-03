@@ -4,6 +4,22 @@ requirejs(['../core/network', '../core/notifier'], function (network, notifier) 
     deviceListElem = document.querySelector('.fn-device-list'),
     deviceTemplate = document.querySelector('#deviceTemplate').innerHTML;
 
+  function toggleDevice (id, event) {
+
+    console.log(id);
+    console.log(event.target.checked);
+
+    network.go({
+      type: 'PUT',
+      url: '/api/devices',
+      json: true,
+      params: JSON.stringify({id: id, state: event.target.checked})
+    }, function (error, device) {
+      console.log(device);
+    });
+
+  }
+
   network.go({
     type: 'GET',
     url: '/api/devices',
@@ -37,6 +53,8 @@ requirejs(['../core/network', '../core/notifier'], function (network, notifier) 
       if (device.state) {
         deviceInput.checked = true;
       }
+
+      deviceInput.addEventListener('change', toggleDevice.bind(null, device._id));
 
       // Add device item to dom
       deviceListElem.appendChild(deviceItem);

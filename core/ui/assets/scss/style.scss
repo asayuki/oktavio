@@ -9,22 +9,24 @@
 @import 'mixins/transitions';
 
 // Components
-@import 'components/notifier';
-@import 'components/slider';
-@import 'components/hamburgler';
+//@import 'components/notifier';
+//@import 'components/slider';
+//@import 'components/hamburgler';
+@import 'components/on-off-toggle';
 
 // Layout
 @import 'layout/layout';
 @import 'layout/navigation';
-@import 'layout/time-of-day';
+//@import 'layout/time-of-day';
 
 // Page specific
 @import 'pages/login';
+@import 'pages/devices';
 
 
 html, body {
   box-sizing: border-box;
-  color: white;
+  color: black;
   font-family: 'Myriad Pro Regular';
   height: 100%;
   min-height: 100%;

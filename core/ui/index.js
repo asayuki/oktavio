@@ -111,6 +111,19 @@ exports.register = (plugin, options, next) => {
           failAction: 'ignore'
         }
       }
+    },
+
+    /**
+     * Styleguide
+     */
+    {
+      method: 'GET',
+      path: '/styleguide',
+      config: {
+        handler: (request, response) => {
+          return response.view('styleguide');
+        }
+      }
     }
   ]);
 

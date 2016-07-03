@@ -10,7 +10,8 @@ module.exports = (grunt) => {
           sourcemap: 'none'
         },
         files: {
-          'core/ui/statics/css/style.css': 'core/ui/assets/scss/style.scss'
+          'core/ui/statics/css/style.css': 'core/ui/assets/scss/style.scss',
+          'core/ui/statics/css/styleguide.css': 'core/ui/assets/scss/styleguide.scss'
         }
       }
     },

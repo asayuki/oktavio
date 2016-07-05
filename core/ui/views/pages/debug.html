@@ -1,0 +1,21 @@
+{{#extend "base_layout"}}
+  {{#content "content"}}
+    <section class="debug-section">
+      <ul class="fn-debug-list">
+      </ul>
+    </section>
+
+    <script type="text/template" id="debugSwitchTemplate">
+      <span class="unit"></span>
+      <span class="id"></span>
+      <span class="protocol"></span>
+      <button>Test/Configure</button>
+
+      <div class="debug-item">
+
+      </div>
+    </script>
+
+    <script data-main="/statics/javascript/pages/debug.js" src="/statics/javascript/vendor/require.js"></script>
+  {{/content}}
+{{/extend}}

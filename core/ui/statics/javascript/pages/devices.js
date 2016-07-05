@@ -1,5 +1,4 @@
-requirejs(['../core/network', '../core/notifier'], function (network, notifier) {
-
+requirejs(['../core/network', '../core/notifier', '/socket.io/socket.io.js'], function (network, notifier, io) {
   var
     deviceListElem = document.querySelector('.fn-device-list'),
     deviceTemplate = document.querySelector('#deviceTemplate').innerHTML;

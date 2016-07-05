@@ -5,11 +5,60 @@ const
 
 exports.register = (plugin, options, next) => {
 
+  const io = require('socket.io')(plugin.listener);
+
+  function Sockets () {
+    this.list = [];
+  }
+
+  Sockets.prototype.add = function (socket) {
+    this.list.push(socket);
+
+    let self = this;
+    socket.on('disconnect', () => {
+      self.remove(socket);
+    });
+  };
+
+  Sockets.prototype.remove = function (socket) {
+    let i = this.list.indexOf(socket);
+    if (i != -1) {
+      this.list.splice(i, 1);
+    }
+  };
+
+  Sockets.prototype.emit = function (name, data, except) {
+    let i = this.list.length;
+    while (i--) {
+      if (this.list[i] != except) {
+        this.list[i].emit(name, data);
+      }
+    }
+  };
+
+  let collection = new Sockets();
+  let debugMode = io.of('/debug');
+
+  debugMode.on('connection', (socket) => {
+    collection.add(socket);
+  });
+
   /*
    * onReceive
    * Takes a json-message and logs it in console stringified.
    */
   const onReceive = (message) => {
+
+    if (typeof message.message !== 'undefined') {
+      if (typeof message.message.id !== 'undefined') {
+        if (typeof message.message.state !== 'undefined') {
+          if (typeof message.message.unit !== 'undefined') {
+            collection.emit('debugMsg', message);
+          }
+        }
+      }
+    }
+
     console.log('Pilight received:', JSON.stringify(message));
   };
 

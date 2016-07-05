@@ -47,7 +47,7 @@ exports.register = (plugin, options, next) => {
           }
         },
         state: {
-          parse: true,
+          parse: false,
           failAction: 'ignore'
         }
       }
@@ -96,6 +96,36 @@ exports.register = (plugin, options, next) => {
           }
 
           return response.view('pages/devices', {page: {context: 'devices'}});
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        state: {
+          parse: true,
+          failAction: 'ignore'
+        }
+      }
+    },
+
+    /*
+     *
+     */
+    {
+      method: 'GET',
+      path: '/debug',
+      config: {
+        handler: (request, response) => {
+          if (!request.auth.isAuthenticated) {
+            return response.redirect('/login');
+          }
+
+          return response.view('pages/debug', {page: {context: 'devices'}});
         },
         auth: {
           mode: 'try',

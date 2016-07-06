@@ -22,13 +22,25 @@
 // Page specific
 @import 'pages/login';
 @import 'pages/devices';
+@import 'pages/debug';
 
+// Vendors
+@import 'vendor/hljs/solarized-dark';
 
 html, body {
   box-sizing: border-box;
   color: black;
+  display: flex;
   font-family: 'Myriad Pro Regular';
   height: 100%;
   min-height: 100%;
   max-height: 100%;
+  width: 100%;
+}
+
+code {
+  font-family: 'Droid Sans Mono';
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }

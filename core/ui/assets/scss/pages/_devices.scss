@@ -2,7 +2,7 @@
   background-color: lighten(#072527, 3%);
   border-radius: 0 0 7px 7px;
   height: 200px;
-  margin: -15px -15px 15px;
+  margin: -15px 0 15px;
 
   button {
     border: 1px solid #34495E;
@@ -15,7 +15,7 @@
 }
 
 .device-list {
-  margin: 0 -15px;
+  //margin: 0 -15px;
 
   ul {
     display: flex;

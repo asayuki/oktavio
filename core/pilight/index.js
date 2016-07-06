@@ -48,7 +48,6 @@ exports.register = (plugin, options, next) => {
    * Takes a json-message and logs it in console stringified.
    */
   const onReceive = (message) => {
-
     if (typeof message.message !== 'undefined') {
       if (typeof message.message.id !== 'undefined') {
         if (typeof message.message.state !== 'undefined') {
@@ -58,7 +57,6 @@ exports.register = (plugin, options, next) => {
         }
       }
     }
-
     console.log('Pilight received:', JSON.stringify(message));
   };
 

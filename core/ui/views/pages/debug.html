@@ -1,20 +1,31 @@
 {{#extend "base_layout"}}
   {{#content "content"}}
+    <header class="debug-header">
+      <h1>Debug</h1>
+    </header>
+
     <section class="debug-section">
       <ul class="fn-debug-list">
       </ul>
     </section>
 
-    <script type="text/template" id="debugSwitchTemplate">
-      <span class="unit"></span>
-      <span class="id"></span>
-      <span class="protocol"></span>
-      <button>Test/Configure</button>
-
-      <div class="debug-item">
-
+    <footer class="debug-footer">
+      <div class="enter-message fn-enter-message">
+        <input type="text" name="message" value='{"message": "write here"}'>
+        <button class="send-message fn-send-message">Send</button>
       </div>
-    </script>
+    </footer>
+
+    <div class="debug-fullsize-message fn-fullsize-message">
+      <p>
+        <label for="deviceid">Device ID</label>
+        <input type="text" id="deviceid">
+      </p>
+      <p>
+        <label for="unitid">Unit ID</label>
+        <input type="text" id="unitid">
+      </p>
+    </div>
 
     <script data-main="/statics/javascript/pages/debug.js" src="/statics/javascript/vendor/require.js"></script>
   {{/content}}

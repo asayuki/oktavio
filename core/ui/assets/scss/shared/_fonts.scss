@@ -126,6 +126,13 @@
   src: local('Myriad Pro Bold'), url('/statics/fonts/myriadpro/MYRIADPRO-BOLD.woff') format('woff');
 }
 
+@font-face {
+  font-family: 'Droid Sans Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Droid Sans Mono'), url('/statics/fonts/droidsans/DroidSansMono.ttf') format('truetype');
+}
+
 
 /**
  * Icomoon

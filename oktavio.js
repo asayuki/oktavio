@@ -60,7 +60,8 @@ oktavio.register(vision, (err) => {
   if (err)
     throw err;
 
-  oktavio.views({
+  // Only if we have UI in core application
+  /*oktavio.views({
     engines: {
       html: {
         module: htmlEngine,
@@ -72,7 +73,7 @@ oktavio.register(vision, (err) => {
     path: __dirname + '/core/ui/views',
     layoutPath: __dirname + '/core/ui/views',
     partialsPath: __dirname + '/core/ui/views'
-  });
+  });*/
 });
 
 // Enable API Documentation
@@ -111,7 +112,6 @@ plugins.push({
 
 plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
-plugins.push({register: require('./core/ui')});
 plugins.push({register: require('./core/pilight')});
 
 

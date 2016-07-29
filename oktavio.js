@@ -114,7 +114,6 @@ plugins.push({register: require('./core/devices')});
 plugins.push({register: require('./core/modes')});
 plugins.push({register: require('./core/pilight')});
 
-
 let startServer = () => {
   oktavio.start(() => {
     if (process.env.APP_TESTING === 'true') {

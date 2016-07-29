@@ -118,6 +118,10 @@ module.exports = {
         db = request.server.plugins['hapi-mongodb'].db,
         devices = db.collection('devices');
 
+      console.log(request.payload);
+
+      //return;
+
       devices.insert(request.payload, (error, device) => {
         if (error) {
           return response({
@@ -268,8 +272,6 @@ module.exports = {
               }
             };
             /* eslint-enable quotes */
-
-            console.log(sendObj);
 
             if (device.state) {
               sendObj.code.on = 1;

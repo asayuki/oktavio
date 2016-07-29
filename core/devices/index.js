@@ -1,9 +1,65 @@
 'use strict';
 const
   Joi = require('joi'),
-  handlers = require('./devices');
+  handlers = require('./devices'),
+  schedule = require('node-schedule');
 
 exports.register = (plugin, options, next) => {
+
+  let
+    db = plugin.plugins['hapi-mongodb'].db,
+    devicesColl = db.collection('devices'),
+    weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+  const deviceJob = schedule.scheduleJob('30 * * * * *', () => {
+
+    let date = new Date();
+    let day = weekDays[date.getDay()];
+
+    devicesColl.find(
+      {
+        [`schedule.${day}.hour`]: date.getHours(),
+        [`schedule.${day}.minute`]: date.getMinutes()
+      }
+    ).toArray((error, devices) => {
+      devices.forEach((device) => {
+        /* eslint-disable quotes */
+        let sendObj = {
+          "action": "send",
+          "code": {
+            "protocol": [device.protocol],
+            "id": device.unit_id,
+            "unit": device.unit_code
+          }
+        };
+        /* eslint-enable quotes */
+        if (`schedule.${day}.state`) {
+          sendObj.code.on = 1;
+        } else {
+          sendObj.code.off = 1;
+        }
+
+        console.log(sendObj);
+      });
+    });
+  });
+
+  const scheduleDaySchema = {
+    hour: Joi.date().format('H').raw().example('15'),
+    minute: Joi.date().format('m').raw().example('30'),
+    state: Joi.boolean()
+  };
+
+  const scheduleSchema = {
+    monday: Joi.object(scheduleDaySchema),
+    tuesday: Joi.object(scheduleDaySchema),
+    wednesday: Joi.object(scheduleDaySchema),
+    thursday: Joi.object(scheduleDaySchema),
+    friday: Joi.object(scheduleDaySchema),
+    saturday: Joi.object(scheduleDaySchema),
+    sunday: Joi.object(scheduleDaySchema)
+  };
+
   plugin.route([
     {
       method: 'GET',
@@ -107,7 +163,8 @@ exports.register = (plugin, options, next) => {
             protocol: Joi.string().required(),
             unit_code: Joi.number().required(),
             unit_id: Joi.number().required(),
-            state: Joi.boolean()
+            state: Joi.boolean(),
+            schedule: Joi.object(scheduleSchema).optional().description('Default will be targeted everyday if set, otherwise it will check into days object and see if that day has a state it should activate.')
           }).required()
         },
         auth: {

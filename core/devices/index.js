@@ -11,20 +11,29 @@ exports.register = (plugin, options, next) => {
     devicesColl = db.collection('devices'),
     weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
+  function addZero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+
   const deviceJob = schedule.scheduleJob('30 * * * * *', () => {
 
-    let date = new Date();
-    let day = weekDays[date.getDay()];
+    let
+      date = new Date(),
+      day = weekDays[date.getDay()],
+      hour = date.getHours(),
+      minute = date.getMinutes();
 
-    devicesColl.find(
-      {
-        [`schedule.${day}.hour`]: date.getHours(),
-        [`schedule.${day}.minute`]: date.getMinutes()
+    devicesColl.find({
+      [`schedule.${day}.${addZero(hour)}${addZero(minute)}`]: {
+        $exists: true
       }
-    ).toArray((error, devices) => {
+    }).toArray((error, devices) => {
       devices.forEach((device) => {
         /* eslint-disable quotes */
-        let sendObj = {
+        let changeState = {
           "action": "send",
           "code": {
             "protocol": [device.protocol],
@@ -33,31 +42,32 @@ exports.register = (plugin, options, next) => {
           }
         };
         /* eslint-enable quotes */
-        if (`schedule.${day}.state`) {
-          sendObj.code.on = 1;
+
+        // Check which state it should have
+        if (device.schedule[`${day}`][`${addZero(hour)}${addZero(minute)}`].state) {
+          changeState.code.on = 1;
         } else {
-          sendObj.code.off = 1;
+          changeState.code.off = 0;
         }
 
-        console.log(sendObj);
+        plugin.plugins.pilight.send(changeState);
       });
     });
   });
 
-  const scheduleDaySchema = {
-    hour: Joi.date().format('H').raw().example('15'),
-    minute: Joi.date().format('m').raw().example('30'),
+  const scheduleDaySchema = Joi.object({
+  }).pattern(/^([01]\d|2[0-3]):?([0-5]\d)$/, Joi.object({
     state: Joi.boolean()
-  };
+  }));
 
   const scheduleSchema = {
-    monday: Joi.object(scheduleDaySchema),
-    tuesday: Joi.object(scheduleDaySchema),
-    wednesday: Joi.object(scheduleDaySchema),
-    thursday: Joi.object(scheduleDaySchema),
-    friday: Joi.object(scheduleDaySchema),
-    saturday: Joi.object(scheduleDaySchema),
-    sunday: Joi.object(scheduleDaySchema)
+    monday: scheduleDaySchema,
+    tuesday: scheduleDaySchema,
+    wednesday: scheduleDaySchema,
+    thursday: scheduleDaySchema,
+    friday: scheduleDaySchema,
+    saturday: scheduleDaySchema,
+    sunday: scheduleDaySchema
   };
 
   plugin.route([
@@ -231,7 +241,8 @@ exports.register = (plugin, options, next) => {
             protocol: Joi.string(),
             unit_code: Joi.number(),
             unit_id: Joi.number(),
-            state: Joi.boolean()
+            state: Joi.boolean(),
+            schedule: Joi.object(scheduleSchema).optional().description('Default will be targeted everyday if set, otherwise it will check into days object and see if that day has a state it should activate.')
           })
         },
         auth: {

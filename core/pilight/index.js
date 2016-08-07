@@ -57,7 +57,10 @@ exports.register = (plugin, options, next) => {
         }
       }
     }
-    console.log('Pilight received:', JSON.stringify(message));
+
+    if (process.env.APP_DEBUG === 'true') {
+      console.log('Pilight received:', JSON.stringify(message));
+    }
   };
 
   /*

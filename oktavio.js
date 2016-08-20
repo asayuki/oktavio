@@ -3,15 +3,11 @@ require('dotenv').load();
 
 const
   hapi = require('hapi'),
-  handlebars = require('handlebars'),
-  handlebarsLayout = require('handlebars-layout'),
   catbox = require('catbox-redis'),
   vision = require('vision'),
   inert = require('inert'),
   good = require('good'),
   Joi = require('joi'),
-  helpers = require('./core/handlebar-helpers'),
-  htmlEngine = handlebars.create(),
   swaggerOpt = {
     info: {
       title: 'Test API documentation',
@@ -36,18 +32,11 @@ let
   mongoURL = null;
 
 // Setup connectionstrings for MongoDB
-if (process.env.MONGO_USER && process.env.MONGO_PASSWORD)
+if (process.env.MONGO_USER && process.env.MONGO_PASSWORD) {
   mongoURL = 'mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASSWORD + '@' + (process.env.MONGO_HOST ? process.env.MONGO_HOST : '127.0.0.1') + ':' + (process.env.MONGO_PORT ? process.env.MONGO_PORT : '27017') + '/' + process.env.MONGO_DB;
-else
+} else {
   mongoURL = 'mongodb://' + (process.env.MONGO_HOST ? process.env.MONGO_HOST : '127.0.0.1') + ':' + (process.env.MONGO_PORT ? process.env.MONGO_PORT : '27017') + '/' + process.env.MONGO_DB;
-
-// Register engine for Handlebars
-handlebarsLayout.register(htmlEngine);
-
-// Register helpers
-[].forEach.call(helpers, (helper) => {
-  htmlEngine.registerHelper(helper.name, helper.func);
-});
+}
 
 // Setup host and port for application
 oktavio.connection({
@@ -56,28 +45,14 @@ oktavio.connection({
 });
 
 // Register viewspath
-oktavio.register(vision, (err) => {
-  if (err)
-    throw err;
-
-  // Only if we have UI in core application
-  /*oktavio.views({
-    engines: {
-      html: {
-        module: htmlEngine,
-        isCached: (process.env.APP_PRODUCTION === 'true') ? true : false
-      }
-    },
-    compileMode: 'sync',
-    relativeTo: __dirname,
-    path: __dirname + '/core/ui/views',
-    layoutPath: __dirname + '/core/ui/views',
-    partialsPath: __dirname + '/core/ui/views'
-  });*/
+oktavio.register(vision, (error) => {
+  if (error) {
+    throw error;
+  }
 });
 
 // Enable API Documentation
-if (process.env.APP_PRODUCTION !== 'true') {
+if (process.env.API_DOCUMENTATION === 'true') {
   plugins.push({register: require('hapi-swagger'), options: swaggerOpt});
 }
 

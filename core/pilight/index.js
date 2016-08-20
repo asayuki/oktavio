@@ -5,7 +5,7 @@ const
 
 exports.register = (plugin, options, next) => {
 
-  const io = require('socket.io')(plugin.listener);
+  /*const io = require('socket.io')(plugin.listener);
 
   function Sockets () {
     this.list = [];
@@ -41,14 +41,14 @@ exports.register = (plugin, options, next) => {
 
   debugMode.on('connection', (socket) => {
     collection.add(socket);
-  });
+  });*/
 
   /*
    * onReceive
    * Takes a json-message and logs it in console stringified.
    */
   const onReceive = (message) => {
-    if (typeof message.message !== 'undefined') {
+    /*if (typeof message.message !== 'undefined') {
       if (typeof message.message.id !== 'undefined') {
         if (typeof message.message.state !== 'undefined') {
           if (typeof message.message.unit !== 'undefined') {
@@ -56,7 +56,7 @@ exports.register = (plugin, options, next) => {
           }
         }
       }
-    }
+    }*/
 
     if (process.env.APP_DEBUG === 'true') {
       console.log('Pilight received:', JSON.stringify(message));

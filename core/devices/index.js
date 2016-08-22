@@ -20,11 +20,10 @@ exports.register = (plugin, options, next) => {
 
   const deviceJob = schedule.scheduleJob('30 * * * * *', () => {
 
-    let
-      date = new Date(),
-      day = weekDays[date.getDay()],
-      hour = date.getHours(),
-      minute = date.getMinutes();
+    let date = new Date();
+    let day = weekDays[date.getDay()];
+    let hour = date.getHours();
+    let minute = date.getMinutes();
 
     devicesColl.find({
       [`schedule.${day}.${addZero(hour)}${addZero(minute)}`]: {

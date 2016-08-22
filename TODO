@@ -3,5 +3,5 @@
 * ~~Clean up oktavio.js~~
 * ~~Clean up some bits in pilight-plugin~~
 * ~~Clean up modes-plugin~~
-* Clean up/redo ui
-* HTTP2
+* Clean up the tests
+* Document API

@@ -1,7 +1,7 @@
 {
   "author": "neme <neme@whispered.se>",
   "name": "oktavio",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "description": "API and GUI for control of your pilight-daemon",
   "main": "oktavio.js",
   "scripts": {
@@ -25,16 +25,13 @@
     "hapi": "^13.4.1",
     "hapi-auth-cookie": "^6.1.1",
     "hapi-auth-jwt": "^4.0.0",
-    "hapi-mongodb": "^6.0.0",
-    "hapi-swagger": "^6.1.0",
-    "hapi-users-plugin": "^1.0.0",
     "inert": "^4.0.0",
     "inquirer": "^1.0.2",
     "joi": "^8.1.0",
     "joi-objectid": "^2.0.0",
     "jsonwebtoken": "^7.0.0",
-    "node-schedule": "^1.1.1",
-    "vision": "^4.0.1"
+    "mongoose": "^4.6.1",
+    "node-schedule": "^1.1.1"
   },
   "devDependencies": {
     "code": "^3.0.0",

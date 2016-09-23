@@ -11,6 +11,22 @@ exports.register = (server, options, next) => {
 
   server.route([
     {
+      method: 'GET',
+      path: '/api/devices',
+      config: {
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        handler: handlers.getDevices
+      }
+    },
+    {
       method: 'POST',
       path: '/api/devices',
       config: {

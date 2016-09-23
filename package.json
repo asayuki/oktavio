@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node oktavio.js",
     "dev": "nodemon --watch oktavio.js --watch core -e html,js --ignore core/ui/_assets/ --ignore core/ui/statics/ oktavio.js",
-    "test": "node_modules/lab/bin/lab -m 10000",
+    "test": "MONGO_DB=oktavioDevTest TESTING=true ./node_modules/lab/bin/lab -c -v -m 10000",
+    "coverage": "MONGO_DB=oktavioDevTest TESTING=true ./node_modules/lab/bin/lab -m 10000 -r html -o ./coverage/index.html",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {

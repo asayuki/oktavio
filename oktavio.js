@@ -27,7 +27,7 @@ Oktavio.register([
   require('hapi-auth-cookie'),
   require('hapi-auth-jwt'),
   require('./core/api/users'),
-  //require('./core/api/devices'),
+  require('./core/api/devices')
   //require('./core/api/modes'),
   //require('./core/api/pilight')
 ], (error) => {

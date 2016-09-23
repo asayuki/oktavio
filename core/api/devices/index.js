@@ -2,8 +2,10 @@
 
 const Boom = require('boom');
 const createDeviceSchema = require('./schemas/createDeviceSchema');
-
+const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
+
+const isLoggedIn = userFunctions.isLoggedIn;
 
 exports.register = (server, options, next) => {
 
@@ -24,6 +26,11 @@ exports.register = (server, options, next) => {
             redirectTo: false
           }
         },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
         handler: handlers.createDevice
       }
     }
@@ -33,7 +40,7 @@ exports.register = (server, options, next) => {
 
 };
 
-exports.register.attribute = {
+exports.register.attributes = {
   name: 'devices',
   version: '2.0.1',
   description: 'Device plugin for Oktavio',

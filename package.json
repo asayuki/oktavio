@@ -21,8 +21,6 @@
     "bcrypt": "^0.8.5",
     "catbox-redis": "^2.0.2",
     "dotenv": "^2.0.0",
-    "good": "^7.0.1",
-    "good-console": "^6.1.1",
     "hapi": "^13.4.1",
     "hapi-auth-cookie": "^6.1.1",
     "hapi-auth-jwt": "^4.0.0",
@@ -30,7 +28,6 @@
     "inquirer": "^1.0.2",
     "joi": "^8.1.0",
     "joi-objectid": "^2.0.0",
-    "jsonwebtoken": "^7.0.0",
     "mongoose": "^4.6.1",
     "node-schedule": "^1.1.1"
   },

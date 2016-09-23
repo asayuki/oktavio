@@ -1,123 +1,60 @@
 'use strict';
-require('dotenv').load();
-
-const
-  hapi = require('hapi'),
-  catbox = require('catbox-redis'),
-  vision = require('vision'),
-  inert = require('inert'),
-  good = require('good'),
-  Joi = require('joi'),
-  swaggerOpt = {
-    info: {
-      title: 'Test API documentation',
-      version: '1.0'
-    },
-    pathPrefixSize: 2
-  },
-  plugins = [],
-  reporters = {},
-  oktavio = new hapi.Server({
-    cache: [{
-      name: 'oktavioCache',
-      engine: catbox,
-      host: (process.env.REDIS_HOST) ? process.env.REDIS_HOST : '127.0.0.1',
-      port: (process.env.REDIS_PORT) ? process.env.REDIS_PORT : 6379,
-      password: process.env.REDIS_PASSWORD,
-      partition: process.env.REDIS_PARTITION
-    }]
-  });
-
-let
-  mongoURL = null;
-
-// Setup connectionstrings for MongoDB
-if (process.env.MONGO_USER && process.env.MONGO_PASSWORD) {
-  mongoURL = 'mongodb://' + process.env.MONGO_USER + ':' + process.env.MONGO_PASSWORD + '@' + (process.env.MONGO_HOST ? process.env.MONGO_HOST : '127.0.0.1') + ':' + (process.env.MONGO_PORT ? process.env.MONGO_PORT : '27017') + '/' + process.env.MONGO_DB;
-} else {
-  mongoURL = 'mongodb://' + (process.env.MONGO_HOST ? process.env.MONGO_HOST : '127.0.0.1') + ':' + (process.env.MONGO_PORT ? process.env.MONGO_PORT : '27017') + '/' + process.env.MONGO_DB;
+if (!process.env.SKIP_DOTENV) {
+  require('dotenv').load();
 }
 
-// Setup host and port for application
-oktavio.connection({
-  host: (process.env.APP_HOST) ? process.env.APP_HOST : 'localhost',
-  port: (process.env.APP_PORT) ? process.env.APP_PORT : 8000
+const Hapi = require('hapi');
+const Mongoose = require('mongoose');
+const Oktavio = new Hapi.Server({
+  cache: [{
+    name: 'oktavioCache',
+    engine: require('catbox-redis'),
+    host: (process.env.REDIS_HOST) ? process.env.REDIS_HOST : '127.0.0.1',
+    port: (process.env.REDIS_PORT) ? process.env.REDIS_PORT : 6379,
+    password: process.env.REDIS_PASSWORD,
+    partition: process.env.REDIS_PARTITION
+  }]
 });
 
-// Register viewspath
-oktavio.register(vision, (error) => {
+Oktavio.connection({
+  host: process.env.HOST,
+  port: process.env.PORT
+});
+
+// Note: add good-logger aswell
+Oktavio.register([
+  require('inert'),
+  require('hapi-auth-cookie'),
+  require('hapi-auth-jwt'),
+  require('./core/api/users'),
+  //require('./core/api/devices'),
+  //require('./core/api/modes'),
+  //require('./core/api/pilight')
+], (error) => {
   if (error) {
     throw error;
   }
-});
 
-// Enable API Documentation
-if (process.env.API_DOCUMENTATION === 'true') {
-  plugins.push({register: require('hapi-swagger'), options: swaggerOpt});
-}
-
-// Add plugins and error reporters to list to register
-plugins.push(inert);
-
-if (process.env.APP_PRODUCTION === 'true' || process.env.APP_TESTING === 'true') {
-  reporters.console = [{module: 'good-console', args: [{ error: '*' }]}, 'stdout'];
-} else {
-  reporters.console = [{module: 'good-console', args: [{ error: '*', response: '*'}]}, 'stdout'];
-}
-
-plugins.push({register: good, options: {ops: false, reporters: reporters}});
-plugins.push({register: require('hapi-mongodb'), options: {url: mongoURL, settings: { db: {'native_parser': false}}}});
-plugins.push({register: require('hapi-auth-cookie')});
-plugins.push({register: require('hapi-auth-jwt')});
-
-plugins.push({
-  register: require('hapi-users-plugin'),
-  options: {
-    collection: 'users',
-    session: true,
-    token: true,
-    session_private_key: 'ihugyuftdiwjerou234h52ökwemr23ASFDSGer63ergHTFHTR',
-    cache_name: 'oktavioCache',
-    extra_fields: {
-      firstname: Joi.string().min(2).max(30),
-      lastname: Joi.string().min(2).max(30)
+  Oktavio.start((oktavioError) => {
+    if (oktavioError) {
+      throw error;
     }
-  }
-});
 
-plugins.push({register: require('./core/devices')});
-plugins.push({register: require('./core/modes')});
-plugins.push({register: require('./core/pilight')});
+    if (process.env.TESTING) {
+      process.env.COMMENCE_TESTING = true;
+    }
 
-let startServer = () => {
-  oktavio.start(() => {
-    if (process.env.APP_TESTING === 'true') {
-      oktavio.plugins.users.testUser(oktavio.plugins['hapi-mongodb'], (error) => {
-        if (error) {
-          throw error;
-        }
-        process.env.APP_STARTED = true;
-      });
-    } else {
-      process.env.APP_STARTED = true;
-      if (process.env.APP_PRODUCTION !== 'true') {
-        console.log('oktavio started at:', oktavio.info.uri);
+    console.log(`Oktav.IO started at: ${Oktavio.info.uri}`);
+
+    Mongoose.connect(process.env.MONGO_URL + process.env.MONGO_DB, {
+      user: process.env.MONGO_USER,
+      pass: process.env.MONGO_PASS
+    }, (dbError) => {
+      if (dbError) {
+        throw dbError;
       }
-    }
+    });
   });
-  oktavio.on('request-internal', (request, event, tags) => {
-    if (tags.error && tags.state) {
-      console.log('Stateerror', event);
-    }
-  });
-};
-
-oktavio.register(plugins, (error) => {
-  if (error) {
-    throw error;
-  }
-
-  startServer();
 });
 
-module.exports = oktavio;
+module.exports = Oktavio;

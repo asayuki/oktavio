@@ -24,6 +24,14 @@ function verifyUniqueUser (request, response) {
   });
 }
 
+function isLoggedIn (request, response) {
+  if (request.auth.isAuthenticated) {
+    return response(request.payload);
+  } else {
+    return response(Boom.unauthorized('Not logged in'));
+  }
+}
+
 function verifyUserExists (request, response) {
   User.findById(request.payload.id, (error, user) => {
     if (error) {
@@ -72,5 +80,6 @@ module.exports = {
   verifyUniqueUser: verifyUniqueUser,
   verifyCredentials: verifyCredentials,
   verifyUserExists: verifyUserExists,
-  hashPassword: hashPassword
+  hashPassword: hashPassword,
+  isLoggedIn: isLoggedIn
 };

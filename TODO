@@ -1,7 +1,5 @@
-* ~~Slam together Login and Users module~~
-* ~~Create npm-plugin of Users module as this is needed in other projects aswell~~ (hapi-users-plugin @ npm)
-* ~~Clean up oktavio.js~~
-* ~~Clean up some bits in pilight-plugin~~
-* ~~Clean up modes-plugin~~
-* Clean up the tests
+* Setup Github tickets/project
+* Write tests
+* Rewrite Device-plugin
+* Rewrite Modes-plugin
 * Document API

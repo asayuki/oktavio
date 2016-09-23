@@ -64,7 +64,18 @@ module.exports = {
 
       return response({devices: devices}).code(200);
     });
-    
+
   }
 
+  /**
+   * Get device
+   */
+
+  /**
+   * Remove device
+   */
+
+  /**
+   * Update device
+   */
 };

@@ -27,8 +27,7 @@ module.exports = {
       });
 
       return response({
-        loggedIn: true,
-        isAdmin: request.pre.user.admin
+        loggedIn: true
       }).code(200);
     });
   },
@@ -63,7 +62,6 @@ module.exports = {
    * @param {String} request.payload.username
    * @param {String} request.payload.email
    * @param {String} request.payload.password
-   * @param {Boolean} request.payload.admin
    * @returns {Object} response
    * @returns {Boolean} response.userCreated
    * @returns {String} response.userId
@@ -72,7 +70,6 @@ module.exports = {
     let user = new User();
     user.email = request.payload.email;
     user.username = request.payload.username;
-    user.admin = request.payload.admin;
 
     hashPassword(request.payload.password, (error, hash) => {
       if (error) {
@@ -100,7 +97,6 @@ module.exports = {
    * @param {String} request.payload.username
    * @param {String} request.payload.email
    * @param {String} request.payload.password
-   * @param {Boolean} request.payload.admin
    * @returns {Object} response
    * @returns {Boolean} response.userUpdated
    */

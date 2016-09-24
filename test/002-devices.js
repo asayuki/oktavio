@@ -25,17 +25,19 @@ let createDeviceId = null;
 lab.experiment('Devices', () => {
 
   lab.before((done) => {
-    server.inject({
-      method: 'POST',
-      url: '/api/users/login',
-      payload: {
-        username: testUser.username,
-        password: testUser.password
-      }
-    }, (response) => {
-      testUserArtifact = response.request.auth.artifacts.sid;
+    Device.remove({}, function (error) {
+      server.inject({
+        method: 'POST',
+        url: '/api/users/login',
+        payload: {
+          username: testUser.username,
+          password: testUser.password
+        }
+      }, (response) => {
+        testUserArtifact = response.request.auth.artifacts.sid;
 
-      done();
+        done();
+      });
     });
   });
 

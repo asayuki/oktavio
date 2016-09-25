@@ -4,9 +4,8 @@
 
 * Node.JS
 * NPM
-* git
-* mongodb-server
-* redis-server
+* MongoDB
+* Redis
 * pilight-daemon
 
 ## Setup Oktav.IO
@@ -34,5 +33,7 @@
 * [<code></code> /api/](documentation/.md)
 
 ### Modes
+
+### Schedules
 
 ### Pilight

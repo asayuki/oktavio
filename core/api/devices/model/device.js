@@ -26,16 +26,7 @@ const deviceModel = new Schema({
   state: {
     type: Boolean,
     required: true
-  },
-  schedule: [{
-    monday: [Schema.Types.Mixed],
-    tuesday: [Schema.Types.Mixed],
-    wednesday: [Schema.Types.Mixed],
-    thursday: [Schema.Types.Mixed],
-    friday: [Schema.Types.Mixed],
-    saturday: [Schema.Types.Mixed],
-    sunday: [Schema.Types.Mixed]
-  }]
+  }
 });
 
 deviceModel.index({

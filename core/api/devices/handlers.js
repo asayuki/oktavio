@@ -10,10 +10,6 @@ module.exports = {
    * @param {Integer} request.payload.unit_code
    * @param {Integer} request.payload.unit_id
    * @param {Boolean} request.payload.state
-   * @param {Object} request.payload.schedule
-   * @param {Object} request.payload.schedule.[weekday]
-   * @param {Object} request.payload.schedule.[weekday].[time]
-   * @param {Boolean} request.payload.schedule.[weekday].[time].state
    */
   createDevice: (request, response) => {
 
@@ -24,7 +20,6 @@ module.exports = {
     device.unit_code = request.payload.unit_code;
     device.unit_id = request.payload.unit_id;
     device.state = request.payload.state;
-    device.schedule = request.payload.schedule;
 
     device.save((deviceError, newDevice) => {
       if (deviceError) {
@@ -76,10 +71,6 @@ module.exports = {
   * @param {Integer} request.payload.unit_code
   * @param {Integer} request.payload.unit_id
   * @param {Boolean} request.payload.state
-  * @param {Object} request.payload.schedule
-  * @param {Object} request.payload.schedule.[weekday]
-  * @param {Object} request.payload.schedule.[weekday].[time]
-  * @param {Boolean} request.payload.schedule.[weekday].[time].state
    */
   updateDevice: (request, response) => {
     let updateId = request.payload.id;

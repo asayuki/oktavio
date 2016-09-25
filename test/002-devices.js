@@ -100,7 +100,7 @@ lab.experiment('Devices', () => {
     });
   });
 
-  lab.test('Get Device GET /api/devices/{ID}', (done) => {
+  lab.test('Get Device GET /api/devices/{id}', (done) => {
     let options = {
       method: 'GET',
       url: '/api/devices/' + createDeviceId,

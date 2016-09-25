@@ -2,6 +2,8 @@
 
 const Boom = require('boom');
 const createDeviceSchema = require('./schemas/createDeviceSchema');
+const getDeviceSchema = require('./schemas/getDeviceSchema');
+const updateDeviceSchema = require('./schemas/updateDeviceSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
 
@@ -23,7 +25,36 @@ exports.register = (server, options, next) => {
             redirectTo: false
           }
         },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
         handler: handlers.getDevices
+      }
+    },
+    {
+      method: 'GET',
+      path: '/api/devices/{id}',
+      config: {
+        validate: {
+          params: getDeviceSchema
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.getDevice
       }
     },
     {
@@ -49,7 +80,32 @@ exports.register = (server, options, next) => {
         ],
         handler: handlers.createDevice
       }
+    },
+    {
+      method: 'PUT',
+      path: '/api/devices',
+      config: {
+        validate: {
+          payload: updateDeviceSchema
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.updateDevice
+      }
     }
+
   ]);
 
   next();

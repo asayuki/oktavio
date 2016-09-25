@@ -65,17 +65,61 @@ module.exports = {
       return response({devices: devices}).code(200);
     });
 
-  }
+  },
+
+  /**
+  * Update device
+  * @param {Object} request.payload
+  * @param {String} request.payload.id
+  * @param {String} request.payload.name
+  * @param {String} request.payload.protocol
+  * @param {Integer} request.payload.unit_code
+  * @param {Integer} request.payload.unit_id
+  * @param {Boolean} request.payload.state
+  * @param {Object} request.payload.schedule
+  * @param {Object} request.payload.schedule.[weekday]
+  * @param {Object} request.payload.schedule.[weekday].[time]
+  * @param {Boolean} request.payload.schedule.[weekday].[time].state
+   */
+  updateDevice: (request, response) => {
+    let updateId = request.payload.id;
+    delete request.payload.id;
+
+    Device.update({_id: updateId}, {$set: request.payload}, (error, device) => {
+      if (error) {
+        return response(Boom.badImplementation('Could not update device.'));
+      }
+
+      return response({
+        deviceUpdated: true
+      }).code(200);
+    });
+  },
 
   /**
    * Get device
+   * @param {Object} request.query
+   * @param {String} request.query.id
+   * @return {Object} response.device
    */
+  getDevice: (request, response) => {
+    Device.findById(request.query.id, (error, device) => {
+      if (error) {
+        return response(Boom.badImplementation('Could not fetch device'));
+      }
+      if (device === null) {
+        return response(Boom.notFound('Could not find device'));
+      }
+
+      return response({device: device});
+    });
+  }
 
   /**
    * Remove device
    */
 
   /**
-   * Update device
+   * Schedule device
    */
 };

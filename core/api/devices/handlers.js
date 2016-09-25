@@ -103,7 +103,7 @@ module.exports = {
    * @return {Object} response.device
    */
   getDevice: (request, response) => {
-    Device.findById(request.query.id, (error, device) => {
+    Device.findById(request.params.id, (error, device) => {
       if (error) {
         return response(Boom.badImplementation('Could not fetch device'));
       }
@@ -113,13 +113,20 @@ module.exports = {
 
       return response({device: device});
     });
-  }
+  },
 
   /**
    * Remove device
    */
+  deleteDevice: (request, response) => {
+    Device.findByIdAndRemove(request.payload.id, (error) => {
+      if (error) {
+        return response(Boom.badImplementation('Error while removing device'));
+      }
 
-  /**
-   * Schedule device
-   */
+      return response({
+        deviceRemoved: true
+      }).code(200);
+    });
+  }
 };

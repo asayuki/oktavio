@@ -133,7 +133,7 @@ lab.experiment('Devices', () => {
     server.inject(options, (response) => {
 
       Code.expect(response.statusCode).to.equal(200);
-      Code.expect(response.result.devices.to.be.an.array());
+      Code.expect(response.result.devices).to.be.an.array();
 
       done();
     });
@@ -155,7 +155,7 @@ lab.experiment('Devices', () => {
     server.inject(options, (response) => {
 
       Code.expect(response.statusCode).to.equal(200);
-      code.expect(response.result.deviceRemoved).to.be.true();
+      Code.expect(response.result.deviceRemoved).to.be.true();
 
       done();
     });

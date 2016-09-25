@@ -4,6 +4,7 @@ const Boom = require('boom');
 const createDeviceSchema = require('./schemas/createDeviceSchema');
 const getDeviceSchema = require('./schemas/getDeviceSchema');
 const updateDeviceSchema = require('./schemas/updateDeviceSchema');
+const deleteDeviceSchema = require('./schemas/deleteDeviceSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
 
@@ -103,6 +104,30 @@ exports.register = (server, options, next) => {
           }
         ],
         handler: handlers.updateDevice
+      }
+    },
+    {
+      method: 'DELETE',
+      path: '/api/devices',
+      config: {
+        validate: {
+          payload: deleteDeviceSchema
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.deleteDevice
       }
     }
 

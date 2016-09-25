@@ -1,0 +1,98 @@
+'use strict';
+
+const Boom = require('boom');
+const NodeSchedule = require('node-schedule');
+const createScheduleSchema = require('./schemas/createScheduleSchema');
+//const getScheduleSchema = require('./schemas/getScheduleSchema');
+//const updateScheduleSchema = require('./schemas/updateScheduleSchema');
+//const deleteScheduleSchema = require('./schemas/deleteScheduleSchema');
+const userFunctions = require('../users/utils/userFunctions');
+const scheduleFunctions = require('./utils/scheduleFunctions');
+const Schedule = require('./model/schedule');
+const handlers = require('./handlers');
+
+const isLoggedIn = userFunctions.isLoggedIn;
+const verifyDeviceExists = scheduleFunctions.verifyDeviceExists;
+
+exports.register = (server, options, next) => {
+
+  function addZero (num) {
+    return (i < 10) ? '0' + num : num;
+  }
+
+  const weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+  // Run job every minute, and we shouldn't start it in testing mode
+  if (!process.env.TESTING) {
+    const job = NodeSchedule.scheduleJob('30 * * * * *', () => {
+
+      let date = new Date();
+      let day = weekDays[date.getDay()];
+      let hour = addZero(date.getHours());
+      let minute = addZero(date.getMinutes());
+
+      Schedule.find({
+        $or: [
+          {
+            weekDay: day,
+            time: parseInt(hour + '' + minute)
+          },
+          {
+            weekDay: 'all',
+            time: parseInt(hour + '' + minute)
+          }
+        ]
+      }, (error, jobs) => {
+
+        // Here we might want exposes?
+        // if Device:
+        // server.plugins.modes.activateDevice(deviceID);
+
+        // if Mode:
+        // server.plugins.modes.activateMode(modeID);
+      });
+    });
+  }
+
+  server.route([
+    {
+      method: 'POST',
+      path: '/api/schedules',
+      config: {
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        validate: {
+          payload: createScheduleSchema
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          },
+          {
+            method: verifyDeviceExists
+          }
+        ],
+        handler: handlers.createSchedule
+      }
+    }
+  ]);
+
+  next();
+
+};
+
+exports.register.attributes = {
+  name: 'schedules',
+  version: '1.0.0',
+  description: 'Schedules plugin for Oktavio',
+  main: 'index.js',
+  author: 'neme <neme@whispered.se>',
+  license: 'MIT'
+};

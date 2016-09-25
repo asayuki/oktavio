@@ -54,14 +54,7 @@ lab.experiment('Devices', () => {
         protocol: 'Deviceprotocol',
         unit_code: 1,
         unit_id: 2,
-        state: false,
-        schedule: {
-          tuesday: {
-            '1800': {
-              state: false
-            }
-          }
-        }
+        state: false
       }
     };
 
@@ -73,6 +66,32 @@ lab.experiment('Devices', () => {
       Code.expect(response.result.deviceId).to.be.an.object();
       done();
 
+    });
+  });
+
+  lab.test('Create second device POST /api/devices', (done) => {
+    let options = {
+      method: 'POST',
+      url: '/api/devices',
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      },
+      payload: {
+        name: 'Devicename #2',
+        protocol: 'Deviceprotocol',
+        unit_code: 2,
+        unit_id: 3,
+        state: true
+      }
+    };
+
+    server.inject(options, (response) => {
+
+      Code.expect(response.statusCode).to.equal(201);
+      Code.expect(response.result.deviceId).to.be.an.object();
+
+      done();
     });
   });
 
@@ -134,6 +153,7 @@ lab.experiment('Devices', () => {
 
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.devices).to.be.an.array();
+      Code.expect(response.result.devices).to.have.length(2);
 
       done();
     });

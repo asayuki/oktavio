@@ -119,5 +119,91 @@ module.exports = {
         deviceRemoved: true
       }).code(200);
     });
+  },
+
+  /**
+   * Activate device
+   */
+  activateDevice: (request, response) => {
+    Device.findById(request.params.id, (error, device) => {
+      if (error) {
+        return response(Boom.badImplementation('Could node fetch device'));
+      }
+
+      if (device === null) {
+        return response(Boom.notFound('Could not find device'));
+      }
+
+      /* eslint-disable quotes */
+      let sendObj = {
+        "action": "send",
+        "code": {
+          "protocol": [device.protocol],
+          "id": device.unit_id,
+          "unit": device.unit_code,
+          "on": 1
+        }
+      };
+      /* eslint-enable quotes */
+
+      request.server.plugins.pilight.send(sendObj, (success) => {
+        if (!success) {
+          return response(Boom.badImplementation('Could not activate device'));
+        }
+
+        Device.update({_id: request.params.id}, {$set: {state: true}}, (error, device) => {
+          if (error) {
+            return response(Boom.badImplementation('Could not update device with new state. But activation went through.'));
+          }
+
+          return response({
+            deviceActivated: true
+          }).code(200);
+        });
+      });
+    });
+  },
+
+  /**
+   * Deactivate device
+   */
+  deactivateDevice: (request, response) => {
+    Device.findById(request.params.id, (error, device) => {
+      if (error) {
+        return response(Boom.badImplementation('Could node fetch device'));
+      }
+
+      if (device === null) {
+        return response(Boom.notFound('Could not find device'));
+      }
+
+      /* eslint-disable quotes */
+      let sendObj = {
+        "action": "send",
+        "code": {
+          "protocol": [device.protocol],
+          "id": device.unit_id,
+          "unit": device.unit_code,
+          "on": 0
+        }
+      };
+      /* eslint-enable quotes */
+
+      request.server.plugins.pilight.send(sendObj, (success) => {
+        if (!success) {
+          return response(Boom.badImplementation('Could not deactivate device'));
+        }
+
+        Device.update({_id: request.params.id}, {$set: {state: false}}, (error, device) => {
+          if (error) {
+            return response(Boom.badImplementation('Could not update device with new state. But deactivation went through.'));
+          }
+
+          return response({
+            deviceDeactivated: true
+          }).code(200);
+        });
+      });
+    });
   }
 };

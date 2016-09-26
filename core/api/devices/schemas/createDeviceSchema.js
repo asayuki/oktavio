@@ -7,7 +7,7 @@ const createDeviceSchema = Joi.object({
   protocol: Joi.string().required(),
   unit_code: Joi.number().required(),
   unit_id: Joi.number().required(),
-  state: Joi.boolean().required()
+  state: Joi.boolean().default(false)
 });
 
 module.exports = createDeviceSchema;

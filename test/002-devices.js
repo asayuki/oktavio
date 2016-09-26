@@ -35,7 +35,6 @@ lab.experiment('Devices', () => {
         }
       }, (response) => {
         testUserArtifact = response.request.auth.artifacts.sid;
-
         done();
       });
     });
@@ -53,19 +52,15 @@ lab.experiment('Devices', () => {
         name: 'Devicename',
         protocol: 'Deviceprotocol',
         unit_code: 1,
-        unit_id: 2,
-        state: false
+        unit_id: 2
       }
     };
 
     server.inject(options, (response) => {
-
       createDeviceId = response.result.deviceId;
-
       Code.expect(response.statusCode).to.equal(201);
       Code.expect(response.result.deviceId).to.be.an.object();
       done();
-
     });
   });
 
@@ -81,16 +76,13 @@ lab.experiment('Devices', () => {
         name: 'Devicename #2',
         protocol: 'Deviceprotocol',
         unit_code: 2,
-        unit_id: 3,
-        state: true
+        unit_id: 3
       }
     };
 
     server.inject(options, (response) => {
-
       Code.expect(response.statusCode).to.equal(201);
       Code.expect(response.result.deviceId).to.be.an.object();
-
       done();
     });
   });
@@ -105,21 +97,18 @@ lab.experiment('Devices', () => {
       },
       payload: {
         id: createDeviceId,
-        state: true,
         name: 'Namedevice'
       }
     };
 
     server.inject(options, (response) => {
-
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.deviceUpdated).to.be.true();
-
       done();
     });
   });
 
-  lab.test('Get Device GET /api/devices/{id}', (done) => {
+  lab.test('Get Device after update GET /api/devices/{id}', (done) => {
     let options = {
       method: 'GET',
       url: '/api/devices/' + createDeviceId,
@@ -130,11 +119,76 @@ lab.experiment('Devices', () => {
     };
 
     server.inject(options, (response) => {
-
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.device.name).to.equal('Namedevice');
-      Code.expect(response.result.device.state).to.be.true();
+      done();
+    });
+  });
 
+  lab.test('Activate Device POST /api/devices/{id}/activate', (done) => {
+    let options = {
+      method: 'POST',
+      url: '/api/devices/' + createDeviceId + '/activate',
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.result.deviceActivated).to.be.true();
+      done();
+    });
+  });
+
+  lab.test('Get Device after activation GET /api/devices/{id}', (done) => {
+    let options = {
+      method: 'GET',
+      url: '/api/devices/' + createDeviceId,
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.result.device.state).to.be.true();
+      done();
+    });
+  });
+
+  lab.test('Deactivate Device POST /api/devices/{id}/deactivate', (done) => {
+    let options = {
+      method: 'POST',
+      url: '/api/devices/' + createDeviceId + '/deactivate',
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.result.deviceDeactivated).to.be.true();
+      done();
+    });
+  });
+
+  lab.test('Get Device after deactivation GET /api/devices/{id}', (done) => {
+    let options = {
+      method: 'GET',
+      url: '/api/devices/' + createDeviceId,
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.result.device.state).to.be.false();
       done();
     });
   });
@@ -150,11 +204,9 @@ lab.experiment('Devices', () => {
     };
 
     server.inject(options, (response) => {
-
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.devices).to.be.an.array();
       Code.expect(response.result.devices).to.have.length(2);
-
       done();
     });
   });
@@ -173,32 +225,9 @@ lab.experiment('Devices', () => {
     };
 
     server.inject(options, (response) => {
-
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.deviceRemoved).to.be.true();
-
       done();
     });
   });
-
-  /*
-  lab.test('', (done) => {
-    let options = {
-      method: '',
-      url: '',
-      credentials: testUser,
-      artifacts: {
-        sid: testUserArtifact
-      },
-      payload: {
-
-      }
-    };
-
-    server.inject(options, (response) => {
-
-      done();
-    });
-  });
-  */
 });

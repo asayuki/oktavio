@@ -60,6 +60,54 @@ exports.register = (server, options, next) => {
     },
     {
       method: 'POST',
+      path: '/api/devices/{id}/activate',
+      config: {
+        validate: {
+          params: getDeviceSchema
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.activateDevice
+      }
+    },
+    {
+      method: 'POST',
+      path: '/api/devices/{id}/deactivate',
+      config: {
+        validate: {
+          params: getDeviceSchema
+        },
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.deactivateDevice
+      }
+    },
+    {
+      method: 'POST',
       path: '/api/devices',
       config: {
         validate: {
@@ -130,7 +178,6 @@ exports.register = (server, options, next) => {
         handler: handlers.deleteDevice
       }
     }
-
   ]);
 
   next();

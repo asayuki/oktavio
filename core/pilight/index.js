@@ -23,6 +23,7 @@ exports.register = (plugin, options, next) => {
       socket.write(JSON.stringify(message) + '\n', 'utf8');
       return true;
     } else {
+      // Return true if in testing mode?
       return false;
     }
   };

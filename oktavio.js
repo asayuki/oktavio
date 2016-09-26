@@ -36,6 +36,14 @@ Oktavio.register([
     throw error;
   }
 
+  /*DELETE THIS LATER*/
+  Oktavio.plugins.pilight = {
+    send: (one, two) => {
+      return two(true);
+    }
+  };
+  /*END OF DELETE THIS LATER*/
+
   Oktavio.start((oktavioError) => {
     if (oktavioError) {
       throw error;

@@ -71,6 +71,9 @@ lab.experiment('Modes', () => {
     };
 
     server.inject(options, (response) => {
+
+      console.log(response.result);
+
       createModeId = response.result.modeId;
       Code.expect(response.statusCode).to.equal(201);
       Code.expect(response.result.modeId).to.be.an.object();

@@ -17,7 +17,7 @@ const verifyDeviceExists = scheduleFunctions.verifyDeviceExists;
 exports.register = (server, options, next) => {
 
   function addZero (num) {
-    return (i < 10) ? '0' + num : num;
+    return (num < 10) ? '0' + num : num;
   }
 
   const weekDays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -94,5 +94,6 @@ exports.register.attributes = {
   description: 'Schedules plugin for Oktavio',
   main: 'index.js',
   author: 'neme <neme@whispered.se>',
-  license: 'MIT'
+  license: 'MIT',
+  dependencies: ['devices', 'modes']
 };

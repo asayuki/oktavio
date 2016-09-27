@@ -46,7 +46,7 @@ Oktavio.register([
 
   Oktavio.start((oktavioError) => {
     if (oktavioError) {
-      throw error;
+      throw oktavioError;
     }
 
     if (process.env.TESTING) {

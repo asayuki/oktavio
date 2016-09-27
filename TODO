@@ -1,5 +1,6 @@
-* Setup Github tickets/project
+* ~~Setup Github tickets/project~~
 * Write tests
-* Rewrite Device-plugin
+* ~~Rewrite Device-plugin~~
 * Rewrite Modes-plugin
 * Document API
+* Make some changes to schemas-plugin

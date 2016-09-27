@@ -2,8 +2,8 @@
 
 const Boom = require('boom');
 const createModeSchema = require('./schemas/createModeSchema');
-//const updateModeSchema = require('./schemas/updateModeSchema');
-//const getModeSchema = require('./schemas/getModeSchema');
+const updateModeSchema = require('./schemas/updateModeSchema');
+const getModeSchema = require('./schemas/getModeSchema');
 //const deleteModeSchema = require('./schemas/deleteModeSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
@@ -37,7 +37,7 @@ exports.register = (server, options, next) => {
         handler: handlers.createMode
       }
     },
-    /*{
+    {
       method: 'PUT',
       path: '/api/modes',
       config: {
@@ -85,6 +85,7 @@ exports.register = (server, options, next) => {
         handler: handlers.getMode
       }
     },
+    /*
     {
       method: 'POST',
       path: '/api/modes/{id}/activate',
@@ -166,5 +167,6 @@ exports.register.attributes = {
   description: 'Mode plugin for Oktavio',
   main: 'index.js',
   author: 'neme <neme@whispered.se>',
-  license: 'MIT'
+  license: 'MIT',
+  dependencies: 'devices'
 };

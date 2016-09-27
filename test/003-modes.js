@@ -71,9 +71,6 @@ lab.experiment('Modes', () => {
     };
 
     server.inject(options, (response) => {
-
-      console.log(response.result);
-
       createModeId = response.result.modeId;
       Code.expect(response.statusCode).to.equal(201);
       Code.expect(response.result.modeId).to.be.an.object();
@@ -105,7 +102,7 @@ lab.experiment('Modes', () => {
   lab.test('Get mode after update GET /api/modes/{id}', (done) => {
     let options = {
       method: 'GET',
-      url: '/api/modes',
+      url: '/api/modes/' + createModeId,
       credentials: testUser,
       artifacts: {
         sid: testUserArtifact

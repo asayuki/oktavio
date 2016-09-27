@@ -89,8 +89,8 @@ module.exports = {
 
   /**
    * Get device
-   * @param {Object} request.query
-   * @param {String} request.query.id
+   * @param {Object} request.params
+   * @param {String} request.params.id
    * @return {Object} response.device
    */
   getDevice: (request, response) => {

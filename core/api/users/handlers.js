@@ -1,3 +1,4 @@
+'use strict';
 const Boom = require('boom');
 const User = require('./model/user');
 const hashPassword = require('./utils/userFunctions').hashPassword;

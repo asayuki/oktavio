@@ -1,3 +1,4 @@
+'use strict';
 const Boom = require('boom');
 const Async = require('async');
 const Mode = require('./model/mode');

@@ -7,10 +7,14 @@ const updateDeviceSchema = require('./schemas/updateDeviceSchema');
 const deleteDeviceSchema = require('./schemas/deleteDeviceSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
+const exposes = require('./exposes');
 
 const isLoggedIn = userFunctions.isLoggedIn;
 
 exports.register = (server, options, next) => {
+
+  server.expose('activate', exposes.activate);
+  server.expose('deactivate', exposes.deactivate);
 
   server.route([
     {

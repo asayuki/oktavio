@@ -111,8 +111,39 @@ module.exports = {
     });
   },
 
+  /**
+   * Get modes
+   * @param {Object} request.query
+   * @param {String} request.query.from
+   * @param {Integer} request.query.limit
+   * @return {Array} response.modes
+   */
+  getModes: (request, response) => {
+    let query = {};
+    if (typeof request.query.from !== 'undefined') {
+      query._id = {
+        $gt: request.query.from
+      };
+    }
 
-  getModes: (request, response) => {},
-  activateMode: (request, response) => {},
+    Mode.find(query)
+    .limit((request.query.limit ? parseInt(request.query.limit) : 20))
+    .select('-__v').exec((error, modes) => {
+      if (error) {
+        return response(Boom.badImplementation('Could not fetch modes'));
+      }
+
+      return response({modes: modes}).code(200);
+    });
+  },
+
+  /**
+   * Activate mode
+   */
+  activateMode: (request, response) => {
+
+  },
+
+
   deleteMode: (request, response) => {}
 };

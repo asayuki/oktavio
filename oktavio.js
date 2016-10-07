@@ -30,19 +30,11 @@ Oktavio.register([
   require('./core/api/devices'),
   require('./core/api/modes'),
   require('./core/api/schedules'),
-  //require('./core/api/pilight')
+  require('./core/api/pilight')
 ], (error) => {
   if (error) {
     throw error;
   }
-
-  /*DELETE THIS LATER*/
-  Oktavio.plugins.pilight = {
-    send: (one, two) => {
-      return two(true);
-    }
-  };
-  /*END OF DELETE THIS LATER*/
 
   Oktavio.start((oktavioError) => {
     if (oktavioError) {

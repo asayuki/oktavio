@@ -12,6 +12,7 @@ const modeModel = new Schema({
     }
   },
   devices: [{
+    _id: false,
     id: {
       type: Schema.Types.ObjectId,
       required: true

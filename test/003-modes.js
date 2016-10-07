@@ -119,7 +119,7 @@ lab.experiment('Modes', () => {
   lab.test('Activate mode POST /api/modes/{id}/activate', (done) => {
     let options = {
       method: 'POST',
-      url: '/api/modes',
+      url: '/api/modes/' + createModeId + '/activate',
       credentials: testUser,
       artifacts: {
         sid: testUserArtifact
@@ -129,23 +129,6 @@ lab.experiment('Modes', () => {
     server.inject(options, (response) => {
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.modeActivated).to.be.true();
-      done();
-    });
-  });
-
-  lab.test('Get mode after activation GET /api/modes/{id}', (done) => {
-    let options = {
-      method: 'GET',
-      url: '/api/modes',
-      credentials: testUser,
-      artifacts: {
-        sid: testUserArtifact
-      }
-    };
-
-    server.inject(options, (response) => {
-      Code.expect(response.statusCode).to.equal(200);
-      Code.expect(response.result.devices[0].state).to.be.true();
       done();
     });
   });

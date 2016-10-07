@@ -4,13 +4,16 @@ const Boom = require('boom');
 const createModeSchema = require('./schemas/createModeSchema');
 const updateModeSchema = require('./schemas/updateModeSchema');
 const getModeSchema = require('./schemas/getModeSchema');
-//const deleteModeSchema = require('./schemas/deleteModeSchema');
+const deleteModeSchema = require('./schemas/deleteModeSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
+const exposes = require('./exposes');
 
 const isLoggedIn = userFunctions.isLoggedIn;
 
 exports.register = (server, options, next) => {
+
+  server.expose('activate', exposes.activate);
 
   server.route([
     {
@@ -85,7 +88,6 @@ exports.register = (server, options, next) => {
         handler: handlers.getMode
       }
     },
-    /*
     {
       method: 'POST',
       path: '/api/modes/{id}/activate',
@@ -100,7 +102,7 @@ exports.register = (server, options, next) => {
           }
         },
         validate: {
-          payload: getModeSchema
+          params: getModeSchema
         },
         pre: [
           {
@@ -109,7 +111,7 @@ exports.register = (server, options, next) => {
         ],
         handler: handlers.activateMode
       }
-    },
+    },/*
     {
       method: 'GET',
       path: '/api/modes',
@@ -130,7 +132,7 @@ exports.register = (server, options, next) => {
         ],
         handler: handlers.getModes
       }
-    },
+    },*/
     {
       method: 'DELETE',
       path: '/api/modes',
@@ -145,7 +147,7 @@ exports.register = (server, options, next) => {
           }
         },
         validate: {
-          payload: deleteModeSchema
+          payload: getModeSchema
         },
         pre: [
           {
@@ -154,7 +156,7 @@ exports.register = (server, options, next) => {
         ],
         handler: handlers.deleteMode
       }
-    }*/
+    }
   ]);
 
   next();

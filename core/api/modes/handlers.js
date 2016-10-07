@@ -141,9 +141,37 @@ module.exports = {
    * Activate mode
    */
   activateMode: (request, response) => {
+    Mode.findById(request.params.id, (error, mode) => {
+      if (error) {
+        return response(Boom.badImplementation('Could not fetch mode'));
+      }
 
+      if (mode === null) {
+        return response(Boom.notFound('Could not find mode'));
+      }
+
+      request.server.plugins.modes.activate(mode, request.server.plugins, (error) => {
+        if (error) {
+          return response(error);
+        }
+
+        return response({
+          modeActivated: true
+        }).code(200);
+      });
+    });
   },
 
 
-  deleteMode: (request, response) => {}
+  deleteMode: (request, response) => {
+    Mode.findByIdAndRemove(request.payload.id, (error) => {
+      if (error) {
+        return response(Boom.badImplementation('Error while removing mode.'));
+      }
+
+      return response({
+        modeRemoved: true
+      }).code(200);
+    });
+  }
 };

@@ -12,9 +12,57 @@
 
 ### configuration
 
+Copy .env.example to .env and make your configurations there.
+
+**Oktav.IO Application**
+
+* **`HOST`** - Defaults to OS hostname, or `localhost`.
+* **`PORT`** - Defaults to random.
+
+**Redis**
+
+* **`REDIS_HOST`** - Defaults to `127.0.0.1`
+* **`REDIS_PORT`** - Defaults to
+* **`REDIS_PASSWORD`** - Defaults to `null`
+* **`REDIS_PARTITION`** - _(Required)_
+
+**MongoDB**
+
+* **`MONGO_URL`** - _(Required)_ For example: `mongodb://127.0.0.1:27017/` (dont forget the trailing slash)
+* **`MONGO_DB`** - _(Required)_
+* **`MONGO_USER`** - Defaults to `null`
+* **`MONGO_PASS`** - Defaults to `null`
+
+**Pilight**
+
+* **`PILIGHT_HOST`** - _(Required)_
+* **`PILIGHT_PORT`** - _(Required)_
+
+**Additional configurations**
+
+* **`SKIP_DOTENV`** - Skip loading .env-file
+* **`TESTING`** - Used by tests
+* **`COMMENCE_TESTING`** - Used by tests
+
 ### Install packages
 
+To install node packages required to run the application, other than general requirements, execute the following command in the project root.
+
+`npm install`
+
+### Add initial User
+
+You wont get far unless you have an account that can login and add/update/delete stuff. Whilst logged in you can create more users.
+
+```
+node bin/createUser
+```
+
 ### Starting
+
+`npm start` will start the application but will also exit the application if you close your terminal window.
+
+A good way to start applications and keeping them alive is to use [PM2](https://github.com/Unitech/pm2). Follow the installation guide and then run ``pm2 start oktavio.js``.
 
 ## API
 
@@ -54,5 +102,3 @@
 * [<code>GET</code> /api/schedules](documentation/schedules/GET_modes.md)
 * [<code>GET</code> /api/schedules/{id}](documentation/schedules/GET_schedules_id.md)
 * [<code>DELETE</code> /api/schedules](documentation/schedules/DELETE_schedules.md)
-
-### Pilight

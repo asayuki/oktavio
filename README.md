@@ -19,6 +19,8 @@ Copy .env.example to .env and make your configurations there.
 
 * **`HOST`** - Defaults to OS hostname, or `localhost`.
 * **`PORT`** - Defaults to random.
+* **`COOKIE_HASH`** - _(Required)_ 32-char long hash for cookies
+* **`COOKIE_NAME`** - _(Required)_ Name for chookie
 
 **Redis**
 

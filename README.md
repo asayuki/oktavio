@@ -30,10 +30,29 @@
 
 ### Devices
 
-* [<code></code> /api/](documentation/.md)
+* [<code>POST</code> /api/devices](documentation/devices/POST_devices.md)
+* [<code>PUT</code> /api/devices](documentation/devices/PUT_devices.md)
+* [<code>GET</code> /api/devices](documentation/devices/GET_devices.md)
+* [<code>GET</code> /api/devices/{id}](documentation/devices/GET_devices_id.md)
+* [<code>DELETE</code> /api/devices](documentation/devices/DELETE_devices.md)
+* [<code>POST</code> /api/devices/{id}/activate](documentation/devices/POST_device_activate.md)
+* [<code>POST</code> /api/devices/{id}/deactivate](documentation/devices/POST_device_deactivate.md)
 
 ### Modes
 
+* [<code>POST</code> /api/modes](documentation/modes/POST_modes.md)
+* [<code>PUT</code> /api/modes](documentation/modes/PUT_modes.md)
+* [<code>GET</code> /api/modes](documentation/modes/GET_modes.md)
+* [<code>GET</code> /api/modes/{id}](documentation/modes/GET_modes_id.md)
+* [<code>DELETE</code> /api/modes](documentation/modes/DELETE_modes.md)
+* [<code>POST</code> /api/modes/{id}/activate](documentation/modes/POST_modes_activate.md)
+
 ### Schedules
+
+* [<code>POST</code> /api/schedules](documentation/schedules/POST_schedules.md)
+* [<code>PUT</code> /api/schedules](documentation/schedules/PUT_schedules.md)
+* [<code>GET</code> /api/schedules](documentation/schedules/GET_modes.md)
+* [<code>GET</code> /api/schedules/{id}](documentation/schedules/GET_schedules_id.md)
+* [<code>DELETE</code> /api/schedules](documentation/schedules/DELETE_schedules.md)
 
 ### Pilight

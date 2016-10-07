@@ -4,7 +4,6 @@ const Boom = require('boom');
 const createModeSchema = require('./schemas/createModeSchema');
 const updateModeSchema = require('./schemas/updateModeSchema');
 const getModeSchema = require('./schemas/getModeSchema');
-const deleteModeSchema = require('./schemas/deleteModeSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const handlers = require('./handlers');
 const exposes = require('./exposes');

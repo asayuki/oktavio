@@ -31,7 +31,7 @@ module.exports = {
           return callback(Boom.badImplementation('Could not activate device'));
         }
 
-        Device.update({_id: request.params.id}, {$set: {state: true}}, (error, device) => {
+        Device.update({_id: id}, {$set: {state: true}}, (error, device) => {
           if (error) {
             return callback(Boom.badImplementation('Could not update device with new state. But activation went through.'));
           }

@@ -17,8 +17,9 @@ Get a user
 
 A JSON object which holds a object called `user` which then contains all user-data, minus password:
 
-- **username**
-- **email**
+- **_id** — ObjectID
+- **username** — String
+- **email** — String
 
 ## Errors
 

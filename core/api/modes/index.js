@@ -111,7 +111,7 @@ exports.register = (server, options, next) => {
         ],
         handler: handlers.activateMode
       }
-    },/*
+    },
     {
       method: 'GET',
       path: '/api/modes',
@@ -132,7 +132,7 @@ exports.register = (server, options, next) => {
         ],
         handler: handlers.getModes
       }
-    },*/
+    },
     {
       method: 'DELETE',
       path: '/api/modes',

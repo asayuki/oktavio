@@ -78,6 +78,30 @@ lab.experiment('Modes', () => {
     });
   });
 
+  lab.test('Create another mode POST /api/modes', (done) => {
+    let options = {
+      method: 'POST',
+      url: '/api/modes',
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      },
+      payload: {
+        name: 'My other mode',
+        devices: [{
+          id: testDevice,
+          state: false
+        }]
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(201);
+      Code.expect(response.result.modeId).to.be.an.object();
+      done();
+    });
+  });
+
   lab.test('Update mode PUT /api/modes', (done) => {
     let options = {
       method: 'PUT',
@@ -133,6 +157,24 @@ lab.experiment('Modes', () => {
     });
   });
 
+  lab.test('Get modes', (done) => {
+    let options = {
+      method: 'GET',
+      url: '/api/modes',
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.result.modes).to.be.an.array();
+      Code.expect(response.result.modes).to.have.length(2);
+      done();
+    });
+  });
+
   lab.test('Delete mode DELETE /api/modes', (done) => {
     let options = {
       method: 'DELETE',
@@ -149,6 +191,24 @@ lab.experiment('Modes', () => {
     server.inject(options, (response) => {
       Code.expect(response.statusCode).to.equal(200);
       Code.expect(response.result.modeRemoved).to.be.true();
+      done();
+    });
+  });
+
+  lab.test('Get modes', (done) => {
+    let options = {
+      method: 'GET',
+      url: '/api/modes',
+      credentials: testUser,
+      artifacts: {
+        sid: testUserArtifact
+      }
+    };
+
+    server.inject(options, (response) => {
+      Code.expect(response.statusCode).to.equal(200);
+      Code.expect(response.result.modes).to.be.an.array();
+      Code.expect(response.result.modes).to.have.length(1);
       done();
     });
   });

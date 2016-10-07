@@ -10,7 +10,7 @@
 
 ## Setup Oktav.IO
 
-### configuration
+### Configuration
 
 Copy .env.example to .env and make your configurations there.
 

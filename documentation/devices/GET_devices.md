@@ -16,7 +16,7 @@ Get a list of devices
 ## Parameters (Query)
 
 - **limit** — Number of total users to get
-- **from** — User (_id) to start the query from
+- **from** — Device (_id) to start the query from
 
 ## Return format
 

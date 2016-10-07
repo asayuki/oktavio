@@ -1,3 +1,4 @@
+'use strict';
 if (!process.env.SKIP_DOTENV) {
   require('dotenv').load();
 }

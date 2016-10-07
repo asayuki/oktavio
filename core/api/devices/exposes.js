@@ -5,9 +5,6 @@ const Device = require('./model/device');
 module.exports = {
 
   activate: (id, pilight, callback) => {
-
-    console.log(id);
-
     Device.findById(id, (error, device) => {
       if (error) {
         return callback(Boom.badImplementation('Could node fetch device'));
@@ -28,8 +25,6 @@ module.exports = {
         }
       };
       /* eslint-enable quotes */
-
-      console.log('MEEEEN');
 
       pilight.send(sendObj, (success) => {
         if (!success) {
@@ -79,7 +74,7 @@ module.exports = {
             return callback(Boom.badImplementation('Could not update device with new state. But deactivation went through.'));
           }
 
-          return response(null, true);
+          return callback(null, true);
         });
       });
     });

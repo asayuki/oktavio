@@ -42,27 +42,17 @@ exports.register = (server, options, next) => {
           }
         ]
       }, (error, jobs) => {
-
-        console.log(jobs);
-
         jobs.forEach((job) => {
-          console.log('jobbb');
           if (job.type === 'device') {
-            console.log('its a device');
             if (job.state) {
-              console.log('holy crap');
-              server.plugins.devices.activate(job.typeId, server.plugins.pilight, (err) => {});
+              server.plugins.devices.activate(job.typeId, server.plugins.pilight, () => {});
             } else {
               server.plugins.devices.deactivate(job.typeId, server.plugins.pilight, () => {});
             }
+          } else if (job.type === 'mode') {
+            server.plugins.modes.activate(job.typeId, server.plugins, () => {});
           }
         });
-        // Here we might want exposes?
-        // if Device:
-        // server.plugins.modes.activateDevice(deviceID);
-
-        // if Mode:
-        // server.plugins.modes.activateMode(modeID);
       });
     });
   }

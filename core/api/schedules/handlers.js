@@ -16,7 +16,7 @@ module.exports = {
     let schedule = new Schedule();
 
     schedule.weekDay = request.payload.weekDay;
-    schedule.time = request.payload.time;
+    schedule.time = parseInt(request.payload.time);
     schedule.type = request.payload.type;
     schedule.typeId = request.payload.typeId;
 

@@ -3,9 +3,8 @@
 const Boom = require('boom');
 const NodeSchedule = require('node-schedule');
 const createScheduleSchema = require('./schemas/createScheduleSchema');
-//const getScheduleSchema = require('./schemas/getScheduleSchema');
-//const updateScheduleSchema = require('./schemas/updateScheduleSchema');
-//const deleteScheduleSchema = require('./schemas/deleteScheduleSchema');
+const getScheduleSchema = require('./schemas/getScheduleSchema');
+const updateScheduleSchema = require('./schemas/updateScheduleSchema');
 const userFunctions = require('../users/utils/userFunctions');
 const scheduleFunctions = require('./utils/scheduleFunctions');
 const Schedule = require('./model/schedule');
@@ -44,6 +43,8 @@ exports.register = (server, options, next) => {
         ]
       }, (error, jobs) => {
 
+        console.log(jobs);
+
         // Here we might want exposes?
         // if Device:
         // server.plugins.modes.activateDevice(deviceID);
@@ -80,6 +81,99 @@ exports.register = (server, options, next) => {
           }
         ],
         handler: handlers.createSchedule
+      }
+    },
+    {
+      method: 'PUT',
+      path: '/api/schedules',
+      config: {
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        validate: {
+          payload: updateScheduleSchema
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.updateSchedule
+      }
+    },
+    {
+      method: 'GET',
+      path: '/api/schedules/{id}',
+      config: {
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        validate: {
+          params: getScheduleSchema
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.getSchedule
+      }
+    },
+    {
+      method: 'GET',
+      path: '/api/schedules',
+      config: {
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.getSchedules
+      }
+    },
+    {
+      method: 'DELETE',
+      path: '/api/schedules',
+      config: {
+        auth: {
+          mode: 'try',
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        validate: {
+          payload: getScheduleSchema
+        },
+        pre: [
+          {
+            method: isLoggedIn
+          }
+        ],
+        handler: handlers.deleteSchedule
       }
     }
   ]);

@@ -49,7 +49,6 @@ lab.experiment('Schedules', () => {
           }
         }, (deviceResponse) => {
           testDevice = deviceResponse.result.devices[0]._id;
-
           // Then we need a mode (but we haven't created that part of API yet)
           server.inject({
             method: 'GET',
@@ -59,8 +58,7 @@ lab.experiment('Schedules', () => {
               sid: testUserArtifact
             }
           }, (modeResponse) => {
-            //testMode = modeResponse.mode._id;
-
+            testMode = modeResponse.result.modes[0]._id;
             done();
           });
         });
@@ -113,7 +111,6 @@ lab.experiment('Schedules', () => {
 
     server.inject(options, (response) => {
       createScheduleModeId = response.result.scheduleId;
-
       Code.expect(response.statusCode).to.equal(201);
       Code.expect(response.result.scheduleCreated).to.be.true();
       Code.expect(response.result.scheduleId).to.be.an.object();
@@ -130,6 +127,7 @@ lab.experiment('Schedules', () => {
         sid: testUserArtifact
       },
       payload: {
+        id: createScheduleId,
         time: 1345,
         state: false
       }

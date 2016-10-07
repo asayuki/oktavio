@@ -10,6 +10,7 @@ lib-cov
 pids
 results
 certs
+coverage
 
 *.log
 

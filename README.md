@@ -1,4 +1,4 @@
-# Oktav.io
+# ![Oktav.IO](oktavio.png) Oktav.IO
 
 ## General Requirements
 

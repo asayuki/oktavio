@@ -45,6 +45,18 @@ exports.register = (server, options, next) => {
 
         console.log(jobs);
 
+        jobs.forEach((job) => {
+          console.log('jobbb');
+          if (job.type === 'device') {
+            console.log('its a device');
+            if (job.state) {
+              console.log('holy crap');
+              server.plugins.devices.activate(job.typeId, server.plugins.pilight, (err) => {});
+            } else {
+              server.plugins.devices.deactivate(job.typeId, server.plugins.pilight, () => {});
+            }
+          }
+        });
         // Here we might want exposes?
         // if Device:
         // server.plugins.modes.activateDevice(deviceID);

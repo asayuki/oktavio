@@ -5,6 +5,9 @@ const Device = require('./model/device');
 module.exports = {
 
   activate: (id, pilight, callback) => {
+
+    console.log(id);
+
     Device.findById(id, (error, device) => {
       if (error) {
         return callback(Boom.badImplementation('Could node fetch device'));
@@ -26,6 +29,8 @@ module.exports = {
       };
       /* eslint-enable quotes */
 
+      console.log('MEEEEN');
+
       pilight.send(sendObj, (success) => {
         if (!success) {
           return callback(Boom.badImplementation('Could not activate device'));
@@ -43,7 +48,7 @@ module.exports = {
   },
 
   deactivate: (id, pilight, callback) => {
-    Device.findById(request.params.id, (error, device) => {
+    Device.findById(id, (error, device) => {
       if (error) {
         return callback(Boom.badImplementation('Could node fetch device'));
       }
@@ -69,7 +74,7 @@ module.exports = {
           return callback(Boom.badImplementation('Could not deactivate device'));
         }
 
-        Device.update({_id: request.params.id}, {$set: {state: false}}, (error, device) => {
+        Device.update({_id: id}, {$set: {state: false}}, (error, device) => {
           if (error) {
             return callback(Boom.badImplementation('Could not update device with new state. But deactivation went through.'));
           }

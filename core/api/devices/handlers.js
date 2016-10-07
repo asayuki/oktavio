@@ -185,7 +185,7 @@ module.exports = {
           "protocol": [device.protocol],
           "id": device.unit_id,
           "unit": device.unit_code,
-          "on": 0
+          "off": 1
         }
       };
       /* eslint-enable quotes */

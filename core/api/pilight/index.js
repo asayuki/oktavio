@@ -63,7 +63,7 @@ exports.register = (server, options, next) => {
   // On connect
   Socket.on('connect', () => {
     /* eslint-disable quotes */
-    send({
+    sendMessage({
       "action": "identify",
       "options": {
         "receiver": 1,

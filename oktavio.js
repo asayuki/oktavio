@@ -26,15 +26,27 @@ Oktavio.register([
   require('inert'),
   require('hapi-auth-cookie'),
   require('hapi-auth-jwt'),
+  require('vision'),
   require('./core/api/users'),
   require('./core/api/devices'),
   require('./core/api/modes'),
   require('./core/api/schedules'),
-  require('./core/api/pilight')
+  require('./core/api/pilight'),
+  require('./core/ui')
 ], (error) => {
   if (error) {
     throw error;
   }
+
+  Oktavio.views({
+    engines: {
+      jade: require('pug')
+    },
+    path: __dirname + '/core/ui/views',
+    compileOptions: {
+      pretty: true
+    }
+  });
 
   Oktavio.start((oktavioError) => {
     if (oktavioError) {

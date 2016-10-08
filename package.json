@@ -6,7 +6,7 @@
   "main": "oktavio.js",
   "scripts": {
     "start": "node oktavio.js",
-    "dev": "nodemon --watch oktavio.js --watch core -e html,js --ignore core/ui/_assets/ --ignore core/ui/statics/ oktavio.js",
+    "dev": "nodemon --watch oktavio.js --watch core -e jade,js --ignore core/ui/assets/ --ignore core/ui/statics/ oktavio.js",
     "test": "MONGO_DB=oktavioDevTest TESTING=true ./node_modules/lab/bin/lab -c -v -m 10000",
     "coverage": "MONGO_DB=oktavioDevTest TESTING=true ./node_modules/lab/bin/lab -m 10000 -r html -o ./coverage/index.html",
     "lint-staged": "lint-staged"
@@ -29,11 +29,16 @@
     "joi": "^8.1.0",
     "joi-objectid": "^2.0.0",
     "mongoose": "^4.6.1",
-    "node-schedule": "^1.1.1"
+    "node-schedule": "^1.1.1",
+    "pug": "^2.0.0-beta6",
+    "vision": "^4.1.0"
   },
   "devDependencies": {
     "code": "^3.0.0",
     "eslint": "^2.12.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
     "lab": "^10.6.1",
     "lint-staged": "^1.0.1",
     "nodemon": "^1.8.1",

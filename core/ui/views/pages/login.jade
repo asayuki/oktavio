@@ -5,4 +5,12 @@ block title
   title Oktav.IO - Login
 
 block content
-  h1 Login
+  section.login
+    form.login-form
+      p.form-row
+        i.icon-envelop
+        input(type='text', name='username', placeholder='Username')
+      p.form-row
+        i.icon-lock
+        input(type='password', name='password', placeholder='Password')
+      button Log In

@@ -8,7 +8,7 @@ module.exports = (grunt) => {
           'sourcemap': 'none'
         },
         files: {
-          'core/ui/statics/style.css': 'core/ui/assets/sccs/style.scss'
+          'core/ui/statics/style.css': 'core/ui/assets/scss/style.scss'
         }
       }
     },
@@ -21,8 +21,8 @@ module.exports = (grunt) => {
     }
   });
 
-  grunt.loadNpmTask('grunt-contrib-sass');
-  grunt.loadNpmTask('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('dev', ['sass', 'watch']);
 };

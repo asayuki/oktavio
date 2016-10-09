@@ -9,6 +9,21 @@ const isLoggedIn = userFunctions.isLoggedIn;
 
 exports.register = (server, options, next) => {
 
+  // Route all statics
+  server.route({
+    method: 'GET',
+    path: '/statics/{path*}',
+    config: {
+      handler: {
+        directory: {
+          path: './core/ui/statics'
+        }
+      },
+      id: 'statics'
+    }
+  });
+
+  // Route all views
   server.route([
     /*{
       method: 'GET',

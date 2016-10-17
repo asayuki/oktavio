@@ -102,6 +102,6 @@ A good way to start applications and keeping them alive is to use [PM2](https://
 
 * [<code>POST</code> /api/schedules](documentation/schedules/POST_schedules.md)
 * [<code>PUT</code> /api/schedules](documentation/schedules/PUT_schedules.md)
-* [<code>GET</code> /api/schedules](documentation/schedules/GET_modes.md)
+* [<code>GET</code> /api/schedules](documentation/schedules/GET_schedules.md)
 * [<code>GET</code> /api/schedules/{id}](documentation/schedules/GET_schedules_id.md)
 * [<code>DELETE</code> /api/schedules](documentation/schedules/DELETE_schedules.md)

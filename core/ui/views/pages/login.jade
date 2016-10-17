@@ -14,3 +14,11 @@ block content
         i.icon-lock
         input(type='password', name='password', placeholder='Password')
       button Log In
+
+block javascript
+  script(type='text/javascript').
+    document.addEventListener('DOMContentLoaded', function (event) {
+      require(['/statics/pages/login.min.js'], function (login) {
+        login.init();
+      });
+    });

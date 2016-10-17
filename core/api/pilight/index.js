@@ -131,9 +131,11 @@ exports.register = (server, options, next) => {
   server.expose('send', (action, callback) => {
     callback(sendMessage(action));
   });
-
-  if (!process.env.TESTING) {
-    createConnection();
+  
+  if (!process.env.PILIGHT_SKIP) {
+    if (!process.env.TESTING) {
+      createConnection();
+    }
   }
 
   next();

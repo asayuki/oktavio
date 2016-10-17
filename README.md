@@ -38,8 +38,9 @@ Copy .env.example to .env and make your configurations there.
 
 **Pilight**
 
-* **`PILIGHT_HOST`** - _(Required)_
-* **`PILIGHT_PORT`** - _(Required)_
+* **`PILIGHT_SKIP`** - Defaults to `false`
+* **`PILIGHT_HOST`** - _(Required, if skip is not set to True)_
+* **`PILIGHT_PORT`** - _(Required, if skip is not set to True)_
 
 **Additional configurations**
 

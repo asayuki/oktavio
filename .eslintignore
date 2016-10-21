@@ -1,2 +1,4 @@
 node_modules/*
 oldtests/*
+core/ui/assets/javascript/vendor/**/*.js
+core/ui/statics/**/*.js

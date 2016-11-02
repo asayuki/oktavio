@@ -18,12 +18,21 @@ define([], () => {
 
         fetch('/api/users/login', {
           method: 'post',
+          credentials: "same-origin",
           body: JSON.stringify({
             username: username,
             password: password
           })
         }).then((response) => {
-          console.log(response);
+          if (response.ok) {
+            window.location = '/';
+          } else {
+            console.log('Resp not ok');
+            // Show error
+          }
+        }).catch(function (error) {
+          console.log('Oh god, why');
+          // Show error
         });
       });
     }

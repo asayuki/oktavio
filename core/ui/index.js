@@ -54,6 +54,23 @@ exports.register = (server, options, next) => {
           return response.view('pages/login');
         }
       }
+    },
+    {
+      method: 'GET',
+      path: '/',
+      config: {
+        auth: {
+          strategies: ['session']
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        },
+        handler: (request, response) => {
+          return response.view('pages/dashboard');
+        }
+      }
     }
   ]);
 

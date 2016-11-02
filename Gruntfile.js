@@ -21,6 +21,7 @@ module.exports = (grunt) => {
         files: [
           {
             'core/ui/statics/vendors.min.js': [
+              'core/ui/assets/javascript/vendor/fetch.polyfill.js',
               'core/ui/assets/javascript/vendor/require.min.js' // Would be best if this is last
             ]
           },

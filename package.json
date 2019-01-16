@@ -1,50 +1,33 @@
 {
-  "author": "neme <neme@whispered.se>",
   "name": "oktavio",
-  "version": "1.0.2",
-  "description": "API and GUI for control of your pilight-daemon",
-  "main": "oktavio.js",
+  "version": "2.0.0",
+  "description": "API for control over pilight-daemon",
+  "main": "index.js",
   "scripts": {
-    "start": "node oktavio.js",
-    "dev": "nodemon --watch oktavio.js --watch core -e jade,js --ignore core/ui/assets/ --ignore core/ui/statics/ oktavio.js",
-    "test": "MONGO_DB=oktavioDevTest TESTING=true ./node_modules/lab/bin/lab -c -v -m 10000",
-    "coverage": "MONGO_DB=oktavioDevTest TESTING=true ./node_modules/lab/bin/lab -m 10000 -r html -o ./coverage/index.html",
-    "lint-staged": "lint-staged"
+    "dev": "nodemon --watch . --ignore ./test -x \"npm start\"",
+    "start": "node ./src/server.js",
+    "test-coverage-file": "lab -c -v -m 10000 -r html -o ./coverage/index.html",
+    "test": "lab -c -v -m 10000"
   },
-  "lint-staged": {
-    "eslint": "*.js"
-  },
-  "pre-commit": "lint-staged",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "async": "^2.0.0-rc.5",
-    "bcrypt": "^0.8.5",
-    "catbox-redis": "^2.0.2",
-    "dotenv": "^2.0.0",
-    "hapi": "^13.4.1",
-    "hapi-auth-cookie": "^6.1.1",
-    "hapi-auth-jwt": "^4.0.0",
-    "inert": "^4.0.0",
-    "inquirer": "^1.0.2",
-    "joi": "^8.1.0",
+    "async-redis": "^1.1.4",
+    "bcrypt": "^3.0.2",
+    "boom": "^7.3.0",
+    "dotenv": "^6.2.0",
+    "hapi": "^17.8.1",
+    "hapi-auth-jwt2": "^8.2.0",
+    "joi": "^14.3.0",
     "joi-objectid": "^2.0.0",
-    "mongoose": "^4.6.1",
-    "node-schedule": "^1.1.1",
-    "pug": "^2.0.0-beta6",
-    "vision": "^4.1.0"
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.3.14",
+    "mysql": "^2.16.0"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.16.0",
-    "code": "^3.0.0",
-    "eslint": "^2.12.0",
-    "grunt": "^1.0.1",
-    "grunt-babel": "^6.0.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "lab": "^10.6.1",
-    "lint-staged": "^1.0.1",
-    "nodemon": "^1.8.1",
-    "pre-commit": "^1.1.3"
+    "code": "^5.2.4",
+    "eslint": "^5.9.0",
+    "lab": "^18.0.0",
+    "nodemon": "^1.18.9"
   }
 }

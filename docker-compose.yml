@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  api:
+    build: .
+    command: npm run dev
+    ports:
+      - 8088:8088
+    volumes:
+      - .:/usr/app
+      - /usr/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+  db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: oktavio
+  redis:
+    image: redis:alpine
